@@ -18,7 +18,6 @@
     </head>
     <body class="font-sans antialiased">
 
-    asdasd
         @inertia
     </body>
 </html>

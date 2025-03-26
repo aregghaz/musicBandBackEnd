@@ -5,18 +5,37 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Blog;
 use Illuminate\Http\Request;
+use Inertia\Inertia;
 
 class BlogController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $blogs = Blog::all();
-        return view('admin.blog.index', compact('blogs'));
+        $search = $request->input('search', ''); // Get the search term from the query parameter
+
+        $blogs = Blog::query()
+            ->when($search, function ($query) use ($search) {
+                return $query->where('title', 'like', '%' . $search . '%')
+                    ->orWhere('description', 'like', '%' . $search . '%');
+            })
+            ->get();
+
+        return Inertia::render('Admin/Blogs/Index', [
+            'blogs' => $blogs
+        ]);
     }
+
 
     public function create()
     {
-        return view('admin.blog.create');
+        return Inertia::render('Admin/Blogs/Create');
+    }
+
+    public function edit(Blog $blog)
+    {
+        return Inertia::render('Admin/Blogs/Edit', [
+            'blog' => $blog
+        ]);
     }
 
     public function store(Request $request)
@@ -24,26 +43,12 @@ class BlogController extends Controller
         $request->validate([
             'title' => 'required|string|max:255',
             'description' => 'required|string',
-            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'image' => 'nullable|string'
         ]);
 
-        $imagePath = null;
-        if ($request->hasFile('image')) {
-            $imagePath = $request->file('image')->store('images/blogs', 'public');
-        }
+        Blog::create($request->all());
 
-        Blog::create([
-            'title' => $request->title,
-            'description' => $request->description,
-            'image' => $imagePath,
-        ]);
-
-        return redirect()->route('admin.blog.index');
-    }
-
-    public function edit(Blog $blog)
-    {
-        return view('admin.blog.edit', compact('blog'));
+        return redirect()->route('blogs.index');
     }
 
     public function update(Request $request, Blog $blog)
@@ -51,37 +56,20 @@ class BlogController extends Controller
         $request->validate([
             'title' => 'required|string|max:255',
             'description' => 'required|string',
-            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'image' => 'nullable|string'
         ]);
 
-        $imagePath = $blog->image;
-        if ($request->hasFile('image')) {
-            // Delete old image if exists
-            if ($blog->image) {
-                \Storage::delete('public/' . $blog->image);
-            }
-            $imagePath = $request->file('image')->store('images/blogs', 'public');
-        }
+        $blog->update($request->all());
 
-        $blog->update([
-            'title' => $request->title,
-            'description' => $request->description,
-            'image' => $imagePath,
-        ]);
-
-        return redirect()->route('admin.blog.index');
+        return redirect()->route('blogs.index');
     }
 
     public function destroy(Blog $blog)
     {
-        // Delete the image from storage if exists
-        if ($blog->image) {
-            \Storage::delete('public/' . $blog->image);
-        }
-
         $blog->delete();
 
-        return redirect()->route('admin.blog.index');
+        return redirect()->route('blogs.index');
     }
 }
+
 
