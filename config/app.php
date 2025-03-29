@@ -123,4 +123,12 @@ return [
         'store' => env('APP_MAINTENANCE_STORE', 'database'),
     ],
 
+    // Add the alias for "is_admin" middleware here
+    'aliases' => [
+        // other aliases...
+        'AdminMiddleware' => App\Http\Middleware\AdminMiddleware::class,
+    ],
+
+
 ];
+
