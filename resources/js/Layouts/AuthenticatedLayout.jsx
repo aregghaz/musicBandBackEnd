@@ -6,21 +6,11 @@ import NavLink from '@/Components/NavLink';
 import ResponsiveNavLink from '@/Components/ResponsiveNavLink';
 import {Link, usePage} from '@inertiajs/react';
 import {useState} from 'react';
-import LanguageSelector from '@/Components/LanguageSelector'; // Import the LanguageSelector component
 
 export default function AuthenticatedLayout({header, children}) {
     const user = usePage().props.auth.user;
-    const locales = ['en', 'hy']; // Available languages (English and Armenian as an example)
 
     const [showingNavigationDropdown, setShowingNavigationDropdown] = useState(false);
-    const [selectedLocale, setSelectedLocale] = useState(locales[0]);
-
-
-    const handleLanguageChange = (locale) => {
-
-        setSelectedLocale(locale);
-        window.location.href = `/${locale}`;
-    };
 
     return (
         <div className="min-h-screen bg-gray-100">
@@ -180,20 +170,6 @@ export default function AuthenticatedLayout({header, children}) {
                 </div>
             </nav>
 
-            {/* Use LanguageSelector Component */}
-            <LanguageSelector
-                locales={locales}
-                selectedLocale={selectedLocale}
-                onLanguageChange={handleLanguageChange}
-            />
-
-            {header && (
-                <header className="bg-white shadow">
-                    <div className="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
-                        {header}
-                    </div>
-                </header>
-            )}
 
             <main>{children}</main>
         </div>

@@ -24,7 +24,7 @@ return Application::configure(basePath: dirname(__DIR__))
         // Register alias for admin middleware
         $middleware->alias([
             'admin' => AdminMiddleware::class,
-            'locale' => LocaleMiddleware::class, // Optional: if you want to use it as route middleware
+//            'locale' => LocaleMiddleware::class, // Optional: if you want to use it as route middleware
         ]);
 
         // If you need to add it to the global middleware stack instead:
