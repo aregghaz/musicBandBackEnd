@@ -32,8 +32,8 @@ class AuthenticatedSessionController extends Controller
         $request->authenticate();
 
         $request->session()->regenerate();
+        return redirect()->intended(route('admin.dashboard', ['locale' => app()->getLocale()], false));
 
-        return redirect()->intended(route('admin.dashboard', absolute: false));
     }
 
     /**

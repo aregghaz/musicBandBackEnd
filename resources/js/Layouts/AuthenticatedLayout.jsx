@@ -1,15 +1,26 @@
+// resources/js/Layouts/AuthenticatedLayout.jsx
+
 import ApplicationLogo from '@/Components/ApplicationLogo';
 import Dropdown from '@/Components/Dropdown';
 import NavLink from '@/Components/NavLink';
 import ResponsiveNavLink from '@/Components/ResponsiveNavLink';
-import { Link, usePage } from '@inertiajs/react';
-import { useState } from 'react';
+import {Link, usePage} from '@inertiajs/react';
+import {useState} from 'react';
+import LanguageSelector from '@/Components/LanguageSelector'; // Import the LanguageSelector component
 
-export default function AuthenticatedLayout({ header, children }) {
+export default function AuthenticatedLayout({header, children}) {
     const user = usePage().props.auth.user;
+    const locales = ['en', 'hy']; // Available languages (English and Armenian as an example)
 
-    const [showingNavigationDropdown, setShowingNavigationDropdown] =
-        useState(false);
+    const [showingNavigationDropdown, setShowingNavigationDropdown] = useState(false);
+    const [selectedLocale, setSelectedLocale] = useState(locales[0]);
+
+
+    const handleLanguageChange = (locale) => {
+
+        setSelectedLocale(locale);
+        window.location.href = `/${locale}`;
+    };
 
     return (
         <div className="min-h-screen bg-gray-100">
@@ -19,7 +30,7 @@ export default function AuthenticatedLayout({ header, children }) {
                         <div className="flex">
                             <div className="flex shrink-0 items-center">
                                 <Link href="/">
-                                    <ApplicationLogo className="block h-9 w-auto fill-current text-gray-800" />
+                                    <ApplicationLogo className="block h-9 w-auto fill-current text-gray-800"/>
                                 </Link>
                             </div>
 
@@ -168,6 +179,13 @@ export default function AuthenticatedLayout({ header, children }) {
                     </div>
                 </div>
             </nav>
+
+            {/* Use LanguageSelector Component */}
+            <LanguageSelector
+                locales={locales}
+                selectedLocale={selectedLocale}
+                onLanguageChange={handleLanguageChange}
+            />
 
             {header && (
                 <header className="bg-white shadow">

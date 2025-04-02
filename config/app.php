@@ -84,6 +84,12 @@ return [
 
     'faker_locale' => env('APP_FAKER_LOCALE', 'en_US'),
 
+    'available_locales' => [
+        'en' => 'English',
+        'hy' => 'Armenian',
+        // Add other supported locales
+    ],
+
     /*
     |--------------------------------------------------------------------------
     | Encryption Key
@@ -128,7 +134,4 @@ return [
         // other aliases...
         'AdminMiddleware' => App\Http\Middleware\AdminMiddleware::class,
     ],
-
-
 ];
-
