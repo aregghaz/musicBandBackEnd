@@ -88,6 +88,7 @@ class BlogController extends Controller
             ->with('success', 'Blog updated successfully');
     }
 
+
     /**
      * Remove the specified blog
      */
