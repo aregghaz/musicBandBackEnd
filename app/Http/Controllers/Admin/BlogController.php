@@ -11,7 +11,7 @@ class BlogController extends Controller
 {
     public function index(Request $request)
     {
-        $search = $request->input('search', ''); // Get the search term from the query parameter
+        $search = $request->input('search', '');
 
         $blogs = Blog::query()
             ->when($search, function ($query) use ($search) {
@@ -24,7 +24,6 @@ class BlogController extends Controller
             'blogs' => $blogs
         ]);
     }
-
 
     public function create()
     {
@@ -41,12 +40,18 @@ class BlogController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'title' => 'required|string|max:255',
-            'description' => 'required|string',
-            'image' => 'nullable|string'
+            'image' => 'nullable|string',
+
+            'translations' => 'required|array',
+            'translations.*.title' => 'required|string|max:255',
+            'translations.*.description' => 'required|string',
         ]);
 
-        Blog::create($request->all());
+
+        $blog = Blog::create([
+            'image' => $request->input('image'),
+            'translations' => $request->input('translations'),
+        ]);
 
         return redirect()->route('blogs.index');
     }
@@ -54,12 +59,18 @@ class BlogController extends Controller
     public function update(Request $request, Blog $blog)
     {
         $request->validate([
-            'title' => 'required|string|max:255',
-            'description' => 'required|string',
-            'image' => 'nullable|string'
+            'image' => 'nullable|string',
+
+            'translations' => 'required|array',
+            'translations.*.title' => 'required|string|max:255',
+            'translations.*.description' => 'required|string',
         ]);
 
-        $blog->update($request->all());
+
+        $blog->update([
+            'image' => $request->input('image'),
+            'translations' => $request->input('translations'),
+        ]);
 
         return redirect()->route('blogs.index');
     }
@@ -71,5 +82,6 @@ class BlogController extends Controller
         return redirect()->route('blogs.index');
     }
 }
+
 
 
