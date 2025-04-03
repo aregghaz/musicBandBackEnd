@@ -3,12 +3,19 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+
+
+
+use App\Http\Resources\BlogCollection;
 use App\Models\Blog;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 
 class BlogController extends Controller
 {
+    /**
+     * Display a listing of blogs with search functionality
+     */
     public function index(Request $request)
     {
         $search = $request->input('search', '');
@@ -20,16 +27,42 @@ class BlogController extends Controller
             })
             ->get();
 
+        // Return the blogs inside an Inertia response
         return Inertia::render('Admin/Blogs/Index', [
-            'blogs' => $blogs
+            'blogs' => new BlogCollection($blogs),
+            'search' => $search,  // Optionally pass search term
         ]);
     }
 
+    /**
+     * Show the form for creating a new blog
+     */
     public function create()
     {
         return Inertia::render('Admin/Blogs/Create');
     }
 
+    /**
+     * Store new blog
+     */
+    public function store(Request $request)
+    {
+        $validated = $request->validate([
+            'title' => 'required|string|max:255',
+            'description' => 'required|string',
+            // Add other fields as needed
+        ]);
+
+        Blog::create($validated);
+
+        return redirect()
+            ->route('blogs.index')
+            ->with('success', 'Blog created successfully');
+    }
+
+    /**
+     * Show edit form
+     */
     public function edit(Blog $blog)
     {
         return Inertia::render('Admin/Blogs/Edit', [
@@ -37,51 +70,35 @@ class BlogController extends Controller
         ]);
     }
 
-    public function store(Request $request)
-    {
-        $request->validate([
-            'image' => 'nullable|string',
-
-            'translations' => 'required|array',
-            'translations.*.title' => 'required|string|max:255',
-            'translations.*.description' => 'required|string',
-        ]);
-
-
-        $blog = Blog::create([
-            'image' => $request->input('image'),
-            'translations' => $request->input('translations'),
-        ]);
-
-        return redirect()->route('blogs.index');
-    }
-
+    /**
+     * Update blog
+     */
     public function update(Request $request, Blog $blog)
     {
-        $request->validate([
-            'image' => 'nullable|string',
-
-            'translations' => 'required|array',
-            'translations.*.title' => 'required|string|max:255',
-            'translations.*.description' => 'required|string',
+        $validated = $request->validate([
+            'title' => 'required|string|max:255',
+            'description' => 'required|string',
+            // Add other fields as needed
         ]);
 
+        $blog->update($validated);
 
-        $blog->update([
-            'image' => $request->input('image'),
-            'translations' => $request->input('translations'),
-        ]);
-
-        return redirect()->route('blogs.index');
+        return redirect()
+            ->route('blogs.index')
+            ->with('success', 'Blog updated successfully');
     }
 
+
+    /**
+     * Remove the specified blog
+     */
     public function destroy(Blog $blog)
     {
         $blog->delete();
 
-        return redirect()->route('blogs.index');
+        return redirect()
+            ->route('blogs.index')
+            ->with('success', 'Blog deleted successfully');
     }
 }
-
-
 

@@ -4,7 +4,7 @@ import {useDebounce} from "@/hooks/useDebounce.jsx";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.jsx";
 
 export default function Index() {
-    const {blogs} = usePage().props;
+    const {blogs:{data:blogs}} = usePage().props;
     const [search, setSearch] = useState("");
     const [isSearched, setIsSearched] =useState(false)
     const debouncedSearch = useDebounce(search, 500);
