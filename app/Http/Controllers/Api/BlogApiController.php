@@ -9,14 +9,11 @@ use Illuminate\Http\Request;
 
 class BlogApiController extends Controller
 {
-    // Get all blog posts
+
     public function index()
     {
-        $data = Blog::all();
-        return response()->json(new  BlogCollection($data), 200);
+        return new BlogCollection(Blog::all());
     }
-
-    // Get a single blog post by ID
     public function show($id)
     {
         $blog = Blog::find($id);
