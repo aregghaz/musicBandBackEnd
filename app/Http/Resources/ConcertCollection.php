@@ -18,13 +18,13 @@ class ConcertCollection extends ResourceCollection
         return $this->collection->map(function ($concert) {
             return [
                 'id' => $concert->id,
-                'concertCity' => $concert->concert_city,  // Convert to camelCase
-                'concertPlace' => $concert->concert_place,  // Convert to camelCase
-                'concertDate' => $concert->concert_date,  // Convert to camelCase
+                'concertCity' => $concert->concert_city,
+                'concertPlace' => $concert->concert_place,
+                'concertDate' => $concert->concert_date,
                 'type' => $concert->type,
-                'concertImage' => $concert->concert_image,  // Convert to camelCase
-                'createdAt' => $concert->created_at->toIso8601String(),  // Convert to ISO string
-                'updatedAt' => $concert->updated_at->toIso8601String(),  // Convert to ISO string
+                'concertImage' => $concert->concert_image,
+                'createdAt' => $concert->created_at->toIso8601String(),
+                'updatedAt' => $concert->updated_at->toIso8601String(),
             ];
         })->toArray();
     }

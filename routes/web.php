@@ -4,6 +4,7 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\Admin\BlogController;
 use App\Http\Controllers\Admin\ConcertController;
 use App\Http\Controllers\Admin\BandMemberController;
+use App\Http\Controllers\Admin\AlbumController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -56,6 +57,7 @@ Route::middleware(['auth', 'admin'])->group(function () {
     Route::patch('/admin/concerts/{concert}', [ConcertController::class, 'update'])->name('concerts.update');
     Route::delete('/admin/concerts/{concert}', [ConcertController::class, 'destroy'])->name('concerts.destroy');
     Route::resource('/admin/band-members', BandMemberController::class);
+    Route::resource('/admin/albums', AlbumController::class);
 });
 
 
