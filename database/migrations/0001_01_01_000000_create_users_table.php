@@ -17,7 +17,7 @@ return new class extends Migration
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
-            $table->string('name'); // Add name field
+    
             $table->boolean('is_admin')->default(false); // Add is_admin field with a default value
             $table->timestamps(); // Add created_at and updated_at fields
             $table->rememberToken();
