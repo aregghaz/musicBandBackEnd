@@ -21,7 +21,6 @@ return new class extends Migration
             $table->boolean('is_admin')->default(false); // Add is_admin field with a default value
             $table->timestamps(); // Add created_at and updated_at fields
             $table->rememberToken();
-            $table->timestamps();
         });
 
         Schema::create('password_reset_tokens', function (Blueprint $table) {
