@@ -47,7 +47,7 @@ export default function Index() {
         }
     >
         <div className="w-full h-dvh bg-gray-100 p-6">
-            <div className="max-w-4xl mx-auto bg-white p-6 rounded-lg shadow-md ">
+            <div className="mx-auto bg-white p-6 rounded-lg shadow-md ">
                 <h1 className="text-3xl font-semibold mb-6 text-center">Manage Blogs</h1>
 
                 {/* Search Form */}

@@ -24,11 +24,6 @@ export default function Create() {
 
     return (
         <AuthenticatedLayout
-            header={
-                <h2 className="text-xl font-semibold leading-tight text-gray-800">
-                    Concerts Create
-                </h2>
-            }
         >
             <div className="p-6">
                 <h1 className="text-2xl font-bold mb-4">Create Concert</h1>

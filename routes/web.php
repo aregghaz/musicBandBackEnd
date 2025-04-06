@@ -5,6 +5,7 @@ use App\Http\Controllers\Admin\BlogController;
 use App\Http\Controllers\Admin\ConcertController;
 use App\Http\Controllers\Admin\BandMemberController;
 use App\Http\Controllers\Admin\AlbumController;
+use App\Http\Controllers\Admin\ContactController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -58,6 +59,9 @@ Route::middleware(['auth', 'admin'])->group(function () {
     Route::delete('/admin/concerts/{concert}', [ConcertController::class, 'destroy'])->name('concerts.destroy');
     Route::resource('/admin/band-members', BandMemberController::class);
     Route::resource('/admin/albums', AlbumController::class);
+    Route::get('/admin/contacts', [ContactController::class, 'showForm'])->name('contacts.showForm');
+    Route::post('/admin/contacts', [ContactController::class, 'storeOrUpdate']);
+
 });
 
 
