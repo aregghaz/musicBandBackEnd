@@ -34,9 +34,28 @@ export default function AuthenticatedLayout({header, children}) {
 
                                 <NavLink
                                     href={route('blogs.index')}
-                                    active={route().current('blogs')}
+                                    active={route().current('blogs.index')}
                                 >
                                     Blogs
+                                </NavLink>
+                                <NavLink
+                                    href={route('concerts.index')}
+                                    active={route().current('concerts.index')}
+                                >
+                                    Concerts
+                                </NavLink>
+                                <NavLink
+                                    href={route('band-members.index')}
+                                    active={route().current('band-members.index')}
+                                >
+                                    Band members
+                                </NavLink>
+
+                                <NavLink
+                                    href={route('albums.index')}
+                                    active={route().current('albums.index')}
+                                >
+                                    Albums
                                 </NavLink>
                             </div>
                         </div>

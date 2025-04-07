@@ -6,12 +6,14 @@ use App\Http\Controllers\Api\BlogApiController;
 use App\Http\Controllers\Api\ConcertApiController;
 use App\Http\Controllers\Api\BandMemberApiController;
 use App\Http\Controllers\Api\AlbumApiController;
+use App\Http\Controllers\Api\ContactApiController;
 
 Route::get('/blogs', [BlogApiController::class, 'index']);
 Route::get('/blogs/{id}', [BlogApiController::class, 'show']);
 Route::get('/concerts/type/{type}', [ConcertApiController::class, 'getConcertsByType']);
 Route::get('/band-members', [BandMemberApiController::class, 'index']);
 Route::get('/albums', [AlbumApiController::class, 'getAlbums']);
+Route::get('/contacts', [ContactApiController::class, 'index']);
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
