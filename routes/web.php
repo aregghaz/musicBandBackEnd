@@ -1,11 +1,14 @@
 <?php
 
+
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\Admin\BlogController;
 use App\Http\Controllers\Admin\ConcertController;
 use App\Http\Controllers\Admin\BandMemberController;
 use App\Http\Controllers\Admin\AlbumController;
 use App\Http\Controllers\Admin\ContactController;
+use App\Http\Controllers\Admin\SettingController;
+use App\Http\Controllers\Admin\SliderController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -61,7 +64,9 @@ Route::middleware(['auth', 'admin'])->group(function () {
     Route::resource('/admin/albums', AlbumController::class);
     Route::get('/admin/contacts', [ContactController::class, 'showForm'])->name('contacts.showForm');
     Route::post('/admin/contacts', [ContactController::class, 'storeOrUpdate']);
-
+    Route::get('/admin/settings', [SettingController::class, 'index'])->name('settings.index');
+    Route::post('/admin/settings', [SettingController::class, 'storeOrUpdate'])->name('settings.storeOrUpdate');
+    Route::resource('admin/sliders', SliderController::class);
 });
 
 
