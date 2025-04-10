@@ -13,26 +13,26 @@ export default function Index() {
     return (
         <AuthenticatedLayout
             header={
-                <h2 className="text-xl font-semibold leading-tight text-gray-800">
+                <h2 className="text-xl font-semibold leading-tight text-white">
                     Albums
                 </h2>
             }
         >
-            <div className="p-8 bg-gray-50 min-h-screen">
-                <h1 className="text-3xl font-semibold mb-6 text-gray-800">Albums</h1>
+            <div className="p-6 bg-[#1e242b] min-h-screen">
+                <h1 className="text-2xl font-bold mb-4 text-white">Albums</h1>
 
                 <div className="mb-6 flex justify-between items-center">
                     <Link
                         href={route("albums.create")}
-                        className="bg-blue-600 text-white px-6 py-2 rounded-lg shadow-md hover:bg-blue-700 transition duration-300"
+                        className="bg-[#ff5252] text-white px-6 py-2 rounded-lg shadow-md hover:bg-[#ff6161] transition duration-300"
                     >
                         + Add Album
                     </Link>
                 </div>
 
-                <div className="overflow-x-auto bg-white shadow-lg rounded-lg">
+                <div className="overflow-x-auto bg-[#232a32] shadow-lg rounded-lg">
                     <table className="w-full text-left border-collapse">
-                        <thead className="bg-blue-100 text-gray-700">
+                        <thead className="bg-[#232a32] text-white">
                         <tr>
                             <th className="px-4 py-3 border-b">Image</th>
                             <th className="px-4 py-3 border-b">Album Name</th>
@@ -44,18 +44,18 @@ export default function Index() {
                             <th className="px-4 py-3 border-b">Actions</th>
                         </tr>
                         </thead>
-                        <tbody>
+                        <tbody className="text-white">
                         {albums.map((album) => (
-                            <tr key={album.id} className="hover:bg-gray-50 transition-colors">
+                            <tr key={album.id} className="hover:bg-[#2a2f37] transition-colors">
                                 <td className="px-4 py-3 border-b">
                                     {album.album_image ? (
                                         <img
                                             src={`/storage/${album.album_image}`}
                                             alt={album.album_name}
-                                            className="w-12 h-12 rounded-md border shadow-sm"
+                                            className="w-12 h-12 rounded-md border border-indigo-400 shadow-sm"
                                         />
                                     ) : (
-                                        "No Image"
+                                        <span className="text-slate-400">No Image</span>
                                     )}
                                 </td>
                                 <td className="px-4 py-3 border-b">{album.album_name}</td>
@@ -65,12 +65,12 @@ export default function Index() {
                                         <a
                                             href={album.apple_link}
                                             target="_blank"
-                                            className="text-blue-600 hover:text-blue-800 transition duration-300"
+                                            className="text-indigo-400 hover:text-indigo-300 transition duration-300"
                                         >
                                             Apple Music
                                         </a>
                                     ) : (
-                                        "Not Available"
+                                        "N/A"
                                     )}
                                 </td>
                                 <td className="px-4 py-3 border-b">
@@ -78,12 +78,12 @@ export default function Index() {
                                         <a
                                             href={album.amazon_link}
                                             target="_blank"
-                                            className="text-blue-600 hover:text-blue-800 transition duration-300"
+                                            className="text-indigo-400 hover:text-indigo-300 transition duration-300"
                                         >
                                             Amazon Music
                                         </a>
                                     ) : (
-                                        "Not Available"
+                                        "N/A"
                                     )}
                                 </td>
                                 <td className="px-4 py-3 border-b">
@@ -91,12 +91,12 @@ export default function Index() {
                                         <a
                                             href={album.spotify_link}
                                             target="_blank"
-                                            className="text-blue-600 hover:text-blue-800 transition duration-300"
+                                            className="text-indigo-400 hover:text-indigo-300 transition duration-300"
                                         >
                                             Spotify
                                         </a>
                                     ) : (
-                                        "Not Available"
+                                        "N/A"
                                     )}
                                 </td>
                                 <td className="px-4 py-3 border-b">
@@ -104,18 +104,18 @@ export default function Index() {
                                         <a
                                             href={album.youtube_link}
                                             target="_blank"
-                                            className="text-blue-600 hover:text-blue-800 transition duration-300"
+                                            className="text-indigo-400 hover:text-indigo-300 transition duration-300"
                                         >
                                             YouTube
                                         </a>
                                     ) : (
-                                        "Not Available"
+                                        "N/A"
                                     )}
                                 </td>
                                 <td className="px-4 py-3 border-b">
                                     <Link
                                         href={route("albums.edit", album.id)}
-                                        className="text-blue-600 hover:text-blue-800 transition duration-300"
+                                        className="text-[#ff5252] hover:text-[#ff6161] transition duration-300"
                                     >
                                         Edit
                                     </Link>
