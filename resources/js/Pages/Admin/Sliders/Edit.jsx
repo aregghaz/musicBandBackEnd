@@ -78,7 +78,7 @@ const Edit = ({ slider }) => {
                     <button
                         type="submit"
                         disabled={processing}
-                        className="bg-[#ff5252] text-white px-6 py-2 rounded-lg shadow-md hover:bg-[#ff6161] transition duration-300"
+                        className="bg-[#ff5252] text-white px-6 py-2 rounded-lg shadow-md hover:bg-[#ff6161]"
                     >
                         {processing ? "Updating..." : "Update Slider"}
                     </button>

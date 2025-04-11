@@ -2,6 +2,7 @@ import { Link, usePage, router } from "@inertiajs/react";
 import { useState, useEffect } from "react";
 import { useDebounce } from "@/hooks/useDebounce.jsx";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.jsx";
+import PrimaryButton from "@/Components/PrimaryButton.jsx";
 
 export default function Index() {
     const { blogs: { data: blogs } } = usePage().props;
@@ -39,11 +40,6 @@ export default function Index() {
 
     return (
         <AuthenticatedLayout
-            header={
-                <h2 className="text-xl font-semibold leading-tight text-white">
-                    Blogs
-                </h2>
-            }
         >
             <div className="w-full h-dvh bg-[#13181d] p-6">
                 <div className="mx-auto bg-[#1e242b] p-6 rounded-lg shadow-md">
@@ -60,7 +56,7 @@ export default function Index() {
                         />
                         <button
                             onClick={handleSearch}
-                            className="px-4 py-2 bg-[#ff5252] text-white rounded-md hover:bg-[#ff6161]"
+                            className="px-4 py-2 bg-[#ff5252] border-[#ff5252] text-white rounded-md hover:bg-[#ff6161]"
                         >
                             Search
                         </button>
@@ -79,9 +75,12 @@ export default function Index() {
                     <div className="mb-8 mt-10">
                         <Link
                             href="/admin/blogs/create"
-                            className="px-4 py-2 bg-[#ff5252] text-white rounded-md hover:bg-[#ff6161]"
+
                         >
-                            Create New Blog
+                            <PrimaryButton variant="danger" className="py-[10px] px-[20px] bg-indigo-600 hover:bg-indigo-400">
+                              +  Create New Blog
+                            </PrimaryButton>
+
                         </Link>
                     </div>
 
@@ -102,15 +101,16 @@ export default function Index() {
                                         />
                                     )}
                                     <div className="flex justify-between items-center">
-                                        <Link
-                                            href={`/admin/blogs/${blog.id}/edit`}
-                                            className="text-[#ff5252] hover:text-[#ff6161]"
-                                        >
-                                            Edit
+
+                                        <Link href={`/admin/blogs/${blog.id}/edit`}>
+                                            <PrimaryButton variant="danger" className="py-[10px] px-[20px] bg-indigo-600 hover:bg-indigo-400">
+                                                Edit
+                                            </PrimaryButton>
                                         </Link>
+
                                         <button
                                             onClick={() => deleteBlog(blog.id)}
-                                            className="px-4 py-2 bg-[#ff5252] text-white rounded-md hover:bg-[#ff6161]"
+                                            className="px-4 py-2 bg-[#ff5252]  text-white rounded-md hover:bg-[#ff6161]"
                                         >
                                             Delete
                                         </button>

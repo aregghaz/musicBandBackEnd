@@ -25,7 +25,7 @@ export default function Login({ status, canResetPassword }) {
         <GuestLayout>
             <Head title="Log in" />
 
-            <div className="bg-[#1e242b] p-8 rounded-lg shadow-md max-w-md mx-auto mt-12 text-white">
+            <div className="bg-[#1e242b] p-8 rounded-lg shadow-md max-w-md mx-auto text-white">
                 {status && (
                     <div className="mb-4 text-sm font-medium text-green-500">
                         {status}
@@ -41,7 +41,7 @@ export default function Login({ status, canResetPassword }) {
                             type="email"
                             name="email"
                             value={data.email}
-                            className="mt-1 block w-full bg-[#2a2f37] text-white border border-[#444] rounded-md focus:ring-2 focus:ring-[#ff5252]"
+                            className="mt-1 block w-full bg-[#2a2f37] text-white placeholder-gray-400 border border-[#444] rounded-md focus:outline-none focus:ring-2"
                             autoComplete="username"
                             isFocused={true}
                             onChange={(e) => setData('email', e.target.value)}
@@ -58,7 +58,7 @@ export default function Login({ status, canResetPassword }) {
                             type="password"
                             name="password"
                             value={data.password}
-                            className="mt-1 block w-full bg-[#2a2f37] text-white border border-[#444] rounded-md focus:ring-2 focus:ring-[#ff5252]"
+                            className="mt-1 block w-full bg-[#2a2f37] text-white placeholder-gray-400 border border-[#444] rounded-md focus:outline-none"
                             autoComplete="current-password"
                             onChange={(e) => setData('password', e.target.value)}
                         />

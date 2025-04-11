@@ -1,5 +1,6 @@
 import { usePage, Link, router } from "@inertiajs/react";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.jsx";
+import PrimaryButton from "@/Components/PrimaryButton.jsx";
 
 export default function SliderIndex() {
     const { sliders } = usePage().props;
@@ -59,21 +60,25 @@ export default function SliderIndex() {
                                         <span className="text-gray-400">No Image</span>
                                     )}
                                 </td>
-                                <td className="px-4 py-3 border-b">
-                                    <div className="flex space-x-3">
-                                        <Link
-                                            href={route("sliders.edit", slider.id)}
-                                            className="text-[#ff5252] hover:text-[#ff6161] transition duration-300"
-                                        >
+
+
+                                <td className="px-4 py-3 border-b flex space-x-4">
+
+
+                                    <Link href={route("sliders.edit", slider.id)}>
+                                        <PrimaryButton variant="danger" className="p-0 bg-indigo-600 hover:bg-indigo-500 !focus:bg-indigo-600">
                                             Edit
-                                        </Link>
-                                        <button
-                                            onClick={() => handleDelete(slider.id)}
-                                            className="text-red-600 hover:text-red-800 transition duration-300"
-                                        >
-                                            Delete
-                                        </button>
-                                    </div>
+                                        </PrimaryButton>
+                                    </Link>
+                                    <PrimaryButton
+                                        variant="danger"
+                                        onClick={() => handleDelete(slider.id)}
+                                        className="p-0 !bg-[#ff5252]"
+                                    >
+                                        Delete
+                                    </PrimaryButton>
+
+
                                 </td>
                             </tr>
                         ))}

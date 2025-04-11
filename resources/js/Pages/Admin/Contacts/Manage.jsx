@@ -71,7 +71,7 @@ const ManageContacts = ({ contacts }) => {
 
     return (
         <AuthenticatedLayout>
-            <div className="container mx-auto mt-8">
+            <div className="mx-auto mt-8 p-6">
                 <h1 className="text-3xl font-bold mb-6 text-white">Manage Contacts</h1>
                 {renderForm('Booking', bookingForm)}
                 {renderForm('Press', pressForm)}

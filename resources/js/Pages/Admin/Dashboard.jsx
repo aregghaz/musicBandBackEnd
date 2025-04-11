@@ -75,13 +75,7 @@ export default function Dashboard() {
                                 </Link>
                             </div>
 
-                            {/* Upcoming Concerts Card */}
-                            <div className="bg-[#232a32] p-4 rounded-lg shadow text-white">
-                                <h2 className="text-md font-semibold mb-1">Upcoming Concerts</h2>
-                                <p className="text-sm text-[rgba(255,255,255,0.7)]">
-                                    Check concert dates under “Manage Concerts”.
-                                </p>
-                            </div>
+
 
                             {/* Settings Card */}
                             <div className="bg-[#232a32] p-4 rounded-lg shadow text-white">
@@ -125,6 +119,36 @@ export default function Dashboard() {
                                 >
                                     🖼️ Manage Website Sliders
                                 </Link>
+                            </div>
+
+                            {/* Contact Submissions Card */}
+                            <div className="bg-[#232a32] p-4 rounded-lg shadow text-white">
+                                <h2 className="text-md font-semibold mb-1">Contacts</h2>
+                                <Link
+                                    href={route('contacts.showForm', { locale })}
+                                    className="inline-block mt-2 text-sm text-[#ff5252] hover:underline cursor-pointer"
+                                >
+                                    📬 View Contact Submissions
+                                </Link>
+                            </div>
+
+                            {/* Create New Concert Card */}
+                            <div className="bg-[#232a32] p-4 rounded-lg shadow text-white">
+                                <h2 className="text-md font-semibold mb-1">Create Concert</h2>
+                                <Link
+                                    href={route('concerts.create', { locale })}
+                                    className="inline-block mt-2 text-sm text-[#ff5252] hover:underline cursor-pointer"
+                                >
+                                    🎤 Add New Concert Event
+                                </Link>
+                            </div>
+
+                            {/* Upcoming Concerts Card */}
+                            <div className="bg-[#232a32] p-4 rounded-lg shadow text-white">
+                                <h2 className="text-md font-semibold mb-1">Upcoming Concerts</h2>
+                                <p className="text-sm text-[rgba(255,255,255,0.7)]">
+                                    Check concert dates under “Manage Concerts”.
+                                </p>
                             </div>
                         </div>
                     </main>

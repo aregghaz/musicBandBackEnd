@@ -15,11 +15,6 @@ export default function Create() {
 
     return (
         <AuthenticatedLayout
-            header={
-                <h2 className="text-xl font-semibold leading-tight text-white">
-                    Create Blog
-                </h2>
-            }
         >
             <div className="flex justify-center items-center min-h-screen bg-[#13181d]">
                 <div className="max-w-2xl w-full p-6 bg-[#1e242b] rounded-lg shadow-md">

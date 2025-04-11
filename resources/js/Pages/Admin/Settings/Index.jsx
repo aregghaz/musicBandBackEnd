@@ -85,7 +85,7 @@ const ManageSettings = ({ settings }) => {
 
     return (
         <AuthenticatedLayout>
-            <div className="container mx-auto mt-8">
+            <div className="mx-auto mt-8 p-6">
                 <h1 className="text-3xl font-bold mb-6 text-white">Manage Settings</h1>
                 {renderForm('Presentation Section', presentationForm, [
                     'title', 'description',

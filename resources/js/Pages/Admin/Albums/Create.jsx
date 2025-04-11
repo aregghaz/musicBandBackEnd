@@ -110,7 +110,7 @@ export default function Create() {
                         <button
                             type="submit"
                             disabled={processing}
-                            className="w-full px-4 py-2 bg-[#ff5252] text-white rounded-md hover:bg-[#ff6161] disabled:opacity-50"
+                            className="w-full px-4 py-2 bg-[#ff5252] border-[#ff5252] text-white rounded-md hover:bg-[#ff6161] disabled:opacity-50"
                         >
                             {processing ? 'Creating...' : 'Create Album'}
                         </button>

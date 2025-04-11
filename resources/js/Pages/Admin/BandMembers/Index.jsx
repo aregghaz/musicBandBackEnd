@@ -1,5 +1,6 @@
 import { usePage, Link, router } from "@inertiajs/react";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.jsx";
+import PrimaryButton from "@/Components/PrimaryButton.jsx";
 
 export default function Index() {
     const { bandMembers } = usePage().props;
@@ -54,19 +55,21 @@ export default function Index() {
                                         className="w-12 h-12 rounded-full border shadow-sm"
                                     />
                                 </td>
-                                <td className="px-4 py-3 border-b">
-                                    <Link
-                                        href={route("band-members.edit", bandMember.id)}
-                                        className="text-[#ff5252] hover:text-[#ff6161] transition duration-300"
-                                    >
-                                        Edit
+
+
+                                <td className="px-4 py-3 border-b flex space-x-4">
+                                    <Link href={route("band-members.edit", bandMember.id)}>
+                                        <PrimaryButton variant="danger" className="p-0 bg-indigo-600">
+                                            Edit
+                                        </PrimaryButton>
                                     </Link>
-                                    <button
+                                    <PrimaryButton
+                                        variant="danger"
                                         onClick={() => handleDelete(bandMember.id)}
-                                        className="text-red-600 hover:text-red-800 transition duration-300 ml-3"
+                                        className="p-0 !bg-[#ff5252]"
                                     >
                                         Delete
-                                    </button>
+                                    </PrimaryButton>
                                 </td>
                             </tr>
                         ))}

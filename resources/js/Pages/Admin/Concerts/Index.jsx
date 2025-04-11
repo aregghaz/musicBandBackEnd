@@ -1,8 +1,9 @@
-import { usePage, Link, router } from "@inertiajs/react";
+import {usePage, Link, router} from "@inertiajs/react";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.jsx";
+import PrimaryButton from "@/Components/PrimaryButton.jsx";
 
 export default function Index() {
-    const { concerts } = usePage().props;
+    const {concerts} = usePage().props;
 
     const handleDelete = (id) => {
         if (confirm("Are you sure?")) {
@@ -43,19 +44,19 @@ export default function Index() {
                                 <td className="px-4 py-3 border-b text-white">{concert.concert_place}</td>
                                 <td className="px-4 py-3 border-b text-white">{concert.concert_date}</td>
                                 <td className="px-4 py-3 border-b text-white">{concert.type}</td>
-                                <td className="px-4 py-3 border-b flex space-x-3">
-                                    <Link
-                                        href={route("concerts.edit", concert.id)}
-                                        className="text-[#ff5252] hover:text-[#ff6161] transition duration-300"
-                                    >
-                                        Edit
+                                <td className="px-4 py-3 border-b flex space-x-4">
+                                    <Link href={route("concerts.edit", concert.id)}>
+                                        <PrimaryButton variant="danger" className="p-0 bg-indigo-600">
+                                            Edit
+                                        </PrimaryButton>
                                     </Link>
-                                    <button
+                                    <PrimaryButton
+                                        variant="danger"
                                         onClick={() => handleDelete(concert.id)}
-                                        className="text-[#ff5252] hover:text-[#ff6161] transition duration-300"
+                                        className="p-0 !bg-[#ff5252]"
                                     >
                                         Delete
-                                    </button>
+                                    </PrimaryButton>
                                 </td>
                             </tr>
                         ))}
