@@ -1,4 +1,4 @@
-import { Link, useForm } from "@inertiajs/react";
+import {Link, useForm} from "@inertiajs/react";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.jsx";
 
 export default function Create() {
@@ -23,10 +23,9 @@ export default function Create() {
     }
 
     return (
-        <AuthenticatedLayout
-        >
-            <div className="p-6">
-                <h1 className="text-2xl font-bold mb-4">Create Concert</h1>
+        <AuthenticatedLayout>
+            <div className="p-6 bg-[#1e242b]">
+                <h1 className="text-2xl font-bold mb-4 text-white">Create Concert</h1>
                 <form onSubmit={submit}>
                     {/* City input */}
                     <div className="mb-4">
@@ -35,7 +34,7 @@ export default function Create() {
                             value={data.concert_city}
                             onChange={e => setData("concert_city", e.target.value)}
                             placeholder="City"
-                            className="w-full px-4 py-2 border rounded-md"
+                            className="w-full px-4 py-2  rounded-md bg-[#1e242b] text-white placeholder-gray-400 focus:outline-none focus:ring-2"
                         />
                     </div>
 
@@ -46,7 +45,7 @@ export default function Create() {
                             value={data.concert_place}
                             onChange={e => setData("concert_place", e.target.value)}
                             placeholder="Place"
-                            className="w-full px-4 py-2 border rounded-md"
+                            className="w-full px-4 py-2  rounded-md bg-[#1e242b] text-white placeholder-gray-400 focus:outline-none focus:ring-2"
                         />
                     </div>
 
@@ -56,7 +55,7 @@ export default function Create() {
                             type="date"
                             value={data.concert_date}
                             onChange={e => setData("concert_date", e.target.value)}
-                            className="w-full px-4 py-2 border rounded-md"
+                            className="w-full px-4 py-2  rounded-md bg-[#1e242b] text-white placeholder-gray-400 focus:outline-none focus:ring-2"
                         />
                     </div>
 
@@ -66,7 +65,7 @@ export default function Create() {
                             name="type"
                             value={data.type}
                             onChange={e => setData("type", e.target.value)}
-                            className="w-full px-4 py-2 border rounded-md"
+                            className="w-full px-4 py-2  rounded-md bg-[#1e242b] text-white placeholder-gray-400 focus:outline-none focus:ring-2"
                         >
                             <option value="">Select Type</option>
                             {concertTypes.map(type => (
@@ -84,7 +83,7 @@ export default function Create() {
                             value={data.concert_image}
                             onChange={e => setData("concert_image", e.target.value)}
                             placeholder="Image URL"
-                            className="w-full px-4 py-2 border rounded-md"
+                            className="w-full px-4 py-2  rounded-md bg-[#1e242b] text-white placeholder-gray-400 focus:outline-none focus:ring-2"
                         />
                     </div>
 
@@ -93,7 +92,7 @@ export default function Create() {
                         <button
                             type="submit"
                             disabled={processing}
-                            className="w-full px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 disabled:opacity-50"
+                            className="w-full px-4 py-2 bg-[#ff5252] text-white rounded-md hover:bg-[#ff6161] disabled:opacity-50"
                         >
                             {processing ? 'Creating...' : 'Create Concert'}
                         </button>

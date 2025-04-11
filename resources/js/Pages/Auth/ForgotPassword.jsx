@@ -11,7 +11,6 @@ export default function ForgotPassword({ status }) {
 
     const submit = (e) => {
         e.preventDefault();
-
         post(route('password.email'));
     };
 
@@ -19,7 +18,7 @@ export default function ForgotPassword({ status }) {
         <GuestLayout>
             <Head title="Forgot Password" />
 
-            <div className="mb-4 text-sm text-gray-600">
+            <div className="mb-4 text-sm text-[#a6a6a6]">
                 Forgot your password? No problem. Just let us know your email
                 address and we will email you a password reset link that will
                 allow you to choose a new one.
@@ -37,15 +36,18 @@ export default function ForgotPassword({ status }) {
                     type="email"
                     name="email"
                     value={data.email}
-                    className="mt-1 block w-full"
+                    className="mt-1 block w-full bg-[#2a2f37] text-white placeholder-[#a6a6a6] border-[#484a4d] rounded-md focus:outline-none focus:ring-2 focus:ring-[#ff5252] focus:border-[#ff5252] transition duration-300"
                     isFocused={true}
                     onChange={(e) => setData('email', e.target.value)}
                 />
 
-                <InputError message={errors.email} className="mt-2" />
+                <InputError message={errors.email} className="mt-2 text-red-500" />
 
                 <div className="mt-4 flex items-center justify-end">
-                    <PrimaryButton className="ms-4" disabled={processing}>
+                    <PrimaryButton
+                        className="ms-4 bg-[#ff5252] text-white hover:bg-[#ff6161] focus:outline-none focus:ring-2 focus:ring-[#ff5252] disabled:bg-[#3d434d]"
+                        disabled={processing}
+                    >
                         Email Password Reset Link
                     </PrimaryButton>
                 </div>
