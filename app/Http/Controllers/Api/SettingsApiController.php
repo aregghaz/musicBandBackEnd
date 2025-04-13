@@ -10,7 +10,6 @@ use App\Models\Slider;
 
 class SettingsApiController extends Controller
 {
-    // Fetch all settings data in separate objects
     public function getAllSettings()
     {
 
@@ -19,8 +18,6 @@ class SettingsApiController extends Controller
 
         return new SettingsCollection($settings, $sliders);
 
-        // If you expect multiple settings entries, then return like this:
-        // return response()->json(SettingsCollection::collection($settings));
     }
 }
 
