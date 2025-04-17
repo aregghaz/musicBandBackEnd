@@ -3,19 +3,14 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-
-
-
 use App\Http\Resources\BlogCollection;
 use App\Models\Blog;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 use Inertia\Inertia;
 
 class BlogController extends Controller
 {
-    /**
-     * Display a listing of blogs with search functionality
-     */
     public function index(Request $request)
     {
         $search = $request->input('search', '');
@@ -27,31 +22,29 @@ class BlogController extends Controller
             })
             ->get();
 
-        // Return the blogs inside an Inertia response
         return Inertia::render('Admin/Blogs/Index', [
             'blogs' => new BlogCollection($blogs),
-            'search' => $search,  // Optionally pass search term
+            'search' => $search,
         ]);
     }
 
-    /**
-     * Show the form for creating a new blog
-     */
     public function create()
     {
         return Inertia::render('Admin/Blogs/Create');
     }
 
-    /**
-     * Store new blog
-     */
     public function store(Request $request)
     {
         $validated = $request->validate([
             'title' => 'required|string|max:255',
             'description' => 'required|string',
-            // Add other fields as needed
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:2048',
         ]);
+
+        if ($request->hasFile('image')) {
+            $imagePath = $request->file('image')->store('uploads/blogs', 'public');
+            $validated['image'] = '/storage/' . $imagePath;
+        }
 
         Blog::create($validated);
 
@@ -60,40 +53,49 @@ class BlogController extends Controller
             ->with('success', 'Blog created successfully');
     }
 
-    /**
-     * Show edit form
-     */
     public function edit(Blog $blog)
     {
         return Inertia::render('Admin/Blogs/Edit', [
-            'blog' => $blog
+            'blog' => $blog,
         ]);
     }
 
-    /**
-     * Update blog
-     */
     public function update(Request $request, Blog $blog)
     {
         $validated = $request->validate([
             'title' => 'required|string|max:255',
             'description' => 'required|string',
-            // Add other fields as needed
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:2048',
+            'image_remove' => 'nullable|boolean',
         ]);
 
-        $blog->update($validated);
+        // If user requests to remove the image
+        if ($request->boolean('image_remove')) {
+            $blog->image = null;
+        }
 
-        return redirect()
-            ->route('blogs.index')
-            ->with('success', 'Blog updated successfully');
+        // If a new image is uploaded
+        if ($request->hasFile('image')) {
+            $imagePath = $request->file('image')->store('uploads/blogs', 'public');
+            $validated['image'] = '/storage/' . $imagePath;
+            $blog->image = $validated['image'];
+        }
+
+        $blog->title = $validated['title'];
+        $blog->description = $validated['description'];
+        $blog->save();
+
+        return redirect()->route('blogs.index')->with('success', 'Blog updated successfully.');
     }
 
-
-    /**
-     * Remove the specified blog
-     */
     public function destroy(Blog $blog)
     {
+        // Optionally delete the image file from storage if it exists
+        if ($blog->image) {
+            $oldImagePath = str_replace('/storage/', '', $blog->image);
+            Storage::disk('public')->delete($oldImagePath);
+        }
+
         $blog->delete();
 
         return redirect()
@@ -101,4 +103,3 @@ class BlogController extends Controller
             ->with('success', 'Blog deleted successfully');
     }
 }
-

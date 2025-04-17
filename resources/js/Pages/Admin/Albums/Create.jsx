@@ -1,11 +1,12 @@
 import { useForm } from '@inertiajs/react';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
+import ImageUpload from '@/Components/ImageUpload';
 
 export default function Create() {
     const { data, setData, post, processing, errors } = useForm({
         album_name: '',
         released_date: '',
-        album_image: 'https://via.placeholder.com/150',
+        album_image: null,  // now holds a File object
         apple_link: '',
         amazon_link: '',
         spotify_link: '',
@@ -14,14 +15,16 @@ export default function Create() {
 
     function submit(e) {
         e.preventDefault();
-        post(route('albums.store'));
+        post(route('albums.store'), {
+            forceFormData: true,  // important for file uploads
+        });
     }
 
     return (
         <AuthenticatedLayout>
             <div className="p-6 bg-[#1e242b]">
                 <h1 className="text-2xl font-bold mb-4 text-white">Create Album</h1>
-                <form onSubmit={submit}>
+                <form onSubmit={submit} encType="multipart/form-data">
                     {/* Album Name */}
                     <div className="mb-4">
                         <input
@@ -40,19 +43,16 @@ export default function Create() {
                             type="date"
                             value={data.released_date}
                             onChange={e => setData('released_date', e.target.value)}
-                            className="w-full px-4 py-2 rounded-md bg-[#1e242b] text-white placeholder-gray-400 focus:outline-none focus:ring-2"
+                            className="w-full px-4 py-2 rounded-md bg-[#1e242b] text-white focus:outline-none focus:ring-2"
                         />
                         {errors.released_date && <div className="text-red-500 mt-1">{errors.released_date}</div>}
                     </div>
 
-                    {/* Album Image URL */}
+                    {/* Album Image Upload */}
                     <div className="mb-4">
-                        <input
-                            type="text"
-                            value={data.album_image}
-                            onChange={e => setData('album_image', e.target.value)}
-                            placeholder="Album Image URL"
-                            className="w-full px-4 py-2 rounded-md bg-[#1e242b] text-white placeholder-gray-400 focus:outline-none focus:ring-2"
+                        <ImageUpload
+                            onChange={file => setData('album_image', file)}
+                            onRemove={() => setData('album_image', null)}
                         />
                         {errors.album_image && <div className="text-red-500 mt-1">{errors.album_image}</div>}
                     </div>

@@ -33,7 +33,7 @@ export default function Index() {
 
                 <div className="overflow-x-auto bg-[#232a32] shadow-lg rounded-lg">
                     <table className="w-full text-left border-collapse">
-                        <thead className=" text-white bg-[#232a32]">
+                        <thead className="text-white bg-[#232a32]">
                         <tr>
                             <th className="px-4 py-3 border-b">First Name</th>
                             <th className="px-4 py-3 border-b">Last Name</th>
@@ -49,14 +49,18 @@ export default function Index() {
                                 <td className="px-4 py-3 border-b">{bandMember.last_name}</td>
                                 <td className="px-4 py-3 border-b">{bandMember.role}</td>
                                 <td className="px-4 py-3 border-b">
-                                    <img
-                                        src={bandMember.band_member_image}
-                                        alt={bandMember.first_name}
-                                        className="w-12 h-12 rounded-full border shadow-sm"
-                                    />
+                                    {bandMember.band_member_image ? (
+                                        <img
+                                            src={bandMember.band_member_image}
+                                            alt={bandMember.first_name}
+                                            className="w-12 h-12 rounded-full border shadow-sm object-cover"
+                                        />
+                                    ) : (
+                                        <div className="w-12 h-12 flex items-center justify-center bg-gray-700 rounded-full text-white text-sm">
+                                            N/A
+                                        </div>
+                                    )}
                                 </td>
-
-
                                 <td className="px-4 py-3 border-b flex space-x-4">
                                     <Link href={route("band-members.edit", bandMember.id)}>
                                         <PrimaryButton variant="danger" className="p-0 bg-indigo-600">

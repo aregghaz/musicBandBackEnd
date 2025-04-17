@@ -1,9 +1,9 @@
-import {usePage, Link, router} from "@inertiajs/react";
+import { usePage, Link, router } from "@inertiajs/react";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.jsx";
 import PrimaryButton from "@/Components/PrimaryButton.jsx";
 
 export default function Index() {
-    const {albums} = usePage().props;
+    const { albums } = usePage().props;
 
     const handleDelete = (id) => {
         if (confirm("Are you sure you want to delete this album?")) {
@@ -12,8 +12,7 @@ export default function Index() {
     };
 
     return (
-        <AuthenticatedLayout
-        >
+        <AuthenticatedLayout>
             <div className="p-6 bg-[#1e242b] min-h-screen">
                 <h1 className="text-2xl font-bold mb-4 text-white">Albums</h1>
 
@@ -40,15 +39,15 @@ export default function Index() {
                             <th className="px-4 py-3 border-b">Actions</th>
                         </tr>
                         </thead>
-                        <tbody className="text-white ">
+                        <tbody className="text-white">
                         {albums.map((album) => (
                             <tr key={album.id} className="hover:bg-[#2a2f37] transition-colors">
                                 <td className="px-4 py-3 border-b">
                                     {album.album_image ? (
                                         <img
-                                            src={`/storage/${album.album_image}`}
+                                            src={album.album_image}
                                             alt={album.album_name}
-                                            className="w-12 h-12 rounded-md border border-indigo-400 shadow-sm"
+                                            className="w-12 h-12 rounded-md border border-indigo-400 shadow-sm object-cover"
                                         />
                                     ) : (
                                         <span className="text-slate-400">No Image</span>
@@ -108,7 +107,6 @@ export default function Index() {
                                         "N/A"
                                     )}
                                 </td>
-
 
                                 <td className="px-4 py-3 border-b flex space-x-4">
                                     <Link href={route("albums.edit", album.id)}>

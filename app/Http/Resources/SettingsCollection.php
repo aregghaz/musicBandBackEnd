@@ -3,9 +3,9 @@
 namespace App\Http\Resources;
 
 use Illuminate\Http\Request;
-use Illuminate\Http\Resources\Json\ResourceCollection;
+use Illuminate\Http\Resources\Json\JsonResource;
 
-class SettingsCollection extends ResourceCollection
+class SettingsCollection extends JsonResource
 {
     protected $sliders;
 
@@ -23,28 +23,25 @@ class SettingsCollection extends ResourceCollection
      */
     public function toArray(Request $request): array
     {
-        return $this->collection->map(function ($setting) {
-            return [
-                'presentationSection' => [
-                    'title' => $setting->title,
-                    'description' => $setting->description,
-                    'upcomingDateFrom' => $setting->upcoming_date_from,
-                    'upcomingDateTo' => $setting->upcoming_date_to,
-                    'upcomingLocation' => $setting->upcoming_location,
-                    'upcomingState' => $setting->upcoming_state,
-                    'upcomingCountry' => $setting->upcoming_country,
-                ],
-                'socialLinks' => [
-                    'instagramLink' => $setting->instagram_link,
-                    'facebookLink' => $setting->facebook_link,
-                    'twitterLink' => $setting->twitter_link,
-                    'youtubeLink' => $setting->youtube_link,
-                    'appleLink' => $setting->apple_link,
-                    'amazonLink' => $setting->amazon_link,
-                ],
-
-                'sliders' => new SlidersCollection($this->sliders),
-            ];
-        })->toArray();
+        return [
+            'presentationSection' => [
+                'title' => $this->title ?? null,
+                'description' => $this->description ?? null,
+                'upcomingDateFrom' => $this->upcoming_date_from ?? null,
+                'upcomingDateTo' => $this->upcoming_date_to ?? null,
+                'upcomingLocation' => $this->upcoming_location ?? null,
+                'upcomingState' => $this->upcoming_state ?? null,
+                'upcomingCountry' => $this->upcoming_country ?? null,
+            ],
+            'socialLinks' => [
+                'instagramLink' => $this->instagram_link ?? null,
+                'facebookLink' => $this->facebook_link ?? null,
+                'twitterLink' => $this->twitter_link ?? null,
+                'youtubeLink' => $this->youtube_link ?? null,
+                'appleLink' => $this->apple_link ?? null,
+                'amazonLink' => $this->amazon_link ?? null,
+            ],
+            'sliders' => new SlidersCollection($this->sliders),
+        ];
     }
 }

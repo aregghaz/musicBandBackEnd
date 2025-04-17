@@ -1,18 +1,42 @@
-import { useForm } from '@inertiajs/react';
+import { useForm, usePage, router } from '@inertiajs/react';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
+import ImageUpload from '@/Components/ImageUpload';
+import { useState } from 'react';
 
-export default function Edit({ bandMember }) {
-    const { data, setData, patch, processing, errors } = useForm({
+export default function Edit() {
+    const { bandMember } = usePage().props;
+
+    const { data, setData, errors } = useForm({
         first_name: bandMember.first_name,
         last_name: bandMember.last_name,
         role: bandMember.role,
-        band_member_image: bandMember.band_member_image,
+        band_member_image: null,
+        image_remove: false,
     });
 
-    function submit(e) {
+    const [existingImage, setExistingImage] = useState(bandMember.band_member_image);
+
+    const submit = (e) => {
         e.preventDefault();
-        patch(route('band-members.update', bandMember.id));
-    }
+
+        const formData = new FormData();
+        formData.append('_method', 'PATCH');
+        formData.append('first_name', data.first_name);
+        formData.append('last_name', data.last_name);
+        formData.append('role', data.role);
+
+        if (data.band_member_image) {
+            formData.append('band_member_image', data.band_member_image);
+        }
+
+        if (data.image_remove) {
+            formData.append('image_remove', '1');
+        }
+
+        router.post(`/admin/band-members/${bandMember.id}`, formData, {
+            forceFormData: true,
+        });
+    };
 
     return (
         <AuthenticatedLayout
@@ -66,31 +90,36 @@ export default function Edit({ bandMember }) {
                             {errors.role && <p className="text-red-500 text-sm mt-1">{errors.role}</p>}
                         </div>
 
-                        {/* Band Member Image */}
+                        {/* Image Upload */}
                         <div>
-                            <label className="block text-white font-medium mb-2">Image URL</label>
-                            <input
-                                type="text"
-                                value={data.band_member_image}
-                                onChange={(e) => setData('band_member_image', e.target.value)}
-                                className="w-full px-4 py-2 rounded-md bg-[#1e242b] text-white placeholder-gray-400 focus:outline-none focus:ring-2"
-                                placeholder="Enter Image URL"
+                            <label className="block text-white font-medium mb-2">Band Member Image</label>
+                            <ImageUpload
+                                initialImage={existingImage}
+                                onChange={(file) => {
+                                    setData('band_member_image', file);
+                                    if (file) {
+                                        setExistingImage(null);
+                                        setData('image_remove', false);
+                                    }
+                                }}
+                                onRemove={() => {
+                                    setExistingImage(null);
+                                    setData('band_member_image', null);
+                                    setData('image_remove', true);
+                                }}
                             />
-                            {errors.band_member_image && <p className="text-red-500 text-sm mt-1">{errors.band_member_image}</p>}
+                            {errors.band_member_image && (
+                                <p className="text-red-500 text-sm mt-1">{errors.band_member_image}</p>
+                            )}
                         </div>
 
                         {/* Submit Button */}
                         <div className="mt-6">
                             <button
                                 type="submit"
-                                disabled={processing}
-                                className={`w-full px-4 py-2 text-white rounded-md ${
-                                    processing
-                                        ? 'bg-gray-400 cursor-not-allowed'
-                                        : 'bg-[#ff5252] hover:bg-[#ff6161] transition duration-300'
-                                }`}
+                                className="w-full px-4 py-2 text-white rounded-md bg-[#ff5252] hover:bg-[#ff6161] transition duration-300"
                             >
-                                {processing ? 'Updating...' : 'Update Band Member'}
+                                Update Band Member
                             </button>
                         </div>
                     </form>

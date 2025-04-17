@@ -52,7 +52,7 @@ export default function SliderIndex() {
                                 <td className="px-4 py-3 border-b">
                                     {slider.slider_image ? (
                                         <img
-                                            src={`/storage/${slider.slider_image}`}
+                                            src={`${slider.slider_image}`}
                                             alt={slider.slider_title}
                                             className="w-12 h-12 rounded-full border shadow-sm"
                                         />
