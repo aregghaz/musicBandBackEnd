@@ -12,7 +12,8 @@ use App\Http\Controllers\Admin\SliderController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Admin\UpcomingTourSectionController;
-use App\Http\Controllers\Admin\TourController;
+use App\Http\Controllers\Admin\GalleryController;
+
 
 use Inertia\Inertia;
 
@@ -71,7 +72,7 @@ Route::middleware(['auth', 'admin'])->group(function () {
     Route::post('/admin/settings', [SettingController::class, 'storeOrUpdate'])->name('settings.storeOrUpdate');
     Route::resource('admin/sliders', SliderController::class);
     Route::resource('admin/upcoming-tour-sections', UpcomingTourSectionController::class);
-
+    Route::resource('admin/gallery', GalleryController::class);
 
 });
 

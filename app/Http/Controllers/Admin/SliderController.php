@@ -27,7 +27,7 @@ class SliderController extends Controller
             'slider_title' => 'required|string|max:255',
             'slider_short_description' => 'required|string|max:255',
             'slider_video_link' => 'nullable|url',
-            'slider_image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'slider_image' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:2048',
         ]);
 
         $slider = new Slider();
@@ -38,7 +38,7 @@ class SliderController extends Controller
         // Handling image upload
         if ($request->hasFile('slider_image')) {
             $imagePath = $request->file('slider_image')->store('sliders', 'public');
-            $slider->slider_image = $imagePath;
+            $slider['slider_image'] = '/storage/' . $imagePath;
         }
 
         $slider->save();
@@ -59,17 +59,16 @@ class SliderController extends Controller
             'slider_title' => 'required|string|max:255',
             'slider_short_description' => 'required|string|max:255',
             'slider_video_link' => 'nullable|url',
-            'slider_image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'slider_image' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:2048',
         ]);
 
         $slider->slider_title = $request->slider_title;
         $slider->slider_short_description = $request->slider_short_description;
         $slider->slider_video_link = $request->slider_video_link;
 
-        // Handling image upload
         if ($request->hasFile('slider_image')) {
             $imagePath = $request->file('slider_image')->store('sliders', 'public');
-            $slider->slider_image = $imagePath;
+            $slider['slider_image'] = '/storage/' . $imagePath;
         }
 
         $slider->save();

@@ -1,25 +1,39 @@
 import React, { useState, useEffect } from 'react';
-import { useForm } from '@inertiajs/react';
+import {router, useForm} from '@inertiajs/react';
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
+import ImageUpload from "@/Components/ImageUpload.jsx";
 
 const Edit = ({ slider }) => {
     const { data, setData, put, processing, errors } = useForm({
         slider_title: slider.slider_title,
         slider_short_description: slider.slider_short_description,
-        slider_video_link: slider.slider_video_link
+        slider_video_link: slider.slider_video_link || null,
+        slider_image: null,
     });
+
+    const [existingImage, setExistingImage] = useState(slider.slider_image);
 
     const handleSubmit = (e) => {
         e.preventDefault();
 
         const formData = new FormData();
+        formData.append('_method', 'PATCH');
         formData.append('slider_title', data.slider_title);
         formData.append('slider_short_description', data.slider_short_description);
-        formData.append('slider_video_link', data.slider_video_link);
 
-        put(`/admin/sliders/${slider.id}`, {
-            data: formData,
-        });
+
+        if (data.slider_video_link) {
+            formData.append('slider_video_link', data.slider_video_link);
+        }
+
+        if (data.slider_image) {
+            formData.append('slider_image', data.slider_image);
+        }
+
+        router.post(`/admin/sliders/${slider.id}`, formData,{
+                forceFormData: true,
+            }
+        );
     };
 
     return (
@@ -65,13 +79,17 @@ const Edit = ({ slider }) => {
 
                     <div>
                         <label htmlFor="slider_image" className="block text-white">Slider Image</label>
-                        <input
-                            type="file"
-                            id="slider_image"
-                            name="slider_image"
-                            disabled
-                            onChange={(e) => setData("slider_image", e.target.files[0])}
-                            className="w-full p-2 border border-[#232a32] rounded bg-[#1e242b] text-white placeholder-gray-400"
+
+                        <ImageUpload
+                            initialImage={existingImage}
+                            onChange={(file) => {
+                                setData('slider_image', file);
+
+                            }}
+                            onRemove={() => {
+                                setExistingImage(null);
+                                setData('slider_image', null);
+                            }}
                         />
                     </div>
 

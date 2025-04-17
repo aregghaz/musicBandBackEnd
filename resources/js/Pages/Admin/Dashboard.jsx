@@ -10,6 +10,7 @@ const navItems = [
     { label: 'Manage Settings', route: 'settings.index' },
     { label: 'Manage Sliders', route: 'sliders.index' },
     { label: 'Pre Sale Tours', route: 'upcoming-tour-sections.index' },
+    { label: 'Gallery', route: 'gallery.index' },
 ];
 
 export default function Dashboard() {

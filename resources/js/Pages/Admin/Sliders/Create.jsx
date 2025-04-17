@@ -1,5 +1,6 @@
 import {useForm} from "@inertiajs/react";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.jsx";
+import ImageUpload from "@/Components/ImageUpload.jsx";
 
 export default function SliderCreate() {
     const {data, setData, post, processing, errors} = useForm({
@@ -9,10 +10,15 @@ export default function SliderCreate() {
         slider_image: null,
     });
 
-    const handleSubmit = (e) => {
+
+
+    function handleSubmit(e) {
         e.preventDefault();
-        post(route("sliders.store"));
-    };
+
+        post(route('sliders.store'), {
+            forceFormData: true
+        });
+    }
 
     return (
         <AuthenticatedLayout
@@ -64,13 +70,10 @@ export default function SliderCreate() {
 
                     <div>
                         <label htmlFor="slider_image" className="block text-white">Image</label>
-                        <input
-                            type="file"
-                            id="slider_image"
-                            name="slider_image"
-                            disabled
-                            onChange={(e) => setData("slider_image", e.target.files[0])}
-                            className="w-full p-2 rounded bg-[#1e242b] text-white placeholder-gray-400"
+
+                        <ImageUpload
+                            onChange={file => setData('slider_image', file)}
+                            initialImage={null}
                         />
                         {errors.slider_image && <p className="text-red-600 text-sm">{errors.slider_image}</p>}
                     </div>
