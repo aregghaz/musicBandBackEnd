@@ -2,6 +2,7 @@
 
 
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\RedirectController;
 use App\Http\Controllers\Admin\BlogController;
 use App\Http\Controllers\Admin\ConcertController;
 use App\Http\Controllers\Admin\BandMemberController;
@@ -18,26 +19,8 @@ use App\Http\Controllers\Admin\GalleryController;
 use Inertia\Inertia;
 
 
-// Redirect for /admin (without locale) to the default locale (en)
-Route::get('/admin', function () {
-    // Check if user is authenticated
-    if (auth()->check()) {
-        // Redirect to the default locale (en) if no locale is set
-        return redirect()->route('admin.dashboard', ['locale' => 'en']);
-    }
-    // If not authenticated, redirect to login
-    return redirect()->route('login');
-})->name('admin');
-
-// Other routes
-Route::get('/', function () {
-    return Inertia::render('Welcome', [
-        'canLogin' => Route::has('login'),
-        'canRegister' => Route::has('register'),
-        'laravelVersion' => Application::VERSION,
-        'phpVersion' => PHP_VERSION,
-    ]);
-});
+Route::get('/', [RedirectController::class, 'handleRedirect']);
+Route::get('/admin', [RedirectController::class, 'handleRedirect'])->name('admin');
 
 // Add locale prefix and middleware for all admin-related routes
 //Route::prefix('{locale}')->middleware(['locale'])->group(function () {
