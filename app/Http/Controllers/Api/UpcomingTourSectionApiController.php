@@ -21,7 +21,6 @@ class UpcomingTourSectionApiController extends Controller
     {
         $section = UpcomingTourSection::with('tours')->first();
         $setting = Setting::first();
-
         return new UpcomingTourSummaryCollection($section,$setting);
     }
 }

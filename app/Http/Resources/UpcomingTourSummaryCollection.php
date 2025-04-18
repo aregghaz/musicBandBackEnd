@@ -17,18 +17,29 @@ class UpcomingTourSummaryCollection extends JsonResource
 
     public function toArray(Request $request): array
     {
-        $tourCount = $this->tours?->count() ?? 0;
-        $closestDate = $this->tours?->min('pre_sale_start');
-        $furthestDate = $this->tours?->max('pre_sale_end');
+        if (!$this->resource) {
+            return [
+                'title' => '',
+                'tourCount' => 0,
+                'closestDate' => null,
+                'furthestDate' => null,
+                'upcomingLocation' => $this->setting?->upcoming_location ?? '',
+                'upcomingState' => $this->setting?->upcoming_state ?? '',
+                'upcomingCountry' => $this->setting?->upcoming_country ?? '',
+            ];
+        }
+
+        $tours = $this->tours ?? collect();
 
         return [
             'title' => $this->title,
-            'tourCount' => $tourCount,
-            'closestDate' => $closestDate,
-            'furthestDate' => $furthestDate,
+            'tourCount' => $tours->count(),
+            'closestDate' => $tours->min('pre_sale_start'),
+            'furthestDate' => $tours->max('pre_sale_end'),
             'upcomingLocation' => $this->setting?->upcoming_location ?? '',
             'upcomingState' => $this->setting?->upcoming_state ?? '',
             'upcomingCountry' => $this->setting?->upcoming_country ?? '',
         ];
     }
+
 }
