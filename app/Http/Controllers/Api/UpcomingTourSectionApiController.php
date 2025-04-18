@@ -14,12 +14,6 @@ class UpcomingTourSectionApiController extends Controller
     {
         $sections = UpcomingTourSection::with('tours')->get();
 
-        if ($sections->isEmpty()) {
-            return response()->json([
-                'message' => 'No upcoming tour sections found.'
-            ], 404);
-        }
-
         return new UpcomingTourSectionCollection($sections);
     }
 
@@ -27,12 +21,6 @@ class UpcomingTourSectionApiController extends Controller
     {
         $section = UpcomingTourSection::with('tours')->first();
         $setting = Setting::first();
-
-        if (!$section) {
-            return response()->json([
-                'message' => 'No upcoming tour section found.'
-            ], 404);
-        }
 
         return new UpcomingTourSummaryCollection($section,$setting);
     }
