@@ -17,10 +17,9 @@ class UpcomingTourSummaryCollection extends JsonResource
 
     public function toArray(Request $request): array
     {
-        $tours = $this->tours;
-        $tourCount = $tours->count();
-        $closestDate = $tours->min('pre_sale_start');
-        $furthestDate = $tours->max('pre_sale_end');
+        $tourCount = $this->tours?->count() ?? 0;
+        $closestDate = $this->tours?->min('pre_sale_start');
+        $furthestDate = $this->tours?->max('pre_sale_end');
 
         return [
             'title' => $this->title,
