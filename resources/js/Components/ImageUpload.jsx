@@ -14,7 +14,7 @@ export default function ImageUpload({ onChange, onRemove, initialImage = null })
     const handleRemoveImage = () => {
         setPreview(null);
         onChange(null);
-        if (onRemove) onRemove();  // trigger the onRemove callback if provided
+        if (onRemove) onRemove();
     };
 
     useEffect(() => {
@@ -47,6 +47,7 @@ export default function ImageUpload({ onChange, onRemove, initialImage = null })
             <input
                 type="file"
                 accept="image/*"
+                disabled={preview}
                 onChange={handleFileChange}
                 className="block w-full text-sm text-gray-300 border border-[#232a32] rounded-md cursor-pointer bg-[#1e242b] focus:outline-none focus:ring-2"
             />

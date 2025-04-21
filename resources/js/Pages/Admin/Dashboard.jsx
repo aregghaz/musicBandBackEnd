@@ -11,6 +11,7 @@ const navItems = [
     { label: 'Manage Sliders', route: 'sliders.index' },
     { label: 'Pre Sale Tours', route: 'upcoming-tour-sections.index' },
     { label: 'Gallery', route: 'gallery.index' },
+    { label: 'Latest Album', route: 'latest-album.index' },
 ];
 
 export default function Dashboard() {
