@@ -10,6 +10,7 @@ use App\Http\Controllers\Api\ContactApiController;
 use App\Http\Controllers\Api\SettingsApiController;
 use App\Http\Controllers\Api\GalleryApiController;
 use App\Http\Controllers\Api\UpcomingTourSectionApiController;
+use App\Http\Controllers\Api\LatestAlbumApiController;
 
 Route::get('/blogs', [BlogApiController::class, 'index']);
 Route::get('/blogs/{id}', [BlogApiController::class, 'show']);
@@ -21,7 +22,7 @@ Route::get('/settings', [SettingsApiController::class, 'getAllSettings']);
 Route::get('/tour-presale-dates', [UpcomingTourSectionApiController::class, 'index']);
 Route::get('/tour-presale-summary', [UpcomingTourSectionApiController::class, 'summary']);
 Route::get('/gallery', [GalleryApiController::class, 'index']);
-
+Route::get('/latest-album', [LatestAlbumApiController::class, 'show']);
 
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {

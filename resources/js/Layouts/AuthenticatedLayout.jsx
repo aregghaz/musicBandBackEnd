@@ -9,7 +9,7 @@ export default function AuthenticatedLayout({ header, children }) {
 
     const handleBack = () => {
         if (window.history.length > 1) {
-            window.history.back();  ry
+            window.history.back();
         } else {
             window.location.href = '/';
         }
