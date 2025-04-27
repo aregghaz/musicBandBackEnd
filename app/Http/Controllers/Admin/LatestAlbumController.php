@@ -36,13 +36,32 @@ class LatestAlbumController extends Controller
 
         $album = LatestAlbum::first();
 
-        // Handle image
+//        // Handle image
+//        if ($request->hasFile('album_image')) {
+//            if ($album && $album->album_image) {
+//                Storage::disk('public')->delete(str_replace('/storage/', '', $album->album_image));
+//            }
+//            $imagePath = $request->file('album_image')->store('albums', 'public');
+//            $data['album_image'] = '/storage/' . $imagePath;
+//        }
+
         if ($request->hasFile('album_image')) {
-            if ($album && $album->album_image) {
-                Storage::disk('public')->delete(str_replace('/storage/', '', $album->album_image));
+
+            if ($album->album_image) {
+                $oldPath = str_replace('/storage/', '', $album->album_image);
+                Storage::disk('public')->delete($oldPath);
             }
-            $imagePath = $request->file('album_image')->store('albums', 'public');
-            $data['album_image'] = '/storage/' . $imagePath;
+
+
+            $path = $request->file('album_image')->store('albums', 'public');
+            $data['album_image'] = '/storage/' . $path;
+        }
+
+        elseif (!$request->input('album_image')  && $album['album_image']) {
+
+            $oldPath = str_replace('/storage/', '', $album['album_image']);
+            Storage::disk('public')->delete($oldPath);
+            $data['album_image'] = null;
         }
 
         if ($album) {
