@@ -60,7 +60,6 @@ class AlbumController extends Controller
 
     public function update(Request $request, Album $album)
     {
-        // Only validate album_image if a new file is uploaded, not when it's empty
         $request->validate([
             'album_name' => 'required|string|max:255',
             'released_date' => 'required|date',
@@ -71,7 +70,6 @@ class AlbumController extends Controller
             'youtube_link' => 'nullable|url',
         ]);
 
-        // Prepare data for update
         $albumData = $request->only([
             'album_name',
             'released_date',
@@ -83,8 +81,22 @@ class AlbumController extends Controller
 
 
         if ($request->hasFile('album_image')) {
+            // Delete old image if exists
+            if ($album->album_image) {
+                $oldPath = str_replace('/storage/', '', $album->album_image);
+                Storage::disk('public')->delete($oldPath);
+            }
+
+
             $path = $request->file('album_image')->store('albums', 'public');
             $albumData['album_image'] = '/storage/' . $path;
+        }
+
+        elseif ($request->input('album_image') === null && $album->album_image) {
+            // Delete the old image
+            $oldPath = str_replace('/storage/', '', $album->album_image);
+            Storage::disk('public')->delete($oldPath);
+            $albumData['album_image'] = null;
         }
 
         $album->update($albumData);
