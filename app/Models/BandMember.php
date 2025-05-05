@@ -10,6 +10,25 @@ class BandMember extends Model
         'first_name',
         'last_name',
         'role',
-        'band_member_image'
+        'band_member_image',
+        'band_member_images',
+        'country',
+        'description',
+        'facebook_link',
+        'instagram_link',
+        'wikipedia_link',
+        'webpage_link',
+        'youtube_link',
+        'is_active',
     ];
+
+    protected $casts = [
+        'band_member_images' => 'array',
+        'is_active' => 'boolean',
+    ];
+
+    public function images()
+    {
+        return $this->hasMany(BandMemberImage::class);
+    }
 }

@@ -1,5 +1,7 @@
 import {Link, useForm} from "@inertiajs/react";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.jsx";
+import PrimaryButton from "@/Components/PrimaryButton.jsx";
+import React from "react";
 
 export default function Create() {
     const {data, setData, post, processing, errors} = useForm({
@@ -77,25 +79,26 @@ export default function Create() {
                     </div>
 
                     {/* Image URL input */}
-                    <div className="mb-4">
-                        <input
-                            type="text"
-                            value={data.concert_image}
-                            onChange={e => setData("concert_image", e.target.value)}
-                            placeholder="Image URL"
-                            className="w-full px-4 py-2  rounded-md bg-[#1e242b] text-white placeholder-gray-400 focus:outline-none focus:ring-2"
-                        />
-                    </div>
+                    {/*<div className="mb-4">*/}
+                    {/*    <input*/}
+                    {/*        type="text"*/}
+                    {/*        value={data.concert_image}*/}
+                    {/*        onChange={e => setData("concert_image", e.target.value)}*/}
+                    {/*        placeholder="Image URL"*/}
+                    {/*        className="w-full px-4 py-2  rounded-md bg-[#1e242b] text-white placeholder-gray-400 focus:outline-none focus:ring-2"*/}
+                    {/*    />*/}
+                    {/*</div>*/}
 
                     {/* Submit Button */}
                     <div>
-                        <button
+                        <PrimaryButton
+                            variant="danger"
                             type="submit"
                             disabled={processing}
-                            className="w-full px-4 py-2 bg-[#ff5252] text-white rounded-md hover:bg-[#ff6161] disabled:opacity-50"
+                            className="p-0 mt-4 !bg-[#ff5252]"
                         >
                             {processing ? 'Creating...' : 'Create Concert'}
-                        </button>
+                        </PrimaryButton>
                     </div>
                 </form>
             </div>

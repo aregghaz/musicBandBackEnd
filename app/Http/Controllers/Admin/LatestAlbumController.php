@@ -21,47 +21,37 @@ class LatestAlbumController extends Controller
 
     public function storeOrUpdate(Request $request)
     {
+        $album = LatestAlbum::first();
+
         $data = $request->validate([
             'album_title' => 'required|string',
             'album_label' => 'nullable|string',
             'album_released' => 'nullable|date',
             'album_genre' => 'nullable|string',
             'album_styles' => 'nullable|string',
-            'album_image' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:2048',
+            'album_image' => 'nullable',
             'album_amazon_link' => 'nullable|string',
             'album_apple_link' => 'nullable|string',
             'album_youtube_link' => 'nullable|string',
             'album_spotify_link' => 'nullable|string',
         ]);
 
-        $album = LatestAlbum::first();
-
-//        // Handle image
-//        if ($request->hasFile('album_image')) {
-//            if ($album && $album->album_image) {
-//                Storage::disk('public')->delete(str_replace('/storage/', '', $album->album_image));
-//            }
-//            $imagePath = $request->file('album_image')->store('albums', 'public');
-//            $data['album_image'] = '/storage/' . $imagePath;
-//        }
 
         if ($request->hasFile('album_image')) {
-
-            if ($album->album_image) {
-                $oldPath = str_replace('/storage/', '', $album->album_image);
-                Storage::disk('public')->delete($oldPath);
+            if ($album && $album->album_image) {
+                Storage::disk('public')->delete(str_replace('/storage/', '', $album->album_image));
             }
-
-
             $path = $request->file('album_image')->store('albums', 'public');
             $data['album_image'] = '/storage/' . $path;
         }
-
-        elseif (!$request->input('album_image')  && $album['album_image']) {
-
-            $oldPath = str_replace('/storage/', '', $album['album_image']);
-            Storage::disk('public')->delete($oldPath);
+        elseif ($request->input('remove_image') === '1') {
+            if ($album && $album->album_image) {
+                Storage::disk('public')->delete(str_replace('/storage/', '', $album->album_image));
+            }
             $data['album_image'] = null;
+        }
+        else {
+            unset($data['album_image']);
         }
 
         if ($album) {
@@ -70,10 +60,7 @@ class LatestAlbumController extends Controller
             $album = LatestAlbum::create($data);
         }
 
-        // ✅ Handle songs
         $songs = $request->input('songs', []);
-
-        // Remove existing songs not present in request (if id is missing)
         $existingSongIds = collect($songs)->pluck('id')->filter();
         Song::where('latest_album_id', $album->id)
             ->whereNotIn('id', $existingSongIds)
@@ -89,7 +76,6 @@ class LatestAlbumController extends Controller
             ];
 
             if (isset($songData['id'])) {
-
                 Song::where('id', $songData['id'])->update($validatedSongData);
             } else {
                 Song::create($validatedSongData);

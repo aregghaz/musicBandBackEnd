@@ -1,7 +1,8 @@
 import {router, useForm} from '@inertiajs/react';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import ImageUpload from '@/Components/ImageUpload';
-import {useState} from "react";
+import React, {useState} from "react";
+import PrimaryButton from "@/Components/PrimaryButton.jsx";
 
 export default function Edit({album}) {
 
@@ -15,6 +16,7 @@ export default function Edit({album}) {
         amazon_link: album.amazon_link || '',
         spotify_link: album.spotify_link || '',
         youtube_link: album.youtube_link || '',
+        remove_image: false,
     });
 
 
@@ -36,9 +38,8 @@ export default function Edit({album}) {
             formData.append('album_image', data.album_image);
         }
 
-        if (data.image_remove) {
-            formData.append('image_remove', '1');
-        }
+        formData.append('remove_image', data.remove_image ? '1' : '0');
+
 
         router.post(`/admin/albums/${album.id}`, formData, {
             forceFormData: true,
@@ -85,6 +86,7 @@ export default function Edit({album}) {
                             onRemove={() => {
                                 setExistingImage(null);
                                 setData('album_image', null);
+                                setData('remove_image', true);
                             }}
                         />
                         {errors.album_image && <div className="text-red-500 mt-1">{errors.album_image}</div>}
@@ -140,13 +142,15 @@ export default function Edit({album}) {
 
                     {/* Submit Button */}
                     <div>
-                        <button
+
+                        <PrimaryButton
+                            variant="danger"
                             type="submit"
                             disabled={processing}
-                            className="w-full px-4 py-2 bg-[#ff5252] text-white rounded-md hover:bg-[#ff6161] disabled:opacity-50"
+                            className="p-0 mt-4 !bg-[#ff5252]"
                         >
                             {processing ? 'Updating...' : 'Update Album'}
-                        </button>
+                        </PrimaryButton>
                     </div>
                 </form>
             </div>

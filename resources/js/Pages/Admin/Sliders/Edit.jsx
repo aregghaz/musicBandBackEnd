@@ -9,6 +9,8 @@ const Edit = ({ slider }) => {
         slider_short_description: slider.slider_short_description,
         slider_video_link: slider.slider_video_link || null,
         slider_image: null,
+        remove_image: false,
+
     });
 
     const [existingImage, setExistingImage] = useState(slider.slider_image);
@@ -29,6 +31,9 @@ const Edit = ({ slider }) => {
         if (data.slider_image) {
             formData.append('slider_image', data.slider_image);
         }
+
+        formData.append('remove_image', data.remove_image ? '1' : '0');
+
 
         router.post(`/admin/sliders/${slider.id}`, formData,{
                 forceFormData: true,
@@ -89,6 +94,7 @@ const Edit = ({ slider }) => {
                             onRemove={() => {
                                 setExistingImage(null);
                                 setData('slider_image', null);
+                                setData('remove_image', true);
                             }}
                         />
                     </div>

@@ -13,6 +13,7 @@ const ShowLatestAlbum = () => {
         album_genre: album?.album_genre || '',
         album_styles: album?.album_styles || '',
         album_image: null,
+        remove_image: false,
         album_amazon_link: album?.album_amazon_link || '',
         album_apple_link: album?.album_apple_link || '',
         album_youtube_link: album?.album_youtube_link || '',
@@ -53,9 +54,11 @@ const ShowLatestAlbum = () => {
         formData.append('album_youtube_link', data.album_youtube_link);
         formData.append('album_spotify_link', data.album_spotify_link);
 
+
         if (data.album_image) {
             formData.append("album_image", data.album_image);
         }
+        formData.append('remove_image', data.remove_image ? '1' : '0');
 
         data.songs.forEach((song, index) => {
             formData.append(`songs[${index}][song_title]`, song.song_title);
@@ -115,6 +118,7 @@ const ShowLatestAlbum = () => {
                                 onRemove={() => {
                                     setExistingImage(null);
                                     setData('album_image', null);
+                                    setData('remove_image', true);
                                 }}
                             />
                             {errors.album_image && (

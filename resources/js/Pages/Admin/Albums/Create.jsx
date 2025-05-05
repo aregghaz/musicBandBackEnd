@@ -1,9 +1,11 @@
-import { useForm } from '@inertiajs/react';
+import {useForm} from '@inertiajs/react';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import ImageUpload from '@/Components/ImageUpload';
+import PrimaryButton from "@/Components/PrimaryButton.jsx";
+import React from "react";
 
 export default function Create() {
-    const { data, setData, post, processing, errors } = useForm({
+    const {data, setData, post, processing, errors} = useForm({
         album_name: '',
         released_date: '',
         album_image: null,  // now holds a File object
@@ -107,13 +109,16 @@ export default function Create() {
 
                     {/* Submit Button */}
                     <div>
-                        <button
+
+                        <PrimaryButton
+                            variant="danger"
                             type="submit"
                             disabled={processing}
-                            className="w-full px-4 py-2 bg-[#ff5252] border-[#ff5252] text-white rounded-md hover:bg-[#ff6161] disabled:opacity-50"
+                            className="p-0 mt-4 !bg-[#ff5252]"
                         >
                             {processing ? 'Creating...' : 'Create Album'}
-                        </button>
+                        </PrimaryButton>
+
                     </div>
                 </form>
             </div>
