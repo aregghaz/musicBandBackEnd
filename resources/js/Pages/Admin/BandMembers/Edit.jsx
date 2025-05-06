@@ -275,6 +275,8 @@ export default function Edit() {
                             <MultipleImageUpload
                                 onChange={handleMultipleImages}
                                 initialImages={data.band_member_images}
+                                cropHeight={300}
+                                cropWidth={300}
                             />
                             {errors.band_member_images && (
                                 <p className="text-red-500 text-sm mt-1">{errors.band_member_images}</p>
