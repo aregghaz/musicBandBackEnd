@@ -61,37 +61,34 @@ class SliderController extends Controller
             'slider_short_description' => 'required|string|max:255',
             'slider_video_link' => 'nullable|url',
             'slider_image' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:2048',
+            'remove_image' => 'nullable|boolean',
         ]);
 
         $slider->slider_title = $request->slider_title;
         $slider->slider_short_description = $request->slider_short_description;
         $slider->slider_video_link = $request->slider_video_link;
 
-
         if ($request->hasFile('slider_image')) {
-
             if ($slider->slider_image) {
                 $oldPath = str_replace('/storage/', '', $slider->slider_image);
                 Storage::disk('public')->delete($oldPath);
             }
 
-
             $path = $request->file('slider_image')->store('albums', 'public');
-            $slider['slider_image'] = '/storage/' . $path;
+            $slider->slider_image = '/storage/' . $path;
+        } elseif ($request->boolean('remove_image')) {
+            if ($slider->slider_image) {
+                $oldPath = str_replace('/storage/', '', $slider->slider_image);
+                Storage::disk('public')->delete($oldPath);
+                $slider->slider_image = null;
+            }
         }
-
-        elseif ($request->input('slider_image') === null && $slider->slider_image) {
-
-            $oldPath = str_replace('/storage/', '', $slider->slider_image);
-            Storage::disk('public')->delete($oldPath);
-            $slider['slider_image'] = null;
-        }
-
 
         $slider->save();
 
         return redirect()->route('sliders.index');
     }
+
 
     public function destroy(Slider $slider)
     {

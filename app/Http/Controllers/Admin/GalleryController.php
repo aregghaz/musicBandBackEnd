@@ -21,7 +21,9 @@ class GalleryController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'gallery_images.*' => 'image|mimes:jpeg,png,jpg,webp|max:2048'
+            'gallery_images.*' => 'image|mimes:jpeg,png,jpg,webp|max:1536'
+        ], [
+            'gallery_images.*.max' => 'Each image must be no larger than 1.5MB.',
         ]);
 
         foreach ($request->file('gallery_images', []) as $image) {

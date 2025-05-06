@@ -68,6 +68,7 @@ class AlbumController extends Controller
             'amazon_link' => 'nullable|url',
             'spotify_link' => 'nullable|url',
             'youtube_link' => 'nullable|url',
+            'remove_image' => 'nullable|boolean',
         ]);
 
         $albumData = $request->only([
@@ -79,24 +80,20 @@ class AlbumController extends Controller
             'youtube_link',
         ]);
 
-
         if ($request->hasFile('album_image')) {
-            // Delete old image if exists
             if ($album->album_image) {
                 $oldPath = str_replace('/storage/', '', $album->album_image);
                 Storage::disk('public')->delete($oldPath);
             }
 
-
             $path = $request->file('album_image')->store('albums', 'public');
             $albumData['album_image'] = '/storage/' . $path;
-        }
-
-        elseif ($request->input('album_image') === null && $album->album_image) {
-            // Delete the old image
-            $oldPath = str_replace('/storage/', '', $album->album_image);
-            Storage::disk('public')->delete($oldPath);
-            $albumData['album_image'] = null;
+        } elseif ($request->boolean('remove_image')) {
+            if ($album->album_image) {
+                $oldPath = str_replace('/storage/', '', $album->album_image);
+                Storage::disk('public')->delete($oldPath);
+                $albumData['album_image'] = null;
+            }
         }
 
         $album->update($albumData);

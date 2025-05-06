@@ -38,6 +38,7 @@ export default function Index() {
                             <th className="px-4 py-3 border-b">First Name</th>
                             <th className="px-4 py-3 border-b">Last Name</th>
                             <th className="px-4 py-3 border-b">Role</th>
+                            <th className="px-4 py-3 border-b">Country</th>
                             <th className="px-4 py-3 border-b">Image</th>
                             <th className="px-4 py-3 border-b">Actions</th>
                         </tr>
@@ -48,6 +49,7 @@ export default function Index() {
                                 <td className="px-4 py-3 border-b">{bandMember.first_name}</td>
                                 <td className="px-4 py-3 border-b">{bandMember.last_name}</td>
                                 <td className="px-4 py-3 border-b">{bandMember.role}</td>
+                                <td className="px-4 py-3 border-b">{bandMember.country}</td>
                                 <td className="px-4 py-3 border-b">
                                     {bandMember.band_member_image ? (
                                         <img
