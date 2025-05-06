@@ -175,6 +175,8 @@ export default function Create() {
                         <ImageUpload
                             onChange={file => setData('band_member_image', file)}
                             initialImage={null}
+                            cropWidth={340}
+                            cropHeight={450}
                         />
                         {errors.band_member_image && (
                             <div className="text-red-500">{errors.band_member_image}</div>

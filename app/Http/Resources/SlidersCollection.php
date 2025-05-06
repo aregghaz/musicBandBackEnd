@@ -20,6 +20,7 @@ class SlidersCollection extends ResourceCollection
                 'sliderTitle' => $slider->slider_title,
                 'sliderShortDescription' => $slider->slider_short_description,
                 'sliderImage' => $slider->slider_image,
+                'sliderImageMob' => $slider->slider_image_mob,
                 'sliderVideoLink' => $slider->slider_video_link,
             ];
         })->toArray();

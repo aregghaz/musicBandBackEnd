@@ -120,6 +120,8 @@ const ShowLatestAlbum = () => {
                                     setData('album_image', null);
                                     setData('remove_image', true);
                                 }}
+                                cropWidth={730}
+                                cropHeight={400}
                             />
                             {errors.album_image && (
                                 <div className="text-red-500 text-sm mt-1">{errors.album_image}</div>

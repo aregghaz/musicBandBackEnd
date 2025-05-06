@@ -55,6 +55,8 @@ export default function Create() {
                                 <ImageUpload
                                     initialImage={null}
                                     onChange={(file) => setData("image", file)}
+                                    cropWidth={540}
+                                    cropHeight={450}
                                 />
                                 {errors.image && <p className="text-red-500 text-sm">{errors.image}</p>}
                             </div>

@@ -1,6 +1,7 @@
 import {useForm} from "@inertiajs/react";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.jsx";
 import ImageUpload from "@/Components/ImageUpload.jsx";
+import React from "react";
 
 export default function SliderCreate() {
     const {data, setData, post, processing, errors} = useForm({
@@ -8,6 +9,7 @@ export default function SliderCreate() {
         slider_short_description: "",
         slider_video_link: "",
         slider_image: null,
+        slider_image_mob: null,
     });
 
 
@@ -74,8 +76,26 @@ export default function SliderCreate() {
                         <ImageUpload
                             onChange={file => setData('slider_image', file)}
                             initialImage={null}
+
+                            cropWidth={1600}
+                            cropHeight={800}
                         />
                         {errors.slider_image && <p className="text-red-600 text-sm">{errors.slider_image}</p>}
+                    </div>
+
+                    <div>
+                        <label htmlFor="slider_image_mob" className="block text-white">Slider Mobile Image</label>
+
+                        <ImageUpload
+                            initialImage={null}
+                            onChange={(file) => {
+                                setData('slider_image_mob', file);
+
+                            }}
+
+                            cropWidth={472}
+                            cropHeight={500}
+                        />
                     </div>
 
                     <button
