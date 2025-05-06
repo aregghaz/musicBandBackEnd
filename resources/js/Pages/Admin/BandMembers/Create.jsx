@@ -187,6 +187,8 @@ export default function Create() {
                     <div className="mb-4">
                         <MultipleImageUpload
                             onChange={handleMultipleImages}
+                            cropHeight={300}
+                            cropWidth={300}
                             initialImages={data.band_member_images.map(image => {
                                 if (image instanceof File) {
                                     return {
