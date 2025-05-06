@@ -10,10 +10,13 @@ const Edit = ({ slider }) => {
         slider_video_link: slider.slider_video_link || null,
         slider_image: null,
         remove_image: false,
+        slider_image_mob: null,
+        remove_image_mob: false,
 
     });
 
     const [existingImage, setExistingImage] = useState(slider.slider_image);
+    const [existingImageMob, setExistingImageMob] = useState(slider.slider_image_mob);
 
     const handleSubmit = (e) => {
         e.preventDefault();
@@ -33,6 +36,12 @@ const Edit = ({ slider }) => {
         }
 
         formData.append('remove_image', data.remove_image ? '1' : '0');
+
+        if (data.slider_image_mob) {
+            formData.append('slider_image_mob', data.slider_image_mob);
+        }
+
+        formData.append('remove_image_mob', data.remove_image_mob ? '1' : '0');
 
 
         router.post(`/admin/sliders/${slider.id}`, formData,{
@@ -96,6 +105,30 @@ const Edit = ({ slider }) => {
                                 setData('slider_image', null);
                                 setData('remove_image', true);
                             }}
+
+                            cropWidth={1600}
+                            cropHeight={800}
+                        />
+                    </div>
+
+
+                    <div>
+                        <label htmlFor="slider_image_mob" className="block text-white">Slider Mobile Image</label>
+
+                        <ImageUpload
+                            initialImage={existingImageMob}
+                            onChange={(file) => {
+                                setData('slider_image_mob', file);
+
+                            }}
+                            onRemove={() => {
+                                setExistingImageMob(null);
+                                setData('slider_image_mob', null);
+                                setData('remove_image_mob', true);
+                            }}
+
+                            cropWidth={472}
+                            cropHeight={500}
                         />
                     </div>
 

@@ -55,6 +55,8 @@ export default function Create() {
                         <ImageUpload
                             onChange={file => setData('album_image', file)}
                             onRemove={() => setData('album_image', null)}
+                            cropWidth={246}
+                            cropHeight={235}
                         />
                         {errors.album_image && <div className="text-red-500 mt-1">{errors.album_image}</div>}
                     </div>

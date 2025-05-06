@@ -22,6 +22,9 @@
         "vite": "^6.0.11"
     },
     "dependencies": {
+        "browser-image-compression": "^2.0.2",
+        "react-easy-crop": "^5.4.1",
+        "react-modal": "^3.16.3",
         "react-router-dom": "^7.4.0",
         "sass": "^1.86.0"
     }

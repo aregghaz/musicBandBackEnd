@@ -88,6 +88,8 @@ export default function Edit({album}) {
                                 setData('album_image', null);
                                 setData('remove_image', true);
                             }}
+                            cropWidth={246}
+                            cropHeight={235}
                         />
                         {errors.album_image && <div className="text-red-500 mt-1">{errors.album_image}</div>}
                     </div>

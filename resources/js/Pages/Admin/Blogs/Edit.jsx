@@ -79,6 +79,8 @@ export default function Edit() {
                                     setData("image", null);
                                     setData("image_remove", true);
                                 }}
+                                cropWidth={540}
+                                cropHeight={450}
                             />
                             {errors.image && <p className="text-red-500 text-sm">{errors.image}</p>}
                         </div>

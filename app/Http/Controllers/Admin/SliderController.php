@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Helpers\ImageUploadHelper;
 use App\Http\Controllers\Controller;
 use App\Models\Slider;
 use Illuminate\Http\Request;
@@ -29,6 +30,7 @@ class SliderController extends Controller
             'slider_short_description' => 'required|string|max:255',
             'slider_video_link' => 'nullable|url',
             'slider_image' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:2048',
+            'slider_image_mob' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:2048',
         ]);
 
         $slider = new Slider();
@@ -36,11 +38,24 @@ class SliderController extends Controller
         $slider->slider_short_description = $request->slider_short_description;
         $slider->slider_video_link = $request->slider_video_link;
 
-        // Handling image upload
-        if ($request->hasFile('slider_image')) {
-            $imagePath = $request->file('slider_image')->store('sliders', 'public');
-            $slider['slider_image'] = '/storage/' . $imagePath;
-        }
+        // Handle image uploads using helper
+        ImageUploadHelper::handleImageUpload(
+            $request,
+            $slider,
+            'slider_image',
+            'remove_image',
+            'slider_image',
+            'sliders'
+        );
+
+        ImageUploadHelper::handleImageUpload(
+            $request,
+            $slider,
+            'slider_image_mob',
+            'remove_image_mob',
+            'slider_image_mob',
+            'sliders'
+        );
 
         $slider->save();
 
@@ -61,37 +76,51 @@ class SliderController extends Controller
             'slider_short_description' => 'required|string|max:255',
             'slider_video_link' => 'nullable|url',
             'slider_image' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:2048',
+            'slider_image_mob' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:2048',
             'remove_image' => 'nullable|boolean',
+            'remove_image_mob' => 'nullable|boolean',
         ]);
 
         $slider->slider_title = $request->slider_title;
         $slider->slider_short_description = $request->slider_short_description;
         $slider->slider_video_link = $request->slider_video_link;
 
-        if ($request->hasFile('slider_image')) {
-            if ($slider->slider_image) {
-                $oldPath = str_replace('/storage/', '', $slider->slider_image);
-                Storage::disk('public')->delete($oldPath);
-            }
+        // Handle image uploads using helper
+        ImageUploadHelper::handleImageUpload(
+            $request,
+            $slider,
+            'slider_image',
+            'remove_image',
+            'slider_image',
+            'sliders'
+        );
 
-            $path = $request->file('slider_image')->store('albums', 'public');
-            $slider->slider_image = '/storage/' . $path;
-        } elseif ($request->boolean('remove_image')) {
-            if ($slider->slider_image) {
-                $oldPath = str_replace('/storage/', '', $slider->slider_image);
-                Storage::disk('public')->delete($oldPath);
-                $slider->slider_image = null;
-            }
-        }
+        ImageUploadHelper::handleImageUpload(
+            $request,
+            $slider,
+            'slider_image_mob',
+            'remove_image_mob',
+            'slider_image_mob',
+            'sliders'
+        );
 
         $slider->save();
 
         return redirect()->route('sliders.index');
     }
 
-
     public function destroy(Slider $slider)
     {
+        // Delete associated images
+        if ($slider->slider_image) {
+            $oldPath = str_replace('/storage/', '', $slider->slider_image);
+            Storage::disk('public')->delete($oldPath);
+        }
+        if ($slider->slider_image_mob) {
+            $oldPathMob = str_replace('/storage/', '', $slider->slider_image_mob);
+            Storage::disk('public')->delete($oldPathMob);
+        }
+
         $slider->delete();
         return redirect()->route('sliders.index');
     }

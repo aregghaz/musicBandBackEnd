@@ -260,6 +260,9 @@ export default function Edit() {
                                     setData('band_member_image', null);
                                     setData('remove_image', true);
                                 }}
+
+                                cropWidth={340}
+                                cropHeight={450}
                             />
                             {errors.band_member_image && (
                                 <p className="text-red-500 text-sm mt-1">{errors.band_member_image}</p>
