@@ -9,6 +9,15 @@ use App\Models\Concert;
 class ConcertApiController extends Controller
 {
     // Get concerts by type
+    public function index()
+    {
+        // Get concerts filtered by type
+        $concerts = Concert::all();
+
+        // Return the concerts using the ConcertCollection
+        return new ConcertCollection($concerts);
+    }
+
     public function getConcertsByType($type)
     {
         // Get concerts filtered by type
