@@ -16,17 +16,20 @@ class AlbumCollection extends ResourceCollection
             return [
                 'id' => $album->id,
                 'albumName' => $album->album_name,
-                'albumImage' => $album->album_image,
+                'albumLabel' => $album->album_label,
                 'releasedDate' => $album->released_date,
-                'appleLink' => $album->apple_link,
+                'albumGenre' => $album->album_genre,
+                'albumStyles' => $album->album_styles,
+                'albumImage' => $album->album_image,
+                'albumThumbnail' => $album->album_thumbnail,
                 'amazonLink' => $album->amazon_link,
-                'spotifyLink' => $album->spotify_link,
+                'appleLink' => $album->apple_link,
                 'youtubeLink' => $album->youtube_link,
+                'spotifyLink' => $album->spotify_link,
+                'songs' => new SongCollection($album->songs),
                 'createdAt' => $album->created_at->toIso8601String(),
                 'updatedAt' => $album->updated_at->toIso8601String(),
             ];
         })->toArray();
     }
 }
-
-
