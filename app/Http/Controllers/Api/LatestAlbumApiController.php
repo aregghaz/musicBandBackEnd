@@ -13,7 +13,7 @@ class LatestAlbumApiController extends Controller
     {
 
         $album = LatestAlbum::with('songs')->first();
-//        return $album;
+
         return new LatestAlbumCollection($album);
 
     }

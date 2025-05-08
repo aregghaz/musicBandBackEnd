@@ -19,6 +19,7 @@ Route::get('/concerts/type/{type}', [ConcertApiController::class, 'getConcertsBy
 Route::get('/concerts', [ConcertApiController::class, 'index']);
 Route::get('/band-members', [BandMemberApiController::class, 'index']);
 Route::get('/albums', [AlbumApiController::class, 'getAlbums']);
+Route::get('/albums/{id}', [AlbumApiController::class, 'getAlbum']);
 Route::get('/contacts', [ContactApiController::class, 'index']);
 Route::get('/settings', [SettingsApiController::class, 'getAllSettings']);
 Route::get('/tour-presale-dates', [UpcomingTourSectionApiController::class, 'index']);
