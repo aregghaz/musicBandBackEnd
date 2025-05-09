@@ -1,14 +1,15 @@
-import { useState, useEffect, useRef, useCallback } from 'react';
+import {useState, useEffect, useRef, useCallback} from 'react';
 import Cropper from 'react-easy-crop';
 
-export default function MultipleImageUpload({ onChange, initialImages = [], cropWidth = 340, cropHeight = 450 }) {
+export default function MultipleImageUpload({onChange, initialImages = [], cropWidth = 340, cropHeight = 450}) {
     const [images, setImages] = useState(initialImages);
     const [fileToCrop, setFileToCrop] = useState(null);
-    const [crop, setCrop] = useState({ x: 0, y: 0 });
+    const [crop, setCrop] = useState({x: 0, y: 0});
     const [zoom, setZoom] = useState(1);
     const [croppedAreaPixels, setCroppedAreaPixels] = useState(null);
     const isMounted = useRef(false);
     const prevImagesRef = useRef(initialImages);
+    const fileInputRef = useRef(null);
 
     // Initialize images from initialImages only on mount
     useEffect(() => {
@@ -17,6 +18,11 @@ export default function MultipleImageUpload({ onChange, initialImages = [], crop
             setImages(initialImages);
             prevImagesRef.current = initialImages;
             isMounted.current = true;
+        } else {
+            if (initialImages.length === 0) {
+                setImages([]);
+                prevImagesRef.current = [];
+            }
         }
     }, [initialImages]);
 
@@ -34,12 +40,15 @@ export default function MultipleImageUpload({ onChange, initialImages = [], crop
     const handleFileChange = useCallback((e) => {
         const file = e.target.files[0];
         if (file) {
+            if (fileToCrop) {
+                URL.revokeObjectURL(fileToCrop);
+            }
             setFileToCrop(URL.createObjectURL(file));
-            setCrop({ x: 0, y: 0 });
+            setCrop({x: 0, y: 0});
             setZoom(1);
             setCroppedAreaPixels(null);
         }
-    }, []);
+    }, [fileToCrop]);
 
     // Handle crop completion
     const onCropComplete = useCallback((croppedArea, croppedAreaPixels) => {
@@ -72,7 +81,7 @@ export default function MultipleImageUpload({ onChange, initialImages = [], crop
 
         return new Promise((resolve) => {
             canvas.toBlob((blob) => {
-                const file = new File([blob], `cropped-image-${Date.now()}.jpg`, { type: "image/jpeg" });
+                const file = new File([blob], `cropped-image-${Date.now()}.jpg`, {type: "image/jpeg"});
                 resolve(file);
             }, "image/jpeg");
         });
@@ -89,6 +98,9 @@ export default function MultipleImageUpload({ onChange, initialImages = [], crop
             const updatedImages = [...images, newImage];
             setImages(updatedImages);
             setFileToCrop(null);
+            if (fileInputRef.current) {
+                fileInputRef.current.value = "";
+            }
         } catch (e) {
             console.error("Error cropping image:", e);
         }
@@ -96,8 +108,14 @@ export default function MultipleImageUpload({ onChange, initialImages = [], crop
 
     // Handle crop cancel
     const handleCropCancel = useCallback(() => {
+        if (fileToCrop) {
+            URL.revokeObjectURL(fileToCrop);
+        }
         setFileToCrop(null);
-    }, []);
+        if (fileInputRef.current) {
+            fileInputRef.current.value = "";
+        }
+    }, [fileToCrop]);
 
     // Handle removing an image
     const handleRemoveImage = useCallback((indexToRemove) => {
@@ -110,6 +128,11 @@ export default function MultipleImageUpload({ onChange, initialImages = [], crop
         const imageToRemove = images[indexToRemove];
         if (imageToRemove.file) {
             URL.revokeObjectURL(imageToRemove.preview);
+        }
+
+        // Reset file input
+        if (fileInputRef.current) {
+            fileInputRef.current.value = "";
         }
     }, [images]);
 
@@ -125,7 +148,7 @@ export default function MultipleImageUpload({ onChange, initialImages = [], crop
     }, [images]);
 
     return (
-        <div className="space-y-3 ">
+        <div className="space-y-3">
             <div className="flex flex-wrap gap-4">
                 {images.map((img, index) => (
                     <div
@@ -170,6 +193,7 @@ export default function MultipleImageUpload({ onChange, initialImages = [], crop
                 accept="image/*"
                 disabled={fileToCrop !== null}
                 onChange={handleFileChange}
+                ref={fileInputRef}
                 className="block w-56 text-sm text-gray-300 border border-[#232a32] rounded-md cursor-pointer bg-[#1e242b] focus:outline-none focus:ring-2"
             />
 

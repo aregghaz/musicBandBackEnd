@@ -65,7 +65,7 @@ class HomeApiController extends Controller
         $latestAlbumData = new LatestAlbumCollection($latestAlbum);
 
 
-        $settings = Setting::all();
+        $settings = Setting::first();
         $sliders = Slider::all();
         $settingsData = new SettingsCollection($settings, $sliders);
 
