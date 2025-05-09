@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, useRef } from "react";
 import Cropper from "react-easy-crop";
 
 export default function ImageUpload({ onChange, onRemove, initialImage = null, cropWidth, cropHeight }) {
@@ -7,11 +7,16 @@ export default function ImageUpload({ onChange, onRemove, initialImage = null, c
     const [crop, setCrop] = useState({ x: 0, y: 0 });
     const [zoom, setZoom] = useState(1);
     const [croppedAreaPixels, setCroppedAreaPixels] = useState(null);
+    const fileInputRef = useRef(null);
 
     // Handle file selection and show cropper
     const handleFileChange = (e) => {
         const file = e.target.files[0];
         if (file) {
+            // Revoke previous fileToCrop URL if exists
+            if (fileToCrop) {
+                URL.revokeObjectURL(fileToCrop);
+            }
             setFileToCrop(URL.createObjectURL(file));
         }
     };
@@ -57,9 +62,14 @@ export default function ImageUpload({ onChange, onRemove, initialImage = null, c
     const handleCropConfirm = useCallback(async () => {
         try {
             const croppedFile = await getCroppedImg(fileToCrop, croppedAreaPixels);
-            setPreview(URL.createObjectURL(croppedFile));
+            const previewUrl = URL.createObjectURL(croppedFile);
+            setPreview(previewUrl);
             onChange(croppedFile);
             setFileToCrop(null);
+            // Clear file input
+            if (fileInputRef.current) {
+                fileInputRef.current.value = "";
+            }
         } catch (e) {
             console.error("Error cropping image:", e);
         }
@@ -67,15 +77,42 @@ export default function ImageUpload({ onChange, onRemove, initialImage = null, c
 
     // Handle crop cancel
     const handleCropCancel = () => {
+        if (fileToCrop) {
+            URL.revokeObjectURL(fileToCrop);
+        }
         setFileToCrop(null);
+        // Clear file input
+        if (fileInputRef.current) {
+            fileInputRef.current.value = "";
+        }
     };
 
     // Handle image removal
     const handleRemoveImage = () => {
+        if (preview && !preview.startsWith('http')) {
+            URL.revokeObjectURL(preview);
+        }
         setPreview(null);
+        setFileToCrop(null);
         onChange(null);
         if (onRemove) onRemove();
+        // Clear file input
+        if (fileInputRef.current) {
+            fileInputRef.current.value = "";
+        }
     };
+
+    // Clean up Blob URLs on unmount
+    useEffect(() => {
+        return () => {
+            if (preview && !preview.startsWith('http')) {
+                URL.revokeObjectURL(preview);
+            }
+            if (fileToCrop) {
+                URL.revokeObjectURL(fileToCrop);
+            }
+        };
+    }, [preview, fileToCrop]);
 
     // Update preview when initialImage changes
     useEffect(() => {
@@ -119,6 +156,7 @@ export default function ImageUpload({ onChange, onRemove, initialImage = null, c
                 accept="image/*"
                 disabled={preview || fileToCrop}
                 onChange={handleFileChange}
+                ref={fileInputRef}
                 className="block w-full text-sm text-gray-300 border border-[#232a32] rounded-md cursor-pointer bg-[#1e242b] focus:outline-none focus:ring-2"
             />
 

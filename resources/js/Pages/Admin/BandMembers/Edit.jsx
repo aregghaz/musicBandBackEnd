@@ -8,7 +8,7 @@ import PrimaryButton from "@/Components/PrimaryButton.jsx";
 export default function Edit() {
     const { bandMember } = usePage().props;
 
-    const { data, setData, errors,processing } = useForm({
+    const { data, setData, errors, processing } = useForm({
         first_name: bandMember.first_name || '',
         last_name: bandMember.last_name || '',
         role: bandMember.role || '',
@@ -102,149 +102,150 @@ export default function Edit() {
             }
         >
             <div className="p-6 bg-[#1e242b]">
-                <h1 className="text-2xl font-bold mb-4 text-white">Edit Band Member</h1>
+                <h1 className="text-2xl font-bold mb-6 text-white">Edit Band Member</h1>
 
                 <div className="bg-[#1e242b] shadow-md rounded-lg p-6">
-                    <form onSubmit={submit} className="space-y-6">
-                        {/* First Name */}
-                        <div>
-                            <label className="block text-white font-medium mb-2">First Name</label>
-                            <input
-                                type="text"
-                                value={data.first_name}
-                                onChange={(e) => setData('first_name', e.target.value)}
-                                className="w-full px-4 py-2 rounded-md bg-[#1e242b] text-white placeholder-gray-400 focus:outline-none focus:ring-2"
-                                placeholder="Enter First Name"
-                            />
-                            {errors.first_name && <p className="text-red-500 text-sm mt-1">{errors.first_name}</p>}
+                    <form onSubmit={submit}>
+                        {/* Grid for Name, Last Name, Role, Country */}
+                        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+                            <div>
+                                <label className="block text-white font-medium mb-2">First Name</label>
+                                <input
+                                    type="text"
+                                    value={data.first_name}
+                                    onChange={(e) => setData('first_name', e.target.value)}
+                                    className="w-full px-4 py-2 rounded-md bg-[#1e242b] text-white placeholder-gray-400 border border-[#232a32] focus:outline-none focus:ring-2 focus:ring-[#ff5252]"
+                                    placeholder="Enter First Name"
+                                />
+                                {errors.first_name && <p className="text-red-500 text-sm mt-1">{errors.first_name}</p>}
+                            </div>
+
+                            <div>
+                                <label className="block text-white font-medium mb-2">Last Name</label>
+                                <input
+                                    type="text"
+                                    value={data.last_name}
+                                    onChange={(e) => setData('last_name', e.target.value)}
+                                    className="w-full px-4 py-2 rounded-md bg-[#1e242b] text-white placeholder-gray-400 border border-[#232a32] focus:outline-none focus:ring-2 focus:ring-[#ff5252]"
+                                    placeholder="Enter Last Name"
+                                />
+                                {errors.last_name && <p className="text-red-500 text-sm mt-1">{errors.last_name}</p>}
+                            </div>
+
+                            <div>
+                                <label className="block text-white font-medium mb-2">Role</label>
+                                <input
+                                    type="text"
+                                    value={data.role}
+                                    onChange={(e) => setData('role', e.target.value)}
+                                    className="w-full px-4 py-2 rounded-md bg-[#1e242b] text-white placeholder-gray-400 border border-[#232a32] focus:outline-none focus:ring-2 focus:ring-[#ff5252]"
+                                    placeholder="Enter Role (e.g. Guitarist, Drummer)"
+                                />
+                                {errors.role && <p className="text-red-500 text-sm mt-1">{errors.role}</p>}
+                            </div>
+
+                            <div>
+                                <label className="block text-white font-medium mb-2">Country</label>
+                                <input
+                                    type="text"
+                                    value={data.country}
+                                    onChange={(e) => setData('country', e.target.value)}
+                                    className="w-full px-4 py-2 rounded-md bg-[#1e242b] text-white placeholder-gray-400 border border-[#232a32] focus:outline-none focus:ring-2 focus:ring-[#ff5252]"
+                                    placeholder="Enter Country"
+                                />
+                                {errors.country && <p className="text-red-500 text-sm mt-1">{errors.country}</p>}
+                            </div>
                         </div>
 
-                        {/* Last Name */}
-                        <div>
-                            <label className="block text-white font-medium mb-2">Last Name</label>
-                            <input
-                                type="text"
-                                value={data.last_name}
-                                onChange={(e) => setData('last_name', e.target.value)}
-                                className="w-full px-4 py-2 rounded-md bg-[#1e242b] text-white placeholder-gray-400 focus:outline-none focus:ring-2"
-                                placeholder="Enter Last Name"
-                            />
-                            {errors.last_name && <p className="text-red-500 text-sm mt-1">{errors.last_name}</p>}
-                        </div>
-
-                        {/* Role */}
-                        <div>
-                            <label className="block text-white font-medium mb-2">Role</label>
-                            <input
-                                type="text"
-                                value={data.role}
-                                onChange={(e) => setData('role', e.target.value)}
-                                className="w-full px-4 py-2 rounded-md bg-[#1e242b] text-white placeholder-gray-400 focus:outline-none focus:ring-2"
-                                placeholder="Enter Role (e.g. Guitarist, Drummer)"
-                            />
-                            {errors.role && <p className="text-red-500 text-sm mt-1">{errors.role}</p>}
-                        </div>
-
-                        {/* Country */}
-                        <div>
-                            <label className="block text-white font-medium mb-2">Country</label>
-                            <input
-                                type="text"
-                                value={data.country}
-                                onChange={(e) => setData('country', e.target.value)}
-                                className="w-full px-4 py-2 rounded-md bg-[#1e242b] text-white placeholder-gray-400 focus:outline-none focus:ring-2"
-                                placeholder="Enter Country"
-                            />
-                            {errors.country && <p className="text-red-500 text-sm mt-1">{errors.country}</p>}
-                        </div>
-
-                        {/* Description */}
-                        <div>
+                        {/* Description (Full Width) */}
+                        <div className="mb-6">
                             <label className="block text-white font-medium mb-2">Description</label>
                             <textarea
                                 value={data.description}
                                 onChange={(e) => setData('description', e.target.value)}
-                                className="w-full px-4 py-2 rounded-md bg-[#1e242b] text-white placeholder-gray-400 focus:outline-none focus:ring-2"
+                                className="w-full px-4 py-2 rounded-md bg-[#1e242b] text-white placeholder-gray-400 border border-[#232a32] focus:outline-none focus:ring-2 focus:ring-[#ff5252] min-h-[100px]"
                                 placeholder="Enter Description"
                             />
                             {errors.description && <p className="text-red-500 text-sm mt-1">{errors.description}</p>}
                         </div>
 
-                        {/* Social Links */}
-                        <div>
-                            <label className="block text-white font-medium mb-2">Facebook Link</label>
-                            <input
-                                type="text"
-                                value={data.facebook_link}
-                                onChange={(e) => setData('facebook_link', e.target.value)}
-                                className="w-full px-4 py-2 rounded-md bg-[#1e242b] text-white placeholder-gray-400 focus:outline-none focus:ring-2"
-                                placeholder="Enter Facebook Link"
-                            />
-                            {errors.facebook_link && <p className="text-red-500 text-sm mt-1">{errors.facebook_link}</p>}
-                        </div>
+                        {/* Grid for Social Links */}
+                        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+                            <div>
+                                <label className="block text-white font-medium mb-2">Facebook Link</label>
+                                <input
+                                    type="text"
+                                    value={data.facebook_link}
+                                    onChange={(e) => setData('facebook_link', e.target.value)}
+                                    className="w-full px-4 py-2 rounded-md bg-[#1e242b] text-white placeholder-gray-400 border border-[#232a32] focus:outline-none focus:ring-2 focus:ring-[#ff5252]"
+                                    placeholder="Enter Facebook Link"
+                                />
+                                {errors.facebook_link && <p className="text-red-500 text-sm mt-1">{errors.facebook_link}</p>}
+                            </div>
 
-                        <div>
-                            <label className="block text-white font-medium mb-2">Instagram Link</label>
-                            <input
-                                type="text"
-                                value={data.instagram_link}
-                                onChange={(e) => setData('instagram_link', e.target.value)}
-                                className="w-full px-4 py-2 rounded-md bg-[#1e242b] text-white placeholder-gray-400 focus:outline-none focus:ring-2"
-                                placeholder="Enter Instagram Link"
-                            />
-                            {errors.instagram_link && <p className="text-red-500 text-sm mt-1">{errors.instagram_link}</p>}
-                        </div>
+                            <div>
+                                <label className="block text-white font-medium mb-2">Instagram Link</label>
+                                <input
+                                    type="text"
+                                    value={data.instagram_link}
+                                    onChange={(e) => setData('instagram_link', e.target.value)}
+                                    className="w-full px-4 py-2 rounded-md bg-[#1e242b] text-white placeholder-gray-400 border border-[#232a32] focus:outline-none focus:ring-2 focus:ring-[#ff5252]"
+                                    placeholder="Enter Instagram Link"
+                                />
+                                {errors.instagram_link && <p className="text-red-500 text-sm mt-1">{errors.instagram_link}</p>}
+                            </div>
 
-                        <div>
-                            <label className="block text-white font-medium mb-2">Wikipedia Link</label>
-                            <input
-                                type="text"
-                                value={data.wikipedia_link}
-                                onChange={(e) => setData('wikipedia_link', e.target.value)}
-                                className="w-full px-4 py-2 rounded-md bg-[#1e242b] text-white placeholder-gray-400 focus:outline-none focus:ring-2"
-                                placeholder="Enter Wikipedia Link"
-                            />
-                            {errors.wikipedia_link && <p className="text-red-500 text-sm mt-1">{errors.wikipedia_link}</p>}
-                        </div>
+                            <div>
+                                <label className="block text-white font-medium mb-2">Wikipedia Link</label>
+                                <input
+                                    type="text"
+                                    value={data.wikipedia_link}
+                                    onChange={(e) => setData('wikipedia_link', e.target.value)}
+                                    className="w-full px-4 py-2 rounded-md bg-[#1e242b] text-white placeholder-gray-400 border border-[#232a32] focus:outline-none focus:ring-2 focus:ring-[#ff5252]"
+                                    placeholder="Enter Wikipedia Link"
+                                />
+                                {errors.wikipedia_link && <p className="text-red-500 text-sm mt-1">{errors.wikipedia_link}</p>}
+                            </div>
 
-                        <div>
-                            <label className="block text-white font-medium mb-2">Webpage Link</label>
-                            <input
-                                type="text"
-                                value={data.webpage_link}
-                                onChange={(e) => setData('webpage_link', e.target.value)}
-                                className="w-full px-4 py-2 rounded-md bg-[#1e242b] text-white placeholder-gray-400 focus:outline-none focus:ring-2"
-                                placeholder="Enter Webpage Link"
-                            />
-                            {errors.webpage_link && <p className="text-red-500 text-sm mt-1">{errors.webpage_link}</p>}
-                        </div>
+                            <div>
+                                <label className="block text-white font-medium mb-2">Webpage Link</label>
+                                <input
+                                    type="text"
+                                    value={data.webpage_link}
+                                    onChange={(e) => setData('webpage_link', e.target.value)}
+                                    className="w-full px-4 py-2 rounded-md bg-[#1e242b] text-white placeholder-gray-400 border border-[#232a32] focus:outline-none focus:ring-2 focus:ring-[#ff5252]"
+                                    placeholder="Enter Webpage Link"
+                                />
+                                {errors.webpage_link && <p className="text-red-500 text-sm mt-1">{errors.webpage_link}</p>}
+                            </div>
 
-                        <div>
-                            <label className="block text-white font-medium mb-2">YouTube Link</label>
-                            <input
-                                type="text"
-                                value={data.youtube_link}
-                                onChange={(e) => setData('youtube_link', e.target.value)}
-                                className="w-full px-4 py-2 rounded-md bg-[#1e242b] text-white placeholder-gray-400 focus:outline-none focus:ring-2"
-                                placeholder="Enter YouTube Link"
-                            />
-                            {errors.youtube_link && <p className="text-red-500 text-sm mt-1">{errors.youtube_link}</p>}
+                            <div>
+                                <label className="block text-white font-medium mb-2">YouTube Link</label>
+                                <input
+                                    type="text"
+                                    value={data.youtube_link}
+                                    onChange={(e) => setData('youtube_link', e.target.value)}
+                                    className="w-full px-4 py-2 rounded-md bg-[#1e242b] text-white placeholder-gray-400 border border-[#232a32] focus:outline-none focus:ring-2 focus:ring-[#ff5252]"
+                                    placeholder="Enter YouTube Link"
+                                />
+                                {errors.youtube_link && <p className="text-red-500 text-sm mt-1">{errors.youtube_link}</p>}
+                            </div>
                         </div>
 
                         {/* Active Status */}
-                        <div className="mb-4 flex items-center">
+                        <div className="mb-6 flex items-center">
                             <input
                                 type="checkbox"
                                 checked={data.is_active}
                                 onChange={(e) => setData('is_active', e.target.checked)}
-                                className="mr-2"
+                                className="mr-2 h-5 w-5 text-[#ff5252] border-[#232a32] focus:ring-[#ff5252]"
                             />
                             <label className="text-white">Is Active</label>
-                            {errors.is_active && <p className="text-red-500 text-sm mt-1">{errors.is_active}</p>}
+                            {errors.is_active && <p className="text-red-500 text-sm ml-2">{errors.is_active}</p>}
                         </div>
 
-                        {/* Single Image Upload */}
-                        <div>
+                        {/* Single Image Upload (Full Width) */}
+                        <div className="mb-6">
                             <label className="block text-white font-medium mb-2">Band Member Image</label>
                             <ImageUpload
                                 initialImage={existingImage}
@@ -260,7 +261,6 @@ export default function Edit() {
                                     setData('band_member_image', null);
                                     setData('remove_image', true);
                                 }}
-
                                 cropWidth={340}
                                 cropHeight={450}
                             />
@@ -269,8 +269,8 @@ export default function Edit() {
                             )}
                         </div>
 
-                        {/* Multiple Image Upload */}
-                        <div>
+                        {/* Multiple Image Upload (Full Width) */}
+                        <div className="mb-6">
                             <label className="block text-white font-medium mb-2">Gallery Images</label>
                             <MultipleImageUpload
                                 onChange={handleMultipleImages}
@@ -284,17 +284,14 @@ export default function Edit() {
                         </div>
 
                         {/* Submit Button */}
-                        <div className="mt-6">
-
-                            <PrimaryButton
-                                variant="danger"
-                                type="submit"
-                                disabled={processing}
-                                className="p-0 mt-4 !bg-[#ff5252]"
-                            >
-                                {processing ? 'Updating...' : 'Update Band Member'}
-                            </PrimaryButton>
-                        </div>
+                        <PrimaryButton
+                            variant="danger"
+                            type="submit"
+                            disabled={processing}
+                            className="p-0 w-48 text-center !bg-[#ff5252] hover:!bg-[#ff6161]"
+                        >
+                            {processing ? 'Updating...' : 'Update Band Member'}
+                        </PrimaryButton>
                     </form>
                 </div>
             </div>
