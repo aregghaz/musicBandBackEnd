@@ -175,7 +175,8 @@ export default function Create() {
 
                     {/* Single Image Upload (Full Width) */}
                     <div className="mb-6">
-                        <label className="block text-white font-medium mb-2">Band Member Image</label>
+                        <label className="block text-white font-medium mb-2">Band Member Image </label>
+                        <small className='block mb-4'>recommended size 340 x 450 </small>
                         <ImageUpload
                             onChange={file => setData('band_member_image', file)}
                             initialImage={null}
@@ -190,6 +191,7 @@ export default function Create() {
                     {/* Multiple Image Upload (Full Width) */}
                     <div className="mb-6">
                         <label className="block text-white font-medium mb-2">Gallery Images</label>
+                        <small className='block mb-4'>recommended size 300 x 300 </small>
                         <MultipleImageUpload
                             onChange={handleMultipleImages}
                             cropHeight={300}

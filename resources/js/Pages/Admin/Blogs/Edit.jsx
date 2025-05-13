@@ -1,7 +1,7 @@
 import { useForm, usePage, router } from "@inertiajs/react";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.jsx";
 import ImageUpload from "@/Components/ImageUpload.jsx";
-import { useState } from "react";
+import React, { useState } from "react";
 
 export default function Edit() {
     const { blog, csrf_token } = usePage().props;
@@ -65,6 +65,7 @@ export default function Edit() {
                         </div>
 
                         <div>
+                            <small className='block mb-4'>recommended size 540 x 450 </small>
                             <ImageUpload
                                 initialImage={existingImage}
                                 onChange={(file) => {

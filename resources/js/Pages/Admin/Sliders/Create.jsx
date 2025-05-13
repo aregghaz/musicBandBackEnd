@@ -73,6 +73,7 @@ export default function SliderCreate() {
                     <div>
                         <label htmlFor="slider_image" className="block text-white">Image</label>
 
+                        <small className='block mb-4'>recommended size 1600 x 800 </small>
                         <ImageUpload
                             onChange={file => setData('slider_image', file)}
                             initialImage={null}
@@ -86,6 +87,7 @@ export default function SliderCreate() {
                     <div>
                         <label htmlFor="slider_image_mob" className="block text-white">Slider Mobile Image</label>
 
+                        <small className='block mb-4'>recommended size 472 x 500 </small>
                         <ImageUpload
                             initialImage={null}
                             onChange={(file) => {

@@ -1,4 +1,4 @@
-import {useState, useEffect} from 'react';
+import React, {useState, useEffect} from 'react';
 import {usePage, router} from '@inertiajs/react';
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.jsx";
 import PrimaryButton from "@/Components/PrimaryButton.jsx";
@@ -94,6 +94,7 @@ export default function GalleryIndex() {
                 </div>
 
                 <div className="flex flex-col gap-4">
+                    <small className='block'>recommended size 340 x 450 </small>
                     <MultipleImageUpload
                         initialImages={newImages}
 

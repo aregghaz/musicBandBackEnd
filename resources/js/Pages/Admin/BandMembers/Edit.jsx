@@ -246,7 +246,8 @@ export default function Edit() {
 
                         {/* Single Image Upload (Full Width) */}
                         <div className="mb-6">
-                            <label className="block text-white font-medium mb-2">Band Member Image</label>
+                            <label className="block text-white font-medium">Band Member Image </label>
+                            <small className='block mb-4'>recommended size 340 x 450 </small>
                             <ImageUpload
                                 initialImage={existingImage}
                                 onChange={(file) => {
@@ -272,6 +273,7 @@ export default function Edit() {
                         {/* Multiple Image Upload (Full Width) */}
                         <div className="mb-6">
                             <label className="block text-white font-medium mb-2">Gallery Images</label>
+                            <small className='block mb-4'>recommended size 300 x 300 </small>
                             <MultipleImageUpload
                                 onChange={handleMultipleImages}
                                 initialImages={data.band_member_images}
