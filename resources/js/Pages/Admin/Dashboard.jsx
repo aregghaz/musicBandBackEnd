@@ -9,7 +9,8 @@ const navItems = [
     { label: 'Manage Contacts', route: 'contacts.showForm' },
     { label: 'Manage Settings', route: 'settings.index' },
     { label: 'Manage Sliders', route: 'sliders.index' },
-    { label: 'Pre Sale Tours', route: 'upcoming-tour-sections.index' },
+    //  TODO: not need yet , delete in future if will not need
+    // { label: 'Pre Sale Tours', route: 'upcoming-tour-sections.index' },
     { label: 'Gallery', route: 'gallery.index' },
     { label: 'Latest Album', route: 'latest-album.index' },
 ];

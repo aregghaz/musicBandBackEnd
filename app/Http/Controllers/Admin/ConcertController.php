@@ -29,8 +29,8 @@ class ConcertController extends Controller
             'concert_place' => 'required|string',
             'concert_date' => 'required|date',
             'type' => 'required|string',
-             // TODO: temporary
             'concert_image' => 'nullable|string',
+            'buy_ticket_link' => 'nullable|url', // Added validation for buy_ticket_link
         ]);
 
         Concert::create($validatedData);
@@ -52,8 +52,8 @@ class ConcertController extends Controller
             'concert_place' => 'sometimes|string',
             'concert_date' => 'sometimes|date',
             'type' => 'sometimes|string',
-            // TODO: temporary
             'concert_image' => 'nullable|string',
+            'buy_ticket_link' => 'nullable|url', // Added validation for buy_ticket_link
         ]);
 
         $concert->update($validatedData);

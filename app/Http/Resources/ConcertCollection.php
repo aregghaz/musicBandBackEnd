@@ -21,6 +21,7 @@ class ConcertCollection extends ResourceCollection
                 'concertCity' => $concert->concert_city,
                 'concertPlace' => $concert->concert_place,
                 'concertDate' => $concert->concert_date,
+                'buyTicketLink' => $concert->buy_ticket_link,
                 'type' => $concert->type,
                 'concertImage' => $concert->concert_image,
                 'createdAt' => $concert->created_at->toIso8601String(),

@@ -11,13 +11,14 @@ const ManageContacts = ({ contacts }) => {
         email: contacts?.Booking?.email || '',
     });
 
-    const pressForm = useForm({
-        type: "Press",
-        name: contacts?.Press?.name || '',
-        surname: contacts?.Press?.surname || '',
-        phone: contacts?.Press?.phone || '',
-        email: contacts?.Press?.email || '',
-    });
+    // TODO: no need yet, remove in future if not will need
+    // const pressForm = useForm({
+    //     type: "Press",
+    //     name: contacts?.Press?.name || '',
+    //     surname: contacts?.Press?.surname || '',
+    //     phone: contacts?.Press?.phone || '',
+    //     email: contacts?.Press?.email || '',
+    // });
 
     const infoForm = useForm({
         type: "Info",
@@ -74,7 +75,7 @@ const ManageContacts = ({ contacts }) => {
             <div className="mx-auto mt-8 p-6">
                 <h1 className="text-3xl font-bold mb-6 text-white">Manage Contacts</h1>
                 {renderForm('Booking', bookingForm)}
-                {renderForm('Press', pressForm)}
+                {/*{renderForm('Press', pressForm)}*/}
                 {renderForm('Info', infoForm)}
             </div>
         </AuthenticatedLayout>

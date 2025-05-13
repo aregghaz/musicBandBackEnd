@@ -1,33 +1,31 @@
-import { useForm } from "@inertiajs/react";
+import { Link, useForm } from "@inertiajs/react";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.jsx";
 import PrimaryButton from "@/Components/PrimaryButton.jsx";
 import React from "react";
 
 export default function Edit({ concert }) {
-    const { data, setData, patch, processing, errors } = useForm({
+    const { data, setData, put, processing, errors } = useForm({
         concert_city: concert.concert_city,
         concert_place: concert.concert_place,
         concert_date: concert.concert_date,
-        type: concert.type, // Ensure the current concert type is selected
+        type: concert.type,
         concert_image: concert.concert_image,
+        buy_ticket_link: concert.buy_ticket_link,
     });
 
-    // Define concert types for the dropdown
     const concertTypes = [
         { id: 1, label: 'American', value: 1 },
         { id: 2, label: 'Armenian', value: 2 },
     ];
 
-    // Handle form submission
     function submit(e) {
         e.preventDefault();
         patch(`/admin/concerts/${concert.id}`);
     }
 
     return (
-        <AuthenticatedLayout
-        >
-            <div className="p-6 bg-[#1e242b] min-h-screen">
+        <AuthenticatedLayout>
+            <div className="p-6 bg-[#1e242b]">
                 <h1 className="text-2xl font-bold mb-4 text-white">Edit Concert</h1>
                 <form onSubmit={submit}>
                     {/* City input */}
@@ -37,8 +35,11 @@ export default function Edit({ concert }) {
                             value={data.concert_city}
                             onChange={e => setData("concert_city", e.target.value)}
                             placeholder="City"
-                            className="w-full px-4 py-2 border rounded-md bg-[#1e242b] text-white placeholder-gray-400 focus:outline-none focus:ring-2"
+                            className="w-full px-4 py-2 rounded-md bg-[#1e242b] text-white placeholder-gray-400 focus:outline-none focus:ring-2"
                         />
+                        {errors.concert_city && (
+                            <span className="text-red-500 text-sm">{errors.concert_city}</span>
+                        )}
                     </div>
 
                     {/* Place input */}
@@ -48,8 +49,11 @@ export default function Edit({ concert }) {
                             value={data.concert_place}
                             onChange={e => setData("concert_place", e.target.value)}
                             placeholder="Place"
-                            className="w-full px-4 py-2 border rounded-md bg-[#1e242b] text-white placeholder-gray-400 focus:outline-none focus:ring-2"
+                            className="w-full px-4 py-2 rounded-md bg-[#1e242b] text-white placeholder-gray-400 focus:outline-none focus:ring-2"
                         />
+                        {errors.concert_place && (
+                            <span className="text-red-500 text-sm">{errors.concert_place}</span>
+                        )}
                     </div>
 
                     {/* Date input */}
@@ -58,8 +62,11 @@ export default function Edit({ concert }) {
                             type="date"
                             value={data.concert_date}
                             onChange={e => setData("concert_date", e.target.value)}
-                            className="w-full px-4 py-2 border rounded-md bg-[#1e242b] text-white placeholder-gray-400 focus:outline-none focus:ring-2"
+                            className="w-full px-4 py-2 rounded-md bg-[#1e242b] text-white placeholder-gray-400 focus:outline-none focus:ring-2"
                         />
+                        {errors.concert_date && (
+                            <span className="text-red-500 text-sm">{errors.concert_date}</span>
+                        )}
                     </div>
 
                     {/* Type select */}
@@ -68,7 +75,7 @@ export default function Edit({ concert }) {
                             name="type"
                             value={data.type}
                             onChange={e => setData("type", e.target.value)}
-                            className="w-full px-4 py-2 border rounded-md bg-[#1e242b] text-white placeholder-gray-400 focus:outline-none focus:ring-2"
+                            className="w-full px-4 py-2 rounded-md bg-[#1e242b] text-white placeholder-gray-400 focus:outline-none focus:ring-2"
                         >
                             <option value="">Select Type</option>
                             {concertTypes.map(type => (
@@ -77,22 +84,27 @@ export default function Edit({ concert }) {
                                 </option>
                             ))}
                         </select>
+                        {errors.type && (
+                            <span className="text-red-500 text-sm">{errors.type}</span>
+                        )}
                     </div>
 
-                    {/* Image URL input */}
-                    {/*<div className="mb-4">*/}
-                    {/*    <input*/}
-                    {/*        type="text"*/}
-                    {/*        value={data.concert_image}*/}
-                    {/*        onChange={e => setData("concert_image", e.target.value)}*/}
-                    {/*        placeholder="Image URL"*/}
-                    {/*        className="w-full px-4 py-2 border rounded-md bg-[#1e242b] text-white placeholder-gray-400 focus:outline-none focus:ring-2"*/}
-                    {/*    />*/}
-                    {/*</div>*/}
+                    {/* Buy Ticket Link input */}
+                    <div className="mb-4">
+                        <input
+                            type="url"
+                            value={data.buy_ticket_link}
+                            onChange={e => setData("buy_ticket_link", e.target.value)}
+                            placeholder="Buy Ticket URL"
+                            className="w-full px-4 py-2 rounded-md bg-[#1e242b] text-white placeholder-gray-400 focus:outline-none focus:ring-2"
+                        />
+                        {errors.buy_ticket_link && (
+                            <span className="text-red-500 text-sm">{errors.buy_ticket_link}</span>
+                        )}
+                    </div>
 
                     {/* Submit Button */}
                     <div>
-
                         <PrimaryButton
                             variant="danger"
                             type="submit"

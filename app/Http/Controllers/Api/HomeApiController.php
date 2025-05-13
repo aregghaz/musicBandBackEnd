@@ -50,9 +50,13 @@ class HomeApiController extends Controller
         $concerts = Concert::all();
         $concertsData = new ConcertCollection($concerts);
 
-        $types = ['Booking', 'Press', 'Info'];
+        // $types = ['Booking', 'Press', 'Info'];
+        $types = ['Booking', 'Info'];
+        // $contacts = Contact::whereIn('type', $types)
+        // ->orderByRaw("FIELD(type, 'Booking', 'Press', 'Info')")
+        // ->get();
         $contacts = Contact::whereIn('type', $types)
-            ->orderByRaw("FIELD(type, 'Booking', 'Press', 'Info')")
+            ->orderByRaw("FIELD(type, 'Booking', 'Info')")
             ->get();
         $contactsData = new ContactCollection($contacts);
 
@@ -71,12 +75,12 @@ class HomeApiController extends Controller
 
 
         $upcomingTourSections = UpcomingTourSection::with('tours')->get();
-        $upcomingTourSectionsData = new UpcomingTourSectionCollection($upcomingTourSections);
+        // $upcomingTourSectionsData = new UpcomingTourSectionCollection($upcomingTourSections);
 
 
         $upcomingTourSection = UpcomingTourSection::with('tours')->first();
         $setting = Setting::first();
-        $upcomingTourSummaryData = new UpcomingTourSummaryCollection($upcomingTourSection, $setting);
+        // $upcomingTourSummaryData = new UpcomingTourSummaryCollection($upcomingTourSection, $setting);
 
 
         $homeData = [
@@ -89,8 +93,8 @@ class HomeApiController extends Controller
             'latestAlbum' => $latestAlbumData,
             'settings' => $settingsData,
             'sliders' => new SlidersCollection($sliders),
-            'upcomingTourSection' => $upcomingTourSectionsData,
-            'upcomingTourSummary' => $upcomingTourSummaryData,
+            // 'upcomingTourSection' => $upcomingTourSectionsData,
+            // 'upcomingTourSummary' => $upcomingTourSummaryData,
         ];
 
         return response()->json([

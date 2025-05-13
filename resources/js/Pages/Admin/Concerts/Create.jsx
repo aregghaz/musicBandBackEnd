@@ -1,21 +1,22 @@
-import {Link, useForm} from "@inertiajs/react";
+import { Link, useForm } from "@inertiajs/react";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.jsx";
 import PrimaryButton from "@/Components/PrimaryButton.jsx";
 import React from "react";
 
 export default function Create() {
-    const {data, setData, post, processing, errors} = useForm({
+    const { data, setData, post, processing, errors } = useForm({
         concert_city: "",
         concert_place: "",
         concert_date: "",
-        type: "", // Keep type as value
-        concert_image: "https://via.placeholder.com/150", // Default image URL
+        type: "",
+        concert_image: "https://via.placeholder.com/150",
+        buy_ticket_link: "", // Added new field
     });
 
     // Define concert types with label and value
     const concertTypes = [
-        {id: 1, label: 'American', value: 1},
-        {id: 2, label: 'Armenian', value: 2},
+        { id: 1, label: 'American', value: 1 },
+        { id: 2, label: 'Armenian', value: 2 },
     ];
 
     // Submit the form
@@ -36,8 +37,11 @@ export default function Create() {
                             value={data.concert_city}
                             onChange={e => setData("concert_city", e.target.value)}
                             placeholder="City"
-                            className="w-full px-4 py-2  rounded-md bg-[#1e242b] text-white placeholder-gray-400 focus:outline-none focus:ring-2"
+                            className="w-full px-4 py-2 rounded-md bg-[#1e242b] text-white placeholder-gray-400 focus:outline-none focus:ring-2"
                         />
+                        {errors.concert_city && (
+                            <span className="text-red-500 text-sm">{errors.concert_city}</span>
+                        )}
                     </div>
 
                     {/* Place input */}
@@ -47,8 +51,11 @@ export default function Create() {
                             value={data.concert_place}
                             onChange={e => setData("concert_place", e.target.value)}
                             placeholder="Place"
-                            className="w-full px-4 py-2  rounded-md bg-[#1e242b] text-white placeholder-gray-400 focus:outline-none focus:ring-2"
+                            className="w-full px-4 py-2 rounded-md bg-[#1e242b] text-white placeholder-gray-400 focus:outline-none focus:ring-2"
                         />
+                        {errors.concert_place && (
+                            <span className="text-red-500 text-sm">{errors.concert_place}</span>
+                        )}
                     </div>
 
                     {/* Date input */}
@@ -57,8 +64,11 @@ export default function Create() {
                             type="date"
                             value={data.concert_date}
                             onChange={e => setData("concert_date", e.target.value)}
-                            className="w-full px-4 py-2  rounded-md bg-[#1e242b] text-white placeholder-gray-400 focus:outline-none focus:ring-2"
+                            className="w-full px-4 py-2 rounded-md bg-[#1e242b] text-white placeholder-gray-400 focus:outline-none focus:ring-2"
                         />
+                        {errors.concert_date && (
+                            <span className="text-red-500 text-sm">{errors.concert_date}</span>
+                        )}
                     </div>
 
                     {/* Type select */}
@@ -67,7 +77,7 @@ export default function Create() {
                             name="type"
                             value={data.type}
                             onChange={e => setData("type", e.target.value)}
-                            className="w-full px-4 py-2  rounded-md bg-[#1e242b] text-white placeholder-gray-400 focus:outline-none focus:ring-2"
+                            className="w-full px-4 py-2 rounded-md bg-[#1e242b] text-white placeholder-gray-400 focus:outline-none focus:ring-2"
                         >
                             <option value="">Select Type</option>
                             {concertTypes.map(type => (
@@ -76,18 +86,24 @@ export default function Create() {
                                 </option>
                             ))}
                         </select>
+                        {errors.type && (
+                            <span className="text-red-500 text-sm">{errors.type}</span>
+                        )}
                     </div>
 
-                    {/* Image URL input */}
-                    {/*<div className="mb-4">*/}
-                    {/*    <input*/}
-                    {/*        type="text"*/}
-                    {/*        value={data.concert_image}*/}
-                    {/*        onChange={e => setData("concert_image", e.target.value)}*/}
-                    {/*        placeholder="Image URL"*/}
-                    {/*        className="w-full px-4 py-2  rounded-md bg-[#1e242b] text-white placeholder-gray-400 focus:outline-none focus:ring-2"*/}
-                    {/*    />*/}
-                    {/*</div>*/}
+                    {/* Buy Ticket Link input */}
+                    <div className="mb-4">
+                        <input
+                            type="url"
+                            value={data.buy_ticket_link}
+                            onChange={e => setData("buy_ticket_link", e.target.value)}
+                            placeholder="Buy Ticket URL"
+                            className="w-full px-4 py-2 rounded-md bg-[#1e242b] text-white placeholder-gray-400 focus:outline-none focus:ring-2"
+                        />
+                        {errors.buy_ticket_link && (
+                            <span className="text-red-500 text-sm">{errors.buy_ticket_link}</span>
+                        )}
+                    </div>
 
                     {/* Submit Button */}
                     <div>
