@@ -1,6 +1,7 @@
 import { useForm, router } from "@inertiajs/react";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.jsx";
 import ImageUpload from "@/Components/ImageUpload.jsx";
+import React from "react";
 
 export default function Create() {
     const { data, setData, errors, reset } = useForm({
@@ -52,6 +53,7 @@ export default function Create() {
                             </div>
 
                             <div>
+                                <small className='block mb-4'>recommended size 540 x 450 </small>
                                 <ImageUpload
                                     initialImage={null}
                                     onChange={(file) => setData("image", file)}

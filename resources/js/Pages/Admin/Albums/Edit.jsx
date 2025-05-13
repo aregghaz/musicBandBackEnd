@@ -107,6 +107,7 @@ export default function Edit({ album }) {
 
                         <div className="col-span-full">
                             <label className="block text-white mb-1">Album Image</label>
+                            <small className='block mb-4'>recommended size 730 x 400 </small>
                             <ImageUpload
                                 onChange={(file) => {
                                     setData('album_image', file);

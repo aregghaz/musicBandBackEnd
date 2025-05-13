@@ -100,6 +100,7 @@ export default function Create() {
 
                         <div className="col-span-full">
                             <label className="block text-white mb-1">Album Image</label>
+                            <small className='block mb-4'>recommended size 730 x 400 </small>
                             <ImageUpload
                                 onChange={(file) => {
                                     setData('album_image', file);
@@ -111,8 +112,8 @@ export default function Create() {
                                     setData('album_image', null);
                                     setData('remove_image', true);
                                 }}
-                                cropWidth={246}
-                                cropHeight={235}
+                                cropWidth={730}
+                                cropHeight={400}
                             />
                             {errors.album_image && (
                                 <div className="text-red-500 text-sm mt-1">{errors.album_image}</div>
