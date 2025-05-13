@@ -1,18 +1,13 @@
 import React from 'react';
 import { useForm } from '@inertiajs/react';
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.jsx";
+import PrimaryButton from "@/Components/PrimaryButton.jsx";
 
 const ManageSettings = ({ settings }) => {
-
     const presentationForm = useForm({
         section: 'presentation',
         title: settings?.title || '',
         description: settings?.description || '',
-        upcoming_date_from: settings?.upcoming_date_from || '',
-        upcoming_date_to: settings?.upcoming_date_to || '',
-        upcoming_location: settings?.upcoming_location || '',
-        upcoming_state: settings?.upcoming_state || '',
-        upcoming_country: settings?.upcoming_country || '',
     });
 
     const socialForm = useForm({
@@ -39,24 +34,28 @@ const ManageSettings = ({ settings }) => {
         <div className="bg-[#1e242b] p-6 shadow-md rounded-lg mb-6">
             <h2 className="text-xl font-semibold mb-4 text-white">{sectionTitle}</h2>
             <form onSubmit={(e) => handleSubmit(e, form.section, form)}>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div className="flex flex-col gap-4">
                     {fields.map((field) => {
-                        const isDate = ['upcoming_date_from', 'upcoming_date_to'].includes(field);
+
                         const isDisabled = disabledFields.includes(field);
+                        const isDescription = field === 'description';
+
                         return (
                             <div key={field}>
                                 <label className="block text-white capitalize">
                                     {field.replace(/_/g, ' ')}
                                 </label>
-                                {field === 'image' ? (
-                                    <input
-                                        type="file"
-                                        className="w-full p-2 border rounded-lg bg-[#1e242b] text-white placeholder-gray-400 focus:outline-none"
-                                        disabled={true}
+                                {isDescription ? (
+                                    <textarea
+                                        className="w-full p-2 border rounded-lg bg-[#1e242b] text-white placeholder-gray-400 focus:outline-none h-60 resize-y"
+                                        value={form.data[field]}
+                                        onChange={(e) => form.setData(field, e.target.value)}
+                                        disabled={isDisabled || form.processing}
+                                        placeholder="Enter description"
                                     />
                                 ) : (
                                     <input
-                                        type={isDate ? 'date' : 'text'}
+                                        type={'text'}
                                         className="w-full p-2 border rounded-lg bg-[#1e242b] text-white placeholder-gray-400 focus:outline-none"
                                         value={form.data[field]}
                                         onChange={(e) => form.setData(field, e.target.value)}
@@ -72,13 +71,13 @@ const ManageSettings = ({ settings }) => {
                         );
                     })}
                 </div>
-                <button
+                <PrimaryButton
                     type="submit"
-                    className="mt-4 w-50 bg-[#ff5252] text-white p-2 rounded-lg hover:bg-[#ff6161] disabled:bg-gray-400"
+                    className="mt-4 !bg-[#ff5252] text-white p-2 rounded-lg hover:!bg-[#ff6161] disabled:!bg-gray-400"
                     disabled={form.processing}
                 >
                     Save {sectionTitle}
-                </button>
+                </PrimaryButton>
             </form>
         </div>
     );
@@ -88,7 +87,7 @@ const ManageSettings = ({ settings }) => {
             <div className="mx-auto mt-8 p-6">
                 <h1 className="text-3xl font-bold mb-6 text-white">Manage Settings</h1>
                 {renderForm('About Section', presentationForm, [
-                    'title', 'description'
+                    'title', 'description',
                 ])}
                 {renderForm('Social Links', socialForm, [
                     'instagram_link', 'facebook_link', 'twitter_link',

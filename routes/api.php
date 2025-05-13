@@ -12,6 +12,7 @@ use App\Http\Controllers\Api\GalleryApiController;
 use App\Http\Controllers\Api\UpcomingTourSectionApiController;
 use App\Http\Controllers\Api\LatestAlbumApiController;
 use App\Http\Controllers\Api\HomeApiController;
+use App\Http\Controllers\Api\HomeSectionApiController;
 
 Route::get('/blogs', [BlogApiController::class, 'index']);
 Route::get('/blogs/{id}', [BlogApiController::class, 'show']);
@@ -27,6 +28,7 @@ Route::get('/tour-presale-summary', [UpcomingTourSectionApiController::class, 's
 Route::get('/gallery', [GalleryApiController::class, 'index']);
 Route::get('/latest-album', [LatestAlbumApiController::class, 'show']);
 Route::get('/home-data', [HomeApiController::class, 'index']);
+Route::get('/home-sections-manage', [HomeSectionApiController::class, 'index']);
 
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {

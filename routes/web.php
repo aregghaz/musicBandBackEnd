@@ -15,6 +15,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Admin\UpcomingTourSectionController;
 use App\Http\Controllers\Admin\GalleryController;
 use App\Http\Controllers\Admin\LatestAlbumController;
+use App\Http\Controllers\Admin\HomeSectionController;
 
 
 use Inertia\Inertia;
@@ -59,6 +60,7 @@ Route::middleware(['auth', 'admin'])->group(function () {
     Route::resource('admin/gallery', GalleryController::class);
     Route::get('admin/latest-album', [LatestAlbumController::class, 'index'])->name('latest-album.index');
     Route::post('admin/latest-album', [LatestAlbumController::class, 'storeOrUpdate'])->name('latest-album.storeOrUpdate');
+    Route::resource('admin/home-sections', HomeSectionController::class);
 
 });
 
