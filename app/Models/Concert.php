@@ -15,6 +15,7 @@ class Concert extends Model
         'concert_date',
         'type',
         'concert_image',
+        'buy_ticket_link',
     ];
 
     protected $dates = [

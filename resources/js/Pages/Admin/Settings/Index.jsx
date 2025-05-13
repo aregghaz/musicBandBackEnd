@@ -87,11 +87,8 @@ const ManageSettings = ({ settings }) => {
         <AuthenticatedLayout>
             <div className="mx-auto mt-8 p-6">
                 <h1 className="text-3xl font-bold mb-6 text-white">Manage Settings</h1>
-                {renderForm('Presentation Section', presentationForm, [
-                    'title', 'description',
-                    'upcoming_date_from', 'upcoming_date_to',
-                    'upcoming_location', 'upcoming_state', 'upcoming_country',
-                    'image', // Image field added here
+                {renderForm('About Section', presentationForm, [
+                    'title', 'description'
                 ])}
                 {renderForm('Social Links', socialForm, [
                     'instagram_link', 'facebook_link', 'twitter_link',
