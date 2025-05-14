@@ -28,6 +28,7 @@ export default function Edit() {
         webpage_link: bandMember.webpage_link || '',
         youtube_link: bandMember.youtube_link || '',
         is_active: bandMember.is_active || false,
+        order: bandMember.order || 0, // Added order field
     });
 
     const [existingImage, setExistingImage] = useState(bandMember.band_member_image);
@@ -48,6 +49,7 @@ export default function Edit() {
         formData.append('webpage_link', data.webpage_link);
         formData.append('youtube_link', data.youtube_link);
         formData.append('is_active', data.is_active ? '1' : '0');
+        formData.append('order', data.order.toString()); // Added order
 
         if (data.band_member_image) {
             formData.append('band_member_image', data.band_member_image);
@@ -71,10 +73,6 @@ export default function Edit() {
             }
         });
 
-        console.log('Submitting form:', {
-            band_member_images: data.band_member_images,
-        });
-
         router.post(`/admin/band-members/${bandMember.id}`, formData, {
             forceFormData: true,
         });
@@ -82,7 +80,6 @@ export default function Edit() {
 
     // Handle multiple images change
     const handleMultipleImages = (newImages) => {
-        console.log('handleMultipleImages:', { newImages });
         const updatedImages = newImages.map((img) => ({
             file: img instanceof File ? img : null,
             preview: img instanceof File ? URL.createObjectURL(img) : img,
@@ -106,7 +103,7 @@ export default function Edit() {
 
                 <div className="bg-[#1e242b] shadow-md rounded-lg p-6">
                     <form onSubmit={submit}>
-                        {/* Grid for Name, Last Name, Role, Country */}
+
                         <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
                             <div>
                                 <label className="block text-white font-medium mb-2">First Name</label>
@@ -154,6 +151,19 @@ export default function Edit() {
                                     placeholder="Enter Country"
                                 />
                                 {errors.country && <p className="text-red-500 text-sm mt-1">{errors.country}</p>}
+                            </div>
+
+                            <div>
+                                <label className="block text-white font-medium mb-2">Order</label>
+                                <input
+                                    type="number"
+                                    value={data.order}
+                                    onChange={(e) => setData('order', parseInt(e.target.value) || 0)}
+                                    className="w-full px-4 py-2 rounded-md bg-[#1e242b] text-white placeholder-gray-400 border border-[#232a32] focus:outline-none focus:ring-2 focus:ring-[#ff5252]"
+                                    placeholder="Enter Order"
+                                    min="0"
+                                />
+                                {errors.order && <p className="text-red-500 text-sm mt-1">{errors.order}</p>}
                             </div>
                         </div>
 
@@ -246,8 +256,8 @@ export default function Edit() {
 
                         {/* Single Image Upload (Full Width) */}
                         <div className="mb-6">
-                            <label className="block text-white font-medium">Band Member Image </label>
-                            <small className='block mb-4'>recommended size 340 x 450 </small>
+                            <label className="block text-white font-medium">Band Member Image</label>
+                            <small className='block mb-4'>recommended size 340 x 450</small>
                             <ImageUpload
                                 initialImage={existingImage}
                                 onChange={(file) => {
@@ -273,7 +283,7 @@ export default function Edit() {
                         {/* Multiple Image Upload (Full Width) */}
                         <div className="mb-6">
                             <label className="block text-white font-medium mb-2">Gallery Images</label>
-                            <small className='block mb-4'>recommended size 300 x 300 </small>
+                            <small className='block mb-4'>recommended size 300 x 300</small>
                             <MultipleImageUpload
                                 onChange={handleMultipleImages}
                                 initialImages={data.band_member_images}

@@ -1,6 +1,5 @@
 <?php
 
-
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\RedirectController;
 use App\Http\Controllers\Admin\BlogController;
@@ -10,24 +9,18 @@ use App\Http\Controllers\Admin\AlbumController;
 use App\Http\Controllers\Admin\ContactController;
 use App\Http\Controllers\Admin\SettingController;
 use App\Http\Controllers\Admin\SliderController;
-use Illuminate\Foundation\Application;
-use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Admin\UpcomingTourSectionController;
 use App\Http\Controllers\Admin\GalleryController;
 use App\Http\Controllers\Admin\LatestAlbumController;
 use App\Http\Controllers\Admin\HomeSectionController;
-
-
+use App\Models\Gallery;
+use App\Models\GalleryCategory;
+use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
-
 
 Route::get('/', [RedirectController::class, 'handleRedirect']);
 Route::get('/admin', [RedirectController::class, 'handleRedirect'])->name('admin');
 
-// Add locale prefix and middleware for all admin-related routes
-//Route::prefix('{locale}')->middleware(['locale'])->group(function () {
-
-// ✅ Protect Dashboard & Profile routes with auth middleware
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/admin/dashboard', fn() => Inertia::render('Admin/Dashboard'))->name('admin.dashboard');
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
@@ -35,7 +28,6 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
-// ✅ Admin Routes (Protected)
 Route::middleware(['auth', 'admin'])->group(function () {
     Route::get('/admin/blogs', [BlogController::class, 'index'])->name('blogs.index');
     Route::get('/admin/blogs/create', [BlogController::class, 'create'])->name('blogs.create');
@@ -58,14 +50,21 @@ Route::middleware(['auth', 'admin'])->group(function () {
     Route::resource('admin/sliders', SliderController::class);
     Route::resource('admin/upcoming-tour-sections', UpcomingTourSectionController::class);
     Route::resource('admin/gallery', GalleryController::class);
+    Route::delete('admin/gallery/image/{gallery}', [GalleryController::class, 'destroyImage'])->name('gallery.image.destroy');
     Route::get('admin/latest-album', [LatestAlbumController::class, 'index'])->name('latest-album.index');
     Route::post('admin/latest-album', [LatestAlbumController::class, 'storeOrUpdate'])->name('latest-album.storeOrUpdate');
     Route::resource('admin/home-sections', HomeSectionController::class);
-
 });
 
+Route::bind('gallery', function ($value) {
+    return GalleryCategory::findOrFail($value);
+});
 
-//});
+Route::bind('gallery', function ($value, $route) {
+    if ($route->getName() === 'gallery.image.destroy') {
+        return Gallery::findOrFail($value);
+    }
+    return GalleryCategory::findOrFail($value);
+});
 
-// Ensure auth routes are included
 require __DIR__ . '/auth.php';

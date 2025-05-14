@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\GalleryCategory;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\BlogApiController;
@@ -25,21 +26,17 @@ Route::get('/contacts', [ContactApiController::class, 'index']);
 Route::get('/settings', [SettingsApiController::class, 'getAllSettings']);
 Route::get('/tour-presale-dates', [UpcomingTourSectionApiController::class, 'index']);
 Route::get('/tour-presale-summary', [UpcomingTourSectionApiController::class, 'summary']);
-Route::get('/gallery', [GalleryApiController::class, 'index']);
+Route::get('/gallery/categories', [GalleryApiController::class, 'index']);
+Route::get('/gallery/categories/{category}', [GalleryApiController::class, 'show']);
 Route::get('/latest-album', [LatestAlbumApiController::class, 'show']);
 Route::get('/home-data', [HomeApiController::class, 'index']);
 Route::get('/home-sections-manage', [HomeSectionApiController::class, 'index']);
-
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-
-
-
-
-
-
-
-
+// Bind 'category' to GalleryCategory
+Route::bind('category', function ($value) {
+    return GalleryCategory::findOrFail($value);
+});

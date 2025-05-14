@@ -1,114 +1,67 @@
-import React, {useState, useEffect} from 'react';
-import {usePage, router} from '@inertiajs/react';
-import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.jsx";
-import PrimaryButton from "@/Components/PrimaryButton.jsx";
-import MultipleImageUpload from "@/Components/MultipleImageUpload.jsx";
+import { usePage, Link, router } from '@inertiajs/react';
+import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.jsx';
+import PrimaryButton from '@/Components/PrimaryButton.jsx';
 
 export default function GalleryIndex() {
-    const {galleries} = usePage().props;
-    const [newImages, setNewImages] = useState([]);
-
-
-    const serverImages = galleries.map(item => ({
-        preview: `/storage/${item.gallery_image}`,
-        id: item.id
-    }));
-
-
-    const handleImageChange = (files) => {
-        const updatedImages = files.map(file => ({
-            file,
-            preview: URL.createObjectURL(file)
-        }));
-        setNewImages(updatedImages);
-    };
+    const { categories } = usePage().props;
 
     const handleDelete = (id) => {
-        if (confirm('Are you sure you want to delete this image?')) {
+        if (confirm('Are you sure you want to delete this category and all its images?')) {
             router.delete(route('gallery.destroy', id));
         }
     };
 
-    const handleSave = (e) => {
-        e.preventDefault();
-        console.log('Saving images:', newImages);
-        if (newImages.length === 0) {
-            alert('No images selected.');
-            return;
-        }
-
-        const formData = new FormData();
-        newImages.forEach(image => formData.append('gallery_images[]', image.file));
-
-        router.post(route('gallery.store'), formData, {
-            forceFormData: true,
-            onSuccess: () => {
-                setNewImages([]);
-            }
-        });
-    };
-
-    useEffect(() => {
-        return () => {
-            newImages.forEach(image => URL.revokeObjectURL(image.preview));
-        };
-    }, [newImages]);
-
     return (
-        <AuthenticatedLayout>
-            <div className="py-6 px-4 lg:px-8 bg-[#13181d] min-h-screen">
-                <h2 className="text-2xl mb-4 text-white">Gallery</h2>
+        <AuthenticatedLayout
+        >
+            <div className="p-6 bg-[#1e242b] min-h-screen">
+                <h1 className="text-2xl font-bold mb-4 text-white">Gallery Folders</h1>
 
-                <div className="mb-6 grid grid-cols-2 md:grid-cols-4 gap-4">
-                    {serverImages.map(item => (
-                        <div
-                            key={item.id}
-                            className="relative w-full h-80 bg-[#222] rounded overflow-hidden flex items-center justify-center shadow"
-                        >
-                            <img
-                                src={item.preview}
-                                alt=""
-                                className="w-full h-full object-cover"
-                            />
-                            <button
-                                onClick={() => handleDelete(item.id)}
-                                className="absolute top-1 right-1 bg-red-600 text-white rounded-full p-1"
-                            >
-                                ✕
-                            </button>
-                        </div>
-                    ))}
-
-                    {/*{newImages.map((image, index) => (*/}
-                    {/*    <div*/}
-                    {/*        key={`${image.preview}-${index}`}*/}
-                    {/*        className="relative w-full h-80 bg-[#222] rounded overflow-hidden flex items-center justify-center shadow"*/}
-                    {/*    >*/}
-                    {/*        <img*/}
-                    {/*            src={image.preview}*/}
-                    {/*            alt=""*/}
-                    {/*            className="w-full h-full object-cover"*/}
-                    {/*        />*/}
-                    {/*    </div>*/}
-                    {/*))}*/}
+                <div className="mb-6 flex justify-between items-center">
+                    <Link
+                        href={route('gallery.create')}
+                        className="bg-[#ff5252] text-white px-6 py-2 rounded-lg shadow-md hover:bg-[#ff6161] transition duration-300"
+                    >
+                        + Add Gallery Folder
+                    </Link>
                 </div>
 
-                <div className="flex flex-col gap-4">
-                    <small className='block'>recommended size 340 x 450 </small>
-                    <MultipleImageUpload
-                        initialImages={newImages}
-
-                        onChange={handleImageChange}
-                        cropWidth={340}
-                        cropHeight={450}
-                    />
-                    <PrimaryButton
-                        variant="danger"
-                        onClick={handleSave}
-                        className="p-0 w-28 text-center !bg-[#ff5252]"
-                    >
-                        Save
-                    </PrimaryButton>
+                <div className="overflow-x-auto bg-[#232a32] shadow-lg rounded-lg">
+                    <table className="w-full text-left border-collapse">
+                        <thead className="text-white bg-[#232a32]">
+                        <tr>
+                            <th className="px-4 py-3 border-b">Folder Name</th>
+                            <th className="px-4 py-3 border-b">Actions</th>
+                        </tr>
+                        </thead>
+                        <tbody className="text-white">
+                        {categories.map((category) => (
+                            <tr
+                                key={category.id}
+                                className="hover:bg-[#2a2f37] transition-colors"
+                            >
+                                <td className="px-4 py-3 border-b">{category.folder_name}</td>
+                                <td className="px-4 py-3 border-b flex space-x-4">
+                                    <Link href={route('gallery.edit', category.id)}>
+                                        <PrimaryButton
+                                            variant="danger"
+                                            className="p-0 bg-indigo-600"
+                                        >
+                                            Edit
+                                        </PrimaryButton>
+                                    </Link>
+                                    <PrimaryButton
+                                        variant="danger"
+                                        onClick={() => handleDelete(category.id)}
+                                        className="p-0 !bg-[#ff5252]"
+                                    >
+                                        Delete
+                                    </PrimaryButton>
+                                </td>
+                            </tr>
+                        ))}
+                        </tbody>
+                    </table>
                 </div>
             </div>
         </AuthenticatedLayout>
