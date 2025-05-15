@@ -22,6 +22,12 @@ class SlidersCollection extends ResourceCollection
                 'sliderImage' => $slider->slider_image,
                 'sliderImageMob' => $slider->slider_image_mob,
                 'sliderVideoLink' => $slider->slider_video_link,
+                'sliderTitleColor'=> $slider->slider_title_color,
+                'sliderTitleSize' => $slider->slider_title_size,
+                'sliderShortDescColor'=> $slider->slider_short_desc_color,
+                'sliderShortDescSize'=> $slider->slider_short_desc_size,
+                'sliderTitleSizeMobile'=> $slider->slider_title_size_mobile,
+                'sliderShortDescSizeMobile'=> $slider->slider_short_desc_size_mobile,
             ];
         })->toArray();
     }

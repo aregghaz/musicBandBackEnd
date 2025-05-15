@@ -8,7 +8,7 @@ use App\Http\Resources\BandMemberCollection;
 use App\Http\Resources\BlogCollection;
 use App\Http\Resources\ConcertCollection;
 use App\Http\Resources\ContactCollection;
-use App\Http\Resources\GalleryCollection;
+use App\Http\Resources\GalleryCategoryCollection;
 use App\Http\Resources\LatestAlbumCollection;
 use App\Http\Resources\SettingsCollection;
 use App\Http\Resources\SlidersCollection;
@@ -20,6 +20,7 @@ use App\Models\Blog;
 use App\Models\Concert;
 use App\Models\Contact;
 use App\Models\Gallery;
+use App\Models\GalleryCategory;
 use App\Models\LatestAlbum;
 use App\Models\Setting;
 use App\Models\Slider;
@@ -61,8 +62,8 @@ class HomeApiController extends Controller
         $contactsData = new ContactCollection($contacts);
 
 
-        $galleries = Gallery::orderBy('created_at', 'desc')->get();
-        $galleriesData = new GalleryCollection($galleries);
+        $galleries = GalleryCategory::select('id', 'folder_name')->get();
+        $galleriesData = new GalleryCategoryCollection($galleries);
 
 
         $latestAlbum = LatestAlbum::with('songs')->first();
@@ -75,12 +76,12 @@ class HomeApiController extends Controller
 
 
         $upcomingTourSections = UpcomingTourSection::with('tours')->get();
-        // $upcomingTourSectionsData = new UpcomingTourSectionCollection($upcomingTourSections);
+        $upcomingTourSectionsData = new UpcomingTourSectionCollection($upcomingTourSections);
 
 
         $upcomingTourSection = UpcomingTourSection::with('tours')->first();
         $setting = Setting::first();
-        // $upcomingTourSummaryData = new UpcomingTourSummaryCollection($upcomingTourSection, $setting);
+        $upcomingTourSummaryData = new UpcomingTourSummaryCollection($upcomingTourSection, $setting);
 
 
         $homeData = [
@@ -93,8 +94,8 @@ class HomeApiController extends Controller
             'latestAlbum' => $latestAlbumData,
             'settings' => $settingsData,
             'sliders' => new SlidersCollection($sliders),
-            // 'upcomingTourSection' => $upcomingTourSectionsData,
-            // 'upcomingTourSummary' => $upcomingTourSummaryData,
+            'upcomingTourSection' => $upcomingTourSectionsData,
+            'upcomingTourSummary' => $upcomingTourSummaryData,
         ];
 
         return response()->json([

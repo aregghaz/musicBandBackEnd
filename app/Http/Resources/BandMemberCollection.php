@@ -26,6 +26,7 @@ class BandMemberCollection extends ResourceCollection
                 'wikipediaLink' => $bandMember->wikipedia_link,
                 'webpageLink' => $bandMember->webpage_link,
                 'youtubeLink' => $bandMember->youtube_link,
+                'order' => $bandMember->order,
                 'isActive' => (bool) $bandMember->is_active,
                 'memberImages' => is_array($bandMember->band_member_images) ? $bandMember->band_member_images : [],
                 'createdAt' => $bandMember->created_at,

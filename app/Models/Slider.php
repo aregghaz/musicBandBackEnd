@@ -15,5 +15,11 @@ class Slider extends Model
         'slider_video_link',
         'slider_image',
         'slider_image_mob',
+        'slider_title_color',
+        'slider_title_size',
+        'slider_short_desc_color',
+        'slider_short_desc_size',
+        'slider_title_size_mobile',
+        'slider_short_desc_size_mobile',
     ];
 }

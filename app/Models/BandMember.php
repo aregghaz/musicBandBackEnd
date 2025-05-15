@@ -20,6 +20,7 @@ class BandMember extends Model
         'webpage_link',
         'youtube_link',
         'is_active',
+        'order',
     ];
 
     protected $casts = [

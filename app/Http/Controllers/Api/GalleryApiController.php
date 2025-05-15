@@ -3,16 +3,21 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
-use App\Http\Resources\GalleryCollection;
-use App\Models\Gallery;
-
+use App\Http\Resources\GalleryCategoryCollection;
+use App\Http\Resources\GalleryCategoryResource;
+use App\Models\GalleryCategory;
 
 class GalleryApiController extends Controller
 {
     public function index()
     {
-        $galleries = Gallery::orderBy('created_at', 'desc')->get();
+        $categories = GalleryCategory::select('id', 'folder_name')->get();
+        return new GalleryCategoryCollection($categories);
+    }
 
-        return new GalleryCollection($galleries);
+    public function show(GalleryCategory $category)
+    {
+        $category->load('galleries');
+        return new GalleryCategoryResource($category);
     }
 }

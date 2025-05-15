@@ -20,6 +20,7 @@ export default function Create() {
         is_active: false,
         band_member_image: null,
         band_member_images: [],
+        order: 0,
     });
 
     function submit(e) {
@@ -45,7 +46,6 @@ export default function Create() {
             <div className="p-6 bg-[#1e242b]">
                 <h1 className="text-2xl font-bold mb-6 text-white">Create Band Member</h1>
                 <form onSubmit={submit}>
-                    {/* Grid for Name, Last Name, Role, Country */}
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
                         <div>
                             <input
@@ -89,6 +89,18 @@ export default function Create() {
                                 className="w-full px-4 py-2 rounded-md bg-[#1e242b] text-white placeholder-gray-400 border border-[#232a32] focus:outline-none focus:ring-2 focus:ring-[#ff5252]"
                             />
                             {errors.country && <div className="text-red-500 text-sm mt-1">{errors.country}</div>}
+                        </div>
+
+                        <div>
+                            <input
+                                type="number"
+                                value={data.order}
+                                onChange={e => setData('order', parseInt(e.target.value) || 0)}
+                                placeholder="Order"
+                                min="0"
+                                className="w-full px-4 py-2 rounded-md bg-[#1e242b] text-white placeholder-gray-400 border border-[#232a32] focus:outline-none focus:ring-2 focus:ring-[#ff5252]"
+                            />
+                            {errors.order && <div className="text-red-500 text-sm mt-1">{errors.order}</div>}
                         </div>
                     </div>
 
@@ -175,8 +187,8 @@ export default function Create() {
 
                     {/* Single Image Upload (Full Width) */}
                     <div className="mb-6">
-                        <label className="block text-white font-medium mb-2">Band Member Image </label>
-                        <small className='block mb-4'>recommended size 340 x 450 </small>
+                        <label className="block text-white font-medium mb-2">Band Member Image</label>
+                        <small className='block mb-4'>recommended size 340 x 450</small>
                         <ImageUpload
                             onChange={file => setData('band_member_image', file)}
                             initialImage={null}
@@ -191,7 +203,7 @@ export default function Create() {
                     {/* Multiple Image Upload (Full Width) */}
                     <div className="mb-6">
                         <label className="block text-white font-medium mb-2">Gallery Images</label>
-                        <small className='block mb-4'>recommended size 300 x 300 </small>
+                        <small className='block mb-4'>recommended size 300 x 300</small>
                         <MultipleImageUpload
                             onChange={handleMultipleImages}
                             cropHeight={300}

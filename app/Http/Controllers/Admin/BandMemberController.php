@@ -35,6 +35,7 @@ class BandMemberController extends Controller
             'webpage_link' => 'nullable|url',
             'youtube_link' => 'nullable|url',
             'is_active' => 'nullable|boolean',
+            'order' => 'required|integer|min:0',
             'band_member_image' => 'nullable|image|mimes:jpeg,png,jpg,webp|max:2048',
             'band_member_images.*' => 'nullable|image|mimes:jpeg,png,jpg,webp|max:2048',
         ]);
@@ -43,6 +44,7 @@ class BandMemberController extends Controller
             'first_name', 'last_name', 'role',
             'country', 'description',
             'facebook_link', 'instagram_link', 'wikipedia_link', 'webpage_link', 'youtube_link',
+            'order',
         ]);
 
         $data['is_active'] = $request->boolean('is_active', false);
@@ -65,7 +67,7 @@ class BandMemberController extends Controller
 
         BandMember::create($data);
 
-        return redirect()->route('band-members.index');
+        return redirect()->route('band-members.index')->with('success', 'Band member created successfully.');
     }
 
     public function edit(BandMember $bandMember)
@@ -87,6 +89,7 @@ class BandMemberController extends Controller
             'webpage_link' => 'nullable|url',
             'youtube_link' => 'nullable|url',
             'is_active' => 'nullable|boolean',
+            'order' => 'required|integer|min:0',
             'band_member_image' => 'nullable|image|mimes:jpeg,png,jpg,webp|max:2048',
             'band_member_images.*' => 'nullable|image|mimes:jpeg,png,jpg,webp|max:2048',
             'image_paths' => 'nullable|array',
@@ -97,6 +100,7 @@ class BandMemberController extends Controller
             'country', 'description',
             'facebook_link', 'instagram_link',
             'wikipedia_link', 'webpage_link', 'youtube_link',
+            'order',
         ]));
 
         $bandMember->is_active = $request->boolean('is_active', false);
@@ -159,6 +163,6 @@ class BandMemberController extends Controller
 
         $bandMember->delete();
 
-        return redirect()->route('band-members.index');
+        return redirect()->route('band-members.index')->with('success', 'Band member deleted successfully.');
     }
 }

@@ -31,12 +31,24 @@ class SliderController extends Controller
             'slider_video_link' => 'nullable|url',
             'slider_image' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:2048',
             'slider_image_mob' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:2048',
+            'slider_title_color' => 'required|string|regex:/^#[0-9A-Fa-f]{6}$/',
+            'slider_title_size' => 'required|integer|min:1',
+            'slider_short_desc_color' => 'required|string|regex:/^#[0-9A-Fa-f]{6}$/',
+            'slider_short_desc_size' => 'required|integer|min:1',
+            'slider_title_size_mobile' => 'required|integer|min:1',
+            'slider_short_desc_size_mobile' => 'required|integer|min:1',
         ]);
 
         $slider = new Slider();
         $slider->slider_title = $request->slider_title;
         $slider->slider_short_description = $request->slider_short_description;
         $slider->slider_video_link = $request->slider_video_link;
+        $slider->slider_title_color = $request->slider_title_color;
+        $slider->slider_title_size = $request->slider_title_size;
+        $slider->slider_short_desc_color = $request->slider_short_desc_color;
+        $slider->slider_short_desc_size = $request->slider_short_desc_size;
+        $slider->slider_title_size_mobile = $request->slider_title_size_mobile;
+        $slider->slider_short_desc_size_mobile = $request->slider_short_desc_size_mobile;
 
         // Handle image uploads using helper
         ImageUploadHelper::handleImageUpload(
@@ -79,11 +91,23 @@ class SliderController extends Controller
             'slider_image_mob' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:2048',
             'remove_image' => 'nullable|boolean',
             'remove_image_mob' => 'nullable|boolean',
+            'slider_title_color' => 'required|string|regex:/^#[0-9A-Fa-f]{6}$/',
+            'slider_title_size' => 'required|integer|min:1',
+            'slider_short_desc_color' => 'required|string|regex:/^#[0-9A-Fa-f]{6}$/',
+            'slider_short_desc_size' => 'required|integer|min:1',
+            'slider_title_size_mobile' => 'required|integer|min:1',
+            'slider_short_desc_size_mobile' => 'required|integer|min:1',
         ]);
 
         $slider->slider_title = $request->slider_title;
         $slider->slider_short_description = $request->slider_short_description;
         $slider->slider_video_link = $request->slider_video_link;
+        $slider->slider_title_color = $request->slider_title_color;
+        $slider->slider_title_size = $request->slider_title_size;
+        $slider->slider_short_desc_color = $request->slider_short_desc_color;
+        $slider->slider_short_desc_size = $request->slider_short_desc_size;
+        $slider->slider_title_size_mobile = $request->slider_title_size_mobile;
+        $slider->slider_short_desc_size_mobile = $request->slider_short_desc_size_mobile;
 
         // Handle image uploads using helper
         ImageUploadHelper::handleImageUpload(
