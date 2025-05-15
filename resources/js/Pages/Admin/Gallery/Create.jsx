@@ -3,11 +3,17 @@ import { router } from '@inertiajs/react';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.jsx';
 import PrimaryButton from '@/Components/PrimaryButton.jsx';
 import MultipleImageUpload from '@/Components/MultipleImageUpload.jsx';
+import ImageUpload from '@/Components/ImageUpload.jsx';
 
 export default function GalleryCreate() {
     const [folderName, setFolderName] = useState('');
+    const [categoryImage, setCategoryImage] = useState(null);
     const [newImages, setNewImages] = useState([]);
     const [descriptions, setDescriptions] = useState([]);
+
+    const handleCategoryImageChange = (file) => {
+        setCategoryImage(file);
+    };
 
     const handleImageChange = (files) => {
         const updatedImages = files.map(file => ({
@@ -15,7 +21,7 @@ export default function GalleryCreate() {
             preview: URL.createObjectURL(file)
         }));
         setNewImages(updatedImages);
-        setDescriptions(new Array(files.length).fill('')); // Initialize descriptions
+        setDescriptions(new Array(files.length).fill(''));
     };
 
     const handleDescriptionChange = (index, value) => {
@@ -30,13 +36,16 @@ export default function GalleryCreate() {
             alert('Folder name is required.');
             return;
         }
-        if (newImages.length === 0) {
-            alert('At least one image is required.');
+        if (newImages.length === 0 && !categoryImage) {
+            alert('At least one image (category or gallery) is required.');
             return;
         }
 
         const formData = new FormData();
         formData.append('folder_name', folderName);
+        if (categoryImage) {
+            formData.append('gallery_category_image', categoryImage);
+        }
         newImages.forEach(image => formData.append('gallery_images[]', image.file));
         descriptions.forEach(desc => formData.append('gallery_image_descriptions[]', desc));
 
@@ -46,6 +55,7 @@ export default function GalleryCreate() {
                 setNewImages([]);
                 setDescriptions([]);
                 setFolderName('');
+                setCategoryImage(null);
             }
         });
     };
@@ -67,11 +77,24 @@ export default function GalleryCreate() {
                         type="text"
                         value={folderName}
                         onChange={(e) => setFolderName(e.target.value)}
-                        className="w-56 bg-[#1e242b]  text-white p-2 rounded"
+                        className="w-56 bg-[#1e242b] text-white p-2 rounded"
                         placeholder="Enter folder name"
                     />
                 </div>
 
+                <div className="mb-6">
+                    <label className="block text-white mb-2">Category Image</label>
+                    <small className="block text-white mb-4">Recommended size 268 x 280</small>
+                    <ImageUpload
+                        onChange={handleCategoryImageChange}
+                        initialImage={null}
+                        onRemove={() => setCategoryImage(null)}
+                        cropWidth={268}
+                        cropHeight={280}
+                    />
+                </div>
+
+                <h2 className="text-2xl text-white mb-4">Gallery Images</h2>
                 <div className="mb-6 grid grid-cols-2 md:grid-cols-4 gap-4">
                     {newImages.map((image, index) => (
                         <div
@@ -98,8 +121,6 @@ export default function GalleryCreate() {
                     <MultipleImageUpload
                         initialImages={newImages}
                         onChange={handleImageChange}
-                        // cropWidth={340}
-                        // cropHeight={450}
                     />
                     <PrimaryButton
                         onClick={handleSave}

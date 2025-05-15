@@ -3,10 +3,14 @@ import { usePage, router } from '@inertiajs/react';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.jsx';
 import PrimaryButton from '@/Components/PrimaryButton.jsx';
 import MultipleImageUpload from '@/Components/MultipleImageUpload.jsx';
+import ImageUpload from '@/Components/ImageUpload.jsx';
 
 export default function GalleryEdit() {
     const { category } = usePage().props;
     const [folderName, setFolderName] = useState(category?.folder_name || '');
+    const [categoryImage, setCategoryImage] = useState(null);
+    const [removeCategoryImage, setRemoveCategoryImage] = useState(false);
+    const [existingCategoryImage, setExistingCategoryImage] = useState(category?.gallery_category_image || null);
     const [newImages, setNewImages] = useState([]);
     const [newDescriptions, setNewDescriptions] = useState([]);
     const [existingImages, setExistingImages] = useState(
@@ -16,6 +20,12 @@ export default function GalleryEdit() {
             description: item.gallery_image_description || ''
         }))
     );
+
+    const handleCategoryImageChange = (file) => {
+        setCategoryImage(file);
+        setRemoveCategoryImage(false);
+        if (file) setExistingCategoryImage(null);
+    };
 
     const handleImageChange = (files) => {
         const updatedImages = files.map(file => ({
@@ -58,6 +68,10 @@ export default function GalleryEdit() {
         const formData = new FormData();
         formData.append('folder_name', folderName);
         formData.append('_method', 'PUT');
+        if (categoryImage) {
+            formData.append('gallery_category_image', categoryImage);
+        }
+        formData.append('remove_category_image', removeCategoryImage ? '1' : '0');
         newImages.forEach(image => formData.append('gallery_images[]', image.file));
         newDescriptions.forEach(desc => formData.append('gallery_image_descriptions[]', desc));
         existingImages.forEach(img => {
@@ -70,6 +84,8 @@ export default function GalleryEdit() {
             onSuccess: () => {
                 setNewImages([]);
                 setNewDescriptions([]);
+                setCategoryImage(null);
+                setRemoveCategoryImage(false);
             }
         });
     };
@@ -91,10 +107,28 @@ export default function GalleryEdit() {
                         type="text"
                         value={folderName}
                         onChange={(e) => setFolderName(e.target.value)}
-                        className="w-56 bg-[#1e242b]  text-white p-2 rounded"
+                        className="w-56 bg-[#1e242b] text-white p-2 rounded"
                         placeholder="Enter folder name"
                     />
                 </div>
+
+                <div className="mb-6">
+                    <label className="block text-white mb-2">Category Image</label>
+                    <small className="block text-white mb-4">Recommended size 268 x 280</small>
+                    <ImageUpload
+                        onChange={handleCategoryImageChange}
+                        initialImage={existingCategoryImage}
+                        onRemove={() => {
+                            setExistingCategoryImage(null);
+                            setCategoryImage(null);
+                            setRemoveCategoryImage(true);
+                        }}
+                        cropWidth={268}
+                        cropHeight={280}
+                    />
+                </div>
+
+                <h2 className="text-2xl text-white mb-4">Gallery Images</h2>
 
                 <div className="mb-6 grid grid-cols-2 md:grid-cols-4 gap-4">
                     {existingImages.length > 0 ? (
@@ -150,8 +184,6 @@ export default function GalleryEdit() {
                     <MultipleImageUpload
                         initialImages={newImages}
                         onChange={handleImageChange}
-                        cropWidth={340}
-                        cropHeight={450}
                     />
                     <PrimaryButton
                         onClick={handleSave}

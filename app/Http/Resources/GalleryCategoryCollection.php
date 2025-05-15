@@ -13,6 +13,7 @@ class GalleryCategoryCollection extends ResourceCollection
             return [
                 'id' => $data->id,
                 'folderName' => $data->folder_name,
+                'folderImage' => $data->gallery_category_image,
             ];
         })->toArray();
     }

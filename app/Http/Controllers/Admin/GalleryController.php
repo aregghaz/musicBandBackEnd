@@ -28,14 +28,23 @@ class GalleryController extends Controller
     {
         $request->validate([
             'folder_name' => 'required|string|max:255|unique:gallery_categories',
+            'gallery_category_image' => 'nullable|image|mimes:jpeg,png,jpg,webp|max:1536',
             'gallery_images.*' => 'nullable|image|mimes:jpeg,png,jpg,webp|max:1536',
             'gallery_image_descriptions.*' => 'nullable|string|max:1000'
         ], [
-            'gallery_images.*.max' => 'Each image must be no larger than 1.5MB.',
+            'gallery_category_image.max' => 'Category image must be no larger than 1.5MB.',
+            'gallery_images.*.max' => 'Each gallery image must be no larger than 1.5MB.',
             'folder_name.unique' => 'This folder name already exists.'
         ]);
 
-        $category = GalleryCategory::create(['folder_name' => $request->folder_name]);
+        $categoryData = ['folder_name' => $request->folder_name];
+
+        if ($request->hasFile('gallery_category_image')) {
+            $path = $request->file('gallery_category_image')->store('gallery/category_images', 'public');
+            $categoryData['gallery_category_image'] = $path;
+        }
+
+        $category = GalleryCategory::create($categoryData);
 
         if ($request->hasFile('gallery_images')) {
             foreach ($request->file('gallery_images', []) as $index => $image) {
@@ -58,6 +67,7 @@ class GalleryController extends Controller
             'category' => [
                 'id' => $category->id,
                 'folder_name' => $category->folder_name,
+                'gallery_category_image' => $category->gallery_category_image ? "/storage/{$category->gallery_category_image}" : null,
                 'galleries' => $category->galleries->map(function ($gallery) {
                     return [
                         'id' => $gallery->id,
@@ -73,13 +83,29 @@ class GalleryController extends Controller
     {
         $request->validate([
             'folder_name' => 'required|string|max:255|unique:gallery_categories,folder_name,' . $category->id,
+            'gallery_category_image' => 'nullable|image|mimes:jpeg,png,jpg,webp|max:1536',
+            'remove_category_image' => 'nullable|boolean',
             'gallery_images.*' => 'nullable|image|mimes:jpeg,png,jpg,webp|max:1536',
             'gallery_image_descriptions.*' => 'nullable|string|max:1000',
             'existing_images.*' => 'nullable|integer|exists:galleries,id',
             'existing_descriptions.*' => 'nullable|string|max:1000'
         ]);
 
-        $category->update(['folder_name' => $request->folder_name]);
+        $categoryData = ['folder_name' => $request->folder_name];
+
+        if ($request->hasFile('gallery_category_image')) {
+            // Delete old image if exists
+            if ($category->gallery_category_image) {
+                Storage::disk('public')->delete($category->gallery_category_image);
+            }
+            $path = $request->file('gallery_category_image')->store('gallery/category_images', 'public');
+            $categoryData['gallery_category_image'] = $path;
+        } elseif ($request->remove_category_image && $category->gallery_category_image) {
+            Storage::disk('public')->delete($category->gallery_category_image);
+            $categoryData['gallery_category_image'] = null;
+        }
+
+        $category->update($categoryData);
 
         if ($request->has('existing_images')) {
             foreach ($request->existing_images as $index => $galleryId) {
@@ -107,6 +133,11 @@ class GalleryController extends Controller
 
     public function destroy(GalleryCategory $category)
     {
+        // Delete category image if exists
+        if ($category->gallery_category_image) {
+            Storage::disk('public')->delete($category->gallery_category_image);
+        }
+
         foreach ($category->galleries as $gallery) {
             Storage::disk('public')->delete($gallery->gallery_image);
             $gallery->delete();
