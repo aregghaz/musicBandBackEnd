@@ -13,6 +13,7 @@ class GalleryCategoryResource extends JsonResource
         return [
             'id' => $this->id,
             'folderName' => $this->folder_name,
+            'folderImage' => $this->gallery_category_image,
             'galleries' => $this->galleries->map(function ($gallery) {
                 return [
                     'id' => $gallery->id,

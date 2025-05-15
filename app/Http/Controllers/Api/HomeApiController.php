@@ -62,7 +62,7 @@ class HomeApiController extends Controller
         $contactsData = new ContactCollection($contacts);
 
 
-        $galleries = GalleryCategory::select('id', 'folder_name')->get();
+        $galleries = GalleryCategory::select('id', 'folder_name','gallery_category_image')->get();
         $galleriesData = new GalleryCategoryCollection($galleries);
 
 

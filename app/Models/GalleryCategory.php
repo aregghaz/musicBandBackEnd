@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class GalleryCategory extends Model
 {
-    protected $fillable = ['folder_name'];
+    protected $fillable = ['folder_name', 'gallery_category_image'];
 
     public function galleries()
     {

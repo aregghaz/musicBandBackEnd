@@ -11,7 +11,7 @@ class GalleryApiController extends Controller
 {
     public function index()
     {
-        $categories = GalleryCategory::select('id', 'folder_name')->get();
+        $categories = GalleryCategory::select('id', 'folder_name','gallery_category_image')->get();
         return new GalleryCategoryCollection($categories);
     }
 

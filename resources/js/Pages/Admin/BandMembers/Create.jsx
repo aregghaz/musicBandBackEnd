@@ -206,8 +206,8 @@ export default function Create() {
                         <small className='block mb-4'>recommended size 300 x 300</small>
                         <MultipleImageUpload
                             onChange={handleMultipleImages}
-                            cropHeight={300}
-                            cropWidth={300}
+                            // cropHeight={300}
+                            // cropWidth={300}
                             initialImages={data.band_member_images.map(image => {
                                 if (image instanceof File) {
                                     return {
