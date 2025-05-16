@@ -3,6 +3,7 @@ import { Link, usePage } from '@inertiajs/react';
 
 const navItems = [
     { label: 'Manage Blogs', route: 'blogs.index' },
+    { label: 'Manage News About Us', route: 'about-us-news.index' },
     { label: 'Manage Concerts', route: 'concerts.index' },
     { label: 'Manage Band Members', route: 'band-members.index' },
     { label: 'Manage Albums', route: 'albums.index' },

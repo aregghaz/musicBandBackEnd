@@ -22,6 +22,7 @@ class HomeSection extends Model
         'band_members_section',
         'gallery_section',
         'blogs_section',
+        'about_us_news_section',
     ];
 
     protected $casts = [
@@ -35,5 +36,6 @@ class HomeSection extends Model
         'band_members_section' => 'boolean',
         'gallery_section' => 'boolean',
         'blogs_section' => 'boolean',
+        'about_us_news_section' => 'boolean',
     ];
 }

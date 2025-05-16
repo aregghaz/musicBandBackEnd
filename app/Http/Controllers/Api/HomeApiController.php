@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Http\Resources\AboutUsNewsCollection;
 use App\Http\Resources\AlbumCollection;
 use App\Http\Resources\BandMemberCollection;
 use App\Http\Resources\BlogCollection;
@@ -14,6 +15,7 @@ use App\Http\Resources\SettingsCollection;
 use App\Http\Resources\SlidersCollection;
 use App\Http\Resources\UpcomingTourSectionCollection;
 use App\Http\Resources\UpcomingTourSummaryCollection;
+use App\Models\AboutUsNews;
 use App\Models\Album;
 use App\Models\BandMember;
 use App\Models\Blog;
@@ -47,6 +49,9 @@ class HomeApiController extends Controller
 
         $blogs = Blog::latest()->take(3)->get();
         $blogsData = new BlogCollection($blogs);
+
+        $aunews = AboutUsNews::latest()->take(3)->get();
+        $aunewsData = new AboutUsNewsCollection($aunews);
 
         $concerts = Concert::all();
         $concertsData = new ConcertCollection($concerts);
@@ -88,6 +93,7 @@ class HomeApiController extends Controller
             'albums' => $albumsData,
             'bandMembers' => $bandMembersData,
             'blogs' => $blogsData,
+            'aboutUsNews' => $aunewsData,
             'contacts' => $contactsData,
             'concerts' => $concertsData,
             'galleries' => $galleriesData,

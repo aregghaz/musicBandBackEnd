@@ -37,6 +37,7 @@ class HomeSectionController extends Controller
             'band_members_section' => 'required|boolean',
             'gallery_section' => 'required|boolean',
             'blogs_section' => 'required|boolean',
+            'about_us_news_section' => 'required|boolean',
         ]);
 
         $homeSection = HomeSection::first();
