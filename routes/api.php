@@ -4,6 +4,7 @@ use App\Models\GalleryCategory;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\BlogApiController;
+use App\Http\Controllers\Api\AboutUsNewsApiController;
 use App\Http\Controllers\Api\ConcertApiController;
 use App\Http\Controllers\Api\BandMemberApiController;
 use App\Http\Controllers\Api\AlbumApiController;
@@ -17,6 +18,8 @@ use App\Http\Controllers\Api\HomeSectionApiController;
 
 Route::get('/blogs', [BlogApiController::class, 'index']);
 Route::get('/blogs/{id}', [BlogApiController::class, 'show']);
+Route::get('/about-us-news', [AboutUsNewsApiController::class, 'index']);
+Route::get('/about-us-news/{id}', [AboutUsNewsApiController::class, 'show']);
 Route::get('/concerts/type/{type}', [ConcertApiController::class, 'getConcertsByType']);
 Route::get('/concerts', [ConcertApiController::class, 'index']);
 Route::get('/band-members', [BandMemberApiController::class, 'index']);

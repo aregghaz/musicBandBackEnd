@@ -13,6 +13,7 @@ use App\Http\Controllers\Admin\UpcomingTourSectionController;
 use App\Http\Controllers\Admin\GalleryController;
 use App\Http\Controllers\Admin\LatestAlbumController;
 use App\Http\Controllers\Admin\HomeSectionController;
+use App\Http\Controllers\Admin\AboutUsNewsController;
 use App\Models\Gallery;
 use App\Models\GalleryCategory;
 use Illuminate\Support\Facades\Route;
@@ -54,6 +55,7 @@ Route::middleware(['auth', 'admin'])->group(function () {
     Route::get('admin/latest-album', [LatestAlbumController::class, 'index'])->name('latest-album.index');
     Route::post('admin/latest-album', [LatestAlbumController::class, 'storeOrUpdate'])->name('latest-album.storeOrUpdate');
     Route::resource('admin/home-sections', HomeSectionController::class);
+    Route::resource('admin/about-us-news', AboutUsNewsController::class);
 });
 
 Route::bind('gallery', function ($value) {

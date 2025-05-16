@@ -13,20 +13,28 @@ const ImageUpload = ({ onChange, onRemove, initialImage = null, cropWidth, cropH
     const [zoom, setZoom] = useState(1);
     const [croppedAreaPixels, setCroppedAreaPixels] = useState(null);
     const [error, setError] = useState(null);
+    const [cropMode, setCropMode] = useState("landscape"); // New state for crop mode
     const fileInputRef = useRef(null);
+
+    const isCropMode = cropWidth && cropHeight;
+
+    const aspectRatio = isCropMode
+        ? cropMode === "landscape"
+            ? 4 / 3
+            : 3 / 4
+        : cropWidth / cropHeight;
 
     // Calculate initial zoom to fit image
     const calculateInitialZoom = useCallback(
         (image) => {
             if (!image.width || !image.height) return 1;
-            const aspect = cropWidth / cropHeight;
             const imageAspect = image.width / image.height;
             // Fit image to cover crop area
-            return imageAspect > aspect
+            return imageAspect > aspectRatio
                 ? cropHeight / image.height
                 : cropWidth / image.width;
         },
-        [cropWidth, cropHeight]
+        [cropWidth, cropHeight, aspectRatio]
     );
 
     // Handle file selection
@@ -57,8 +65,8 @@ const ImageUpload = ({ onChange, onRemove, initialImage = null, cropWidth, cropH
                 image.onload = resolve;
                 image.onerror = () => reject(new Error("Failed to load image."));
             });
-            const initialZoom = calculateInitialZoom(image);
-            setZoom(Math.max(0.5, Math.min(initialZoom, 3)));
+            // const initialZoom = calculateInitialZoom(image);
+            setZoom(1);
             setCrop({ x: 0, y: 0 });
         } catch (err) {
             setError("Failed to process image. Please try another.");
@@ -179,6 +187,13 @@ const ImageUpload = ({ onChange, onRemove, initialImage = null, cropWidth, cropH
         }
     };
 
+    // Handle crop mode toggle
+    const handleCropModeToggle = (mode) => {
+        setCropMode(mode);
+        setCrop({ x: 0, y: 0 }); // Reset crop position
+        setZoom(1); // Reset zoom
+    };
+
     // Clean up Blob URLs on unmount
     useEffect(() => {
         return () => {
@@ -248,17 +263,45 @@ const ImageUpload = ({ onChange, onRemove, initialImage = null, cropWidth, cropH
                             image={fileToCrop}
                             crop={crop}
                             zoom={zoom}
-                            zoomSpeed={0.2} // Very slow zoom
+                            zoomSpeed={0.2}
                             minZoom={0.5}
                             maxZoom={3}
                             restrictPosition={false}
-                            aspect={cropWidth / cropHeight}
+                            aspect={aspectRatio}
                             onCropChange={handleCropChange}
                             onZoomChange={handleZoomChange}
                             onCropComplete={onCropComplete}
                             aria-label="Crop image"
                         />
                     </div>
+                    {isCropMode && (
+                        <div className="flex space-x-2 mb-2">
+                            <button
+                                type="button"
+                                onClick={() => handleCropModeToggle("landscape")}
+                                className={`px-3 py-1 text-sm rounded-md ${
+                                    cropMode === "landscape"
+                                        ? "bg-[#ff5252] text-white"
+                                        : "bg-gray-600 text-gray-200"
+                                } hover:bg-[#ff6161]`}
+                                aria-label="Switch to landscape crop"
+                            >
+                                Landscape
+                            </button>
+                            <button
+                                type="button"
+                                onClick={() => handleCropModeToggle("portrait")}
+                                className={`px-3 py-1 text-sm rounded-md ${
+                                    cropMode === "portrait"
+                                        ? "bg-[#ff5252] text-white"
+                                        : "bg-gray-600 text-gray-200"
+                                } hover:bg-[#ff6161]`}
+                                aria-label="Switch to portrait crop"
+                            >
+                                Portrait
+                            </button>
+                        </div>
+                    )}
                     <div className="flex justify-end space-x-2">
                         <button
                             type="button"

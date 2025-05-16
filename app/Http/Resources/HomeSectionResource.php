@@ -28,6 +28,7 @@ class HomeSectionResource extends JsonResource
             'bandMembersSection' => $this->band_members_section,
             'gallerySection' => $this->gallery_section,
             'blogsSection' => $this->blogs_section,
+            'aboutUsNewsSection' => $this->about_us_news_section,
         ];
     }
 }

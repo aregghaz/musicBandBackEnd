@@ -15,6 +15,7 @@ export default function Manage({ homeSection }) {
         band_members_section: homeSection?.band_members_section ?? false,
         gallery_section: homeSection?.gallery_section ?? false,
         blogs_section: homeSection?.blogs_section ?? false,
+        about_us_news_section: homeSection?.about_us_news_section ?? false,
     });
 
     function submit(e) {
@@ -108,6 +109,20 @@ export default function Manage({ homeSection }) {
                         />
                         {errors.blogs_section && (
                             <span className="text-red-500 text-sm ml-2">{errors.blogs_section}</span>
+                        )}
+                    </div>
+
+                    {/* About us news Section */}
+                    <div className="mb-4 flex items-center">
+                        <label className="text-white mr-4 w-60">About us news Section</label>
+                        <input
+                            type="checkbox"
+                            checked={data.about_us_news_section}
+                            onChange={(e) => setData("about_us_news_section", e.target.checked)}
+                            className="form-checkbox h-5 w-5 text-[#ff5252] bg-[#1e242b] border-gray-400 focus:ring-[#ff5252]"
+                        />
+                        {errors.about_us_news_section && (
+                            <span className="text-red-500 text-sm ml-2">{errors.about_us_news_section}</span>
                         )}
                     </div>
 
