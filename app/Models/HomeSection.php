@@ -23,6 +23,7 @@ class HomeSection extends Model
         'gallery_section',
         'blogs_section',
         'about_us_news_section',
+        'reviews_section',
     ];
 
     protected $casts = [
@@ -37,5 +38,6 @@ class HomeSection extends Model
         'gallery_section' => 'boolean',
         'blogs_section' => 'boolean',
         'about_us_news_section' => 'boolean',
+        'reviews_section' => 'boolean',
     ];
 }

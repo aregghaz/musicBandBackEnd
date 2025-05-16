@@ -29,6 +29,7 @@ class HomeSectionResource extends JsonResource
             'gallerySection' => $this->gallery_section,
             'blogsSection' => $this->blogs_section,
             'aboutUsNewsSection' => $this->about_us_news_section,
+            'reviewsSection' => $this->reviews_section,
         ];
     }
 }

@@ -11,6 +11,7 @@ use App\Http\Resources\ConcertCollection;
 use App\Http\Resources\ContactCollection;
 use App\Http\Resources\GalleryCategoryCollection;
 use App\Http\Resources\LatestAlbumCollection;
+use App\Http\Resources\ReviewCollection;
 use App\Http\Resources\SettingsCollection;
 use App\Http\Resources\SlidersCollection;
 use App\Http\Resources\UpcomingTourSectionCollection;
@@ -24,6 +25,7 @@ use App\Models\Contact;
 use App\Models\Gallery;
 use App\Models\GalleryCategory;
 use App\Models\LatestAlbum;
+use App\Models\Review;
 use App\Models\Setting;
 use App\Models\Slider;
 use App\Models\UpcomingTourSection;
@@ -83,6 +85,8 @@ class HomeApiController extends Controller
         $upcomingTourSections = UpcomingTourSection::with('tours')->get();
         $upcomingTourSectionsData = new UpcomingTourSectionCollection($upcomingTourSections);
 
+        $reviews = new ReviewCollection(Review::where('review_hide', false)->get());
+
 
         $upcomingTourSection = UpcomingTourSection::with('tours')->first();
         $setting = Setting::first();
@@ -94,6 +98,7 @@ class HomeApiController extends Controller
             'bandMembers' => $bandMembersData,
             'blogs' => $blogsData,
             'aboutUsNews' => $aunewsData,
+            'reviews' => $reviews,
             'contacts' => $contactsData,
             'concerts' => $concertsData,
             'galleries' => $galleriesData,

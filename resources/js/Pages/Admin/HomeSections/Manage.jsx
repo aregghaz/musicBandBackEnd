@@ -16,6 +16,7 @@ export default function Manage({ homeSection }) {
         gallery_section: homeSection?.gallery_section ?? false,
         blogs_section: homeSection?.blogs_section ?? false,
         about_us_news_section: homeSection?.about_us_news_section ?? false,
+        reviews_section: homeSection?.reviews_section ?? false,
     });
 
     function submit(e) {
@@ -123,6 +124,20 @@ export default function Manage({ homeSection }) {
                         />
                         {errors.about_us_news_section && (
                             <span className="text-red-500 text-sm ml-2">{errors.about_us_news_section}</span>
+                        )}
+                    </div>
+
+                    {/* Reviews Section */}
+                    <div className="mb-4 flex items-center">
+                        <label className="text-white mr-4 w-60">Reviews Section</label>
+                        <input
+                            type="checkbox"
+                            checked={data.reviews_section}
+                            onChange={(e) => setData("reviews_section", e.target.checked)}
+                            className="form-checkbox h-5 w-5 text-[#ff5252] bg-[#1e242b] border-gray-400 focus:ring-[#ff5252]"
+                        />
+                        {errors.reviews_section && (
+                            <span className="text-red-500 text-sm ml-2">{errors.reviews_section}</span>
                         )}
                     </div>
 
