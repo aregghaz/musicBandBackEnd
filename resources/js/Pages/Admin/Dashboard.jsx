@@ -2,6 +2,7 @@ import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.jsx';
 import { Link, usePage } from '@inertiajs/react';
 
 const navItems = [
+    { label: 'Manage Home Sections', route: 'home-sections.index' },
     { label: 'Manage Blogs', route: 'blogs.index' },
     { label: 'Manage News About Us', route: 'about-us-news.index' },
     { label: 'Manage Concerts', route: 'concerts.index' },
@@ -13,7 +14,8 @@ const navItems = [
     { label: 'Pre Sale Tours', route: 'upcoming-tour-sections.index' },
     { label: 'Gallery', route: 'gallery.index' },
     { label: 'Latest Album', route: 'latest-album.index' },
-    { label: 'Manage Home Sections', route: 'home-sections.index' },
+    { label: 'Manage Reviews', route: 'reviews.index'},
+
 ];
 
 export default function Dashboard() {

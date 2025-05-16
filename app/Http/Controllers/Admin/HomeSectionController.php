@@ -38,6 +38,7 @@ class HomeSectionController extends Controller
             'gallery_section' => 'required|boolean',
             'blogs_section' => 'required|boolean',
             'about_us_news_section' => 'required|boolean',
+            'reviews_section' => 'required|boolean',
         ]);
 
         $homeSection = HomeSection::first();
