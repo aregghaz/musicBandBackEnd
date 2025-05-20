@@ -48,7 +48,7 @@ export default function AuthenticatedLayout({ header, children }) {
                                     href={route('band-members.index')}
                                     active={route().current('band-members.index')}
                                 >
-                                    Band Members
+                                    Team Members
                                 </NavLink>
                                 <NavLink
                                     className="text-white hover:text-[#ff5252]"

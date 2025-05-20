@@ -28,7 +28,8 @@ export default function Edit() {
         webpage_link: bandMember.webpage_link || '',
         youtube_link: bandMember.youtube_link || '',
         is_active: bandMember.is_active || false,
-        order: bandMember.order || 0, // Added order field
+        is_head: bandMember.is_head || false,
+        order: bandMember.order || 0,
     });
 
     const [existingImage, setExistingImage] = useState(bandMember.band_member_image);
@@ -49,7 +50,8 @@ export default function Edit() {
         formData.append('webpage_link', data.webpage_link);
         formData.append('youtube_link', data.youtube_link);
         formData.append('is_active', data.is_active ? '1' : '0');
-        formData.append('order', data.order.toString()); // Added order
+        formData.append('is_head', data.is_head ? '1' : '0');
+        formData.append('order', data.order.toString());
 
         if (data.band_member_image) {
             formData.append('band_member_image', data.band_member_image);
@@ -92,14 +94,10 @@ export default function Edit() {
 
     return (
         <AuthenticatedLayout
-            header={
-                <h2 className="text-xl font-semibold leading-tight text-gray-800">
-                    Edit Band Member
-                </h2>
-            }
+
         >
             <div className="p-6 bg-[#1e242b]">
-                <h1 className="text-2xl font-bold mb-6 text-white">Edit Band Member</h1>
+                <h1 className="text-2xl font-bold mb-6 text-white">Edit Team Member</h1>
 
                 <div className="bg-[#1e242b] shadow-md rounded-lg p-6">
                     <form onSubmit={submit}>
@@ -242,21 +240,33 @@ export default function Edit() {
                             </div>
                         </div>
 
-                        {/* Active Status */}
-                        <div className="mb-6 flex items-center">
-                            <input
-                                type="checkbox"
-                                checked={data.is_active}
-                                onChange={(e) => setData('is_active', e.target.checked)}
-                                className="mr-2 h-5 w-5 text-[#ff5252] border-[#232a32] focus:ring-[#ff5252]"
-                            />
-                            <label className="text-white">Is Active</label>
-                            {errors.is_active && <p className="text-red-500 text-sm ml-2">{errors.is_active}</p>}
+                        {/* Status Checkboxes */}
+                        <div className="mb-6 flex flex-col gap-4">
+                            <div className="flex items-center">
+                                <input
+                                    type="checkbox"
+                                    checked={data.is_active}
+                                    onChange={(e) => setData('is_active', e.target.checked)}
+                                    className="mr-2 h-5 w-5 text-[#ff5252] border-[#232a32] focus:ring-[#ff5252]"
+                                />
+                                <label className="text-white">Is Active</label>
+                                {errors.is_active && <p className="text-red-500 text-sm ml-2">{errors.is_active}</p>}
+                            </div>
+                            <div className="flex items-center">
+                                <input
+                                    type="checkbox"
+                                    checked={data.is_head}
+                                    onChange={(e) => setData('is_head', e.target.checked)}
+                                    className="mr-2 h-5 w-5 text-[#ff5252] border-[#232a32] focus:ring-[#ff5252]"
+                                />
+                                <label className="text-white">Is Band Head</label>
+                                {errors.is_head && <p className="text-red-500 text-sm ml-2">{errors.is_head}</p>}
+                            </div>
                         </div>
 
                         {/* Single Image Upload (Full Width) */}
                         <div className="mb-6">
-                            <label className="block text-white font-medium">Band Member Image</label>
+                            <label className="block text-white font-medium">Team Member Image</label>
                             <small className='block mb-4'>recommended size 340 x 450</small>
                             <ImageUpload
                                 initialImage={existingImage}
@@ -287,8 +297,6 @@ export default function Edit() {
                             <MultipleImageUpload
                                 onChange={handleMultipleImages}
                                 initialImages={data.band_member_images}
-                                // cropHeight={300}
-                                // cropWidth={300}
                             />
                             {errors.band_member_images && (
                                 <p className="text-red-500 text-sm mt-1">{errors.band_member_images}</p>
@@ -302,7 +310,7 @@ export default function Edit() {
                             disabled={processing}
                             className="p-0 w-48 text-center !bg-[#ff5252] hover:!bg-[#ff6161]"
                         >
-                            {processing ? 'Updating...' : 'Update Band Member'}
+                            {processing ? 'Updating...' : 'Update Team Member'}
                         </PrimaryButton>
                     </form>
                 </div>

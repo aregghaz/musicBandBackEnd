@@ -28,6 +28,7 @@ class BandMemberCollection extends ResourceCollection
                 'youtubeLink' => $bandMember->youtube_link,
                 'order' => $bandMember->order,
                 'isActive' => (bool) $bandMember->is_active,
+                'isHead' => (bool) $bandMember->is_head,
                 'memberImages' => is_array($bandMember->band_member_images) ? $bandMember->band_member_images : [],
                 'createdAt' => $bandMember->created_at,
                 'updatedAt' => $bandMember->updated_at,

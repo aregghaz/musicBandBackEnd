@@ -33,7 +33,7 @@ export default function Index() {
                             <th className="px-4 py-3 border-b">City</th>
                             <th className="px-4 py-3 border-b">Place</th>
                             <th className="px-4 py-3 border-b">Date</th>
-                            <th className="px-4 py-3 border-b">Type</th>
+                            {/*<th className="px-4 py-3 border-b">Type</th>*/}
                             <th className="px-4 py-3 border-b">Actions</th>
                         </tr>
                         </thead>
@@ -43,7 +43,7 @@ export default function Index() {
                                 <td className="px-4 py-3 border-b text-white">{concert.concert_city}</td>
                                 <td className="px-4 py-3 border-b text-white">{concert.concert_place}</td>
                                 <td className="px-4 py-3 border-b text-white">{concert.concert_date}</td>
-                                <td className="px-4 py-3 border-b text-white">{concert.type}</td>
+                                {/*<td className="px-4 py-3 border-b text-white">{concert.type}</td>*/}
                                 <td className="px-4 py-3 border-b flex space-x-4">
                                     <Link href={route("concerts.edit", concert.id)}>
                                         <PrimaryButton variant="danger" className="p-0 bg-indigo-600">

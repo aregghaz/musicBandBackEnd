@@ -170,9 +170,9 @@ export default function Manage({ homeSection }) {
                         )}
                     </div>
 
-                    {/* Band members Section */}
+
                     <div className="mb-4 flex items-center">
-                        <label className="text-white mr-4 w-60">Band Members Section</label>
+                        <label className="text-white mr-4 w-60">Team Section</label>
                         <input
                             type="checkbox"
                             checked={data.band_members_section}

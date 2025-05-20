@@ -13,21 +13,16 @@ export default function Index() {
 
     return (
         <AuthenticatedLayout
-            header={
-                <h2 className="text-xl font-semibold leading-tight text-gray-800">
-                    Band Members
-                </h2>
-            }
         >
             <div className="p-6 bg-[#1e242b] min-h-screen">
-                <h1 className="text-2xl font-bold mb-4 text-white">Band Members</h1>
+                <h1 className="text-2xl font-bold mb-4 text-white">Team</h1>
 
                 <div className="mb-6 flex justify-between items-center">
                     <Link
                         href={route("band-members.create")}
                         className="bg-[#ff5252] text-white px-6 py-2 rounded-lg shadow-md hover:bg-[#ff6161] transition duration-300"
                     >
-                        + Add Band Member
+                        + Add Team Member
                     </Link>
                 </div>
 
