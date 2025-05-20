@@ -32,6 +32,8 @@ class SettingsCollection extends JsonResource
                 'upcomingLocation' => $this->upcoming_location ?? null,
                 'upcomingState' => $this->upcoming_state ?? null,
                 'upcomingCountry' => $this->upcoming_country ?? null,
+                'aboutBackgroundImage'=> $this->about_background_image ?? null,
+                'aboutBackgroundImageMob'=> $this->about_background_image_mob ?? null,
             ],
             'socialLinks' => [
                 'instagramLink' => $this->instagram_link ?? null,

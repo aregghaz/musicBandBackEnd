@@ -8,19 +8,19 @@ export default function Edit({ concert }) {
         concert_city: concert.concert_city,
         concert_place: concert.concert_place,
         concert_date: concert.concert_date,
-        type: concert.type,
+        type: "1",
         concert_image: concert.concert_image,
         buy_ticket_link: concert.buy_ticket_link,
     });
 
-    const concertTypes = [
-        { id: 1, label: 'American', value: 1 },
-        { id: 2, label: 'Armenian', value: 2 },
-    ];
+    // const concertTypes = [
+    //     { id: 1, label: 'American', value: 1 },
+    //     { id: 2, label: 'Armenian', value: 2 },
+    // ];
 
     function submit(e) {
         e.preventDefault();
-        patch(`/admin/concerts/${concert.id}`);
+        put(`/admin/concerts/${concert.id}`);
     }
 
     return (
@@ -70,24 +70,24 @@ export default function Edit({ concert }) {
                     </div>
 
                     {/* Type select */}
-                    <div className="mb-4">
-                        <select
-                            name="type"
-                            value={data.type}
-                            onChange={e => setData("type", e.target.value)}
-                            className="w-full px-4 py-2 rounded-md bg-[#1e242b] text-white placeholder-gray-400 focus:outline-none focus:ring-2"
-                        >
-                            <option value="">Select Type</option>
-                            {concertTypes.map(type => (
-                                <option key={type.id} value={type.value}>
-                                    {type.label}
-                                </option>
-                            ))}
-                        </select>
-                        {errors.type && (
-                            <span className="text-red-500 text-sm">{errors.type}</span>
-                        )}
-                    </div>
+                    {/*<div className="mb-4">*/}
+                    {/*    <select*/}
+                    {/*        name="type"*/}
+                    {/*        value={data.type}*/}
+                    {/*        onChange={e => setData("type", e.target.value)}*/}
+                    {/*        className="w-full px-4 py-2 rounded-md bg-[#1e242b] text-white placeholder-gray-400 focus:outline-none focus:ring-2"*/}
+                    {/*    >*/}
+                    {/*        <option value="">Select Type</option>*/}
+                    {/*        {concertTypes.map(type => (*/}
+                    {/*            <option key={type.id} value={type.value}>*/}
+                    {/*                {type.label}*/}
+                    {/*            </option>*/}
+                    {/*        ))}*/}
+                    {/*    </select>*/}
+                    {/*    {errors.type && (*/}
+                    {/*        <span className="text-red-500 text-sm">{errors.type}</span>*/}
+                    {/*    )}*/}
+                    {/*</div>*/}
 
                     {/* Buy Ticket Link input */}
                     <div className="mb-4">

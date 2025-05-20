@@ -21,11 +21,13 @@ class BandMember extends Model
         'youtube_link',
         'is_active',
         'order',
+        'is_head',
     ];
 
     protected $casts = [
         'band_member_images' => 'array',
         'is_active' => 'boolean',
+        'is_head' => 'boolean',
     ];
 
     public function images()

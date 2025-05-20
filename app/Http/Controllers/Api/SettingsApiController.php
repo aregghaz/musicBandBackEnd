@@ -13,7 +13,7 @@ class SettingsApiController extends Controller
     public function getAllSettings()
     {
 
-        $settings = Setting::all();;
+        $settings = Setting::first();
         $sliders = Slider::all();
 
         return new SettingsCollection($settings, $sliders);

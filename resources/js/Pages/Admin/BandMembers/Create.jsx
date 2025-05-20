@@ -18,6 +18,7 @@ export default function Create() {
         webpage_link: '',
         youtube_link: '',
         is_active: false,
+        is_head: false,
         band_member_image: null,
         band_member_images: [],
         order: 0,
@@ -39,12 +40,12 @@ export default function Create() {
         <AuthenticatedLayout
             header={
                 <h2 className="text-xl font-semibold leading-tight text-gray-800">
-                    Create Band Member
+                    Create Team Member
                 </h2>
             }
         >
             <div className="p-6 bg-[#1e242b]">
-                <h1 className="text-2xl font-bold mb-6 text-white">Create Band Member</h1>
+                <h1 className="text-2xl font-bold mb-6 text-white">Create Team Member</h1>
                 <form onSubmit={submit}>
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
                         <div>
@@ -173,21 +174,33 @@ export default function Create() {
                         </div>
                     </div>
 
-                    {/* Active Status */}
-                    <div className="mb-6 flex items-center">
-                        <input
-                            type="checkbox"
-                            checked={data.is_active}
-                            onChange={e => setData('is_active', e.target.checked)}
-                            className="mr-2 h-5 w-5 text-[#ff5252] border-[#232a32] focus:ring-[#ff5252]"
-                        />
-                        <label className="text-white">Is Active</label>
-                        {errors.is_active && <div className="text-red-500 text-sm ml-2">{errors.is_active}</div>}
+                    {/* Status Checkboxes */}
+                    <div className="mb-6 flex flex-col gap-4">
+                        <div className="flex items-center">
+                            <input
+                                type="checkbox"
+                                checked={data.is_active}
+                                onChange={e => setData('is_active', e.target.checked)}
+                                className="mr-2 h-5 w-5 text-[#ff5252] border-[#232a32] focus:ring-[#ff5252]"
+                            />
+                            <label className="text-white">Is Active</label>
+                            {errors.is_active && <div className="text-red-500 text-sm ml-2">{errors.is_active}</div>}
+                        </div>
+                        <div className="flex items-center">
+                            <input
+                                type="checkbox"
+                                checked={data.is_head}
+                                onChange={e => setData('is_head', e.target.checked)}
+                                className="mr-2 h-5 w-5 text-[#ff5252] border-[#232a32] focus:ring-[#ff5252]"
+                            />
+                            <label className="text-white">Is Team Head</label>
+                            {errors.is_head && <div className="text-red-500 text-sm ml-2">{errors.is_head}</div>}
+                        </div>
                     </div>
 
                     {/* Single Image Upload (Full Width) */}
                     <div className="mb-6">
-                        <label className="block text-white font-medium mb-2">Band Member Image</label>
+                        <label className="block text-white font-medium mb-2">Team Member Image</label>
                         <small className='block mb-4'>recommended size 340 x 450</small>
                         <ImageUpload
                             onChange={file => setData('band_member_image', file)}
@@ -206,8 +219,6 @@ export default function Create() {
                         <small className='block mb-4'>recommended size 300 x 300</small>
                         <MultipleImageUpload
                             onChange={handleMultipleImages}
-                            // cropHeight={300}
-                            // cropWidth={300}
                             initialImages={data.band_member_images.map(image => {
                                 if (image instanceof File) {
                                     return {
@@ -233,7 +244,7 @@ export default function Create() {
                         disabled={processing}
                         className="p-0 w-48 text-center !bg-[#ff5252] hover:!bg-[#ff6161]"
                     >
-                        {processing ? 'Creating...' : 'Create Band Member'}
+                        {processing ? 'Creating...' : 'Create Team Member'}
                     </PrimaryButton>
                 </form>
             </div>

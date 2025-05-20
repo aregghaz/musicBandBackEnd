@@ -7,22 +7,29 @@ use App\Models\BandMember;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Inertia\Inertia;
+use Illuminate\Support\Facades\Log;
 
 class BandMemberController extends Controller
 {
     public function index()
     {
+        $bandHead = BandMember::where('is_head', true)->first();
         $bandMembers = BandMember::all();
-        return Inertia::render('Admin/BandMembers/Index', ['bandMembers' => $bandMembers]);
+        return Inertia::render('Admin/BandMembers/Index', [
+            'bandHead' => $bandHead,
+            'bandMembers' => $bandMembers,
+        ]);
     }
 
     public function create()
     {
-        return Inertia::render('Admin/BandMembers/Create');
+        return Inertia::render('Admin/BandMembers/Create', ['bandMember' => null]);
     }
 
     public function store(Request $request)
     {
+        Log::info('BandMember store called', ['request_data' => $request->all()]);
+
         $request->validate([
             'first_name' => 'required|string',
             'last_name' => 'required|string',
@@ -35,6 +42,7 @@ class BandMemberController extends Controller
             'webpage_link' => 'nullable|url',
             'youtube_link' => 'nullable|url',
             'is_active' => 'nullable|boolean',
+            'is_head' => 'nullable|boolean',
             'order' => 'required|integer|min:0',
             'band_member_image' => 'nullable|image|mimes:jpeg,png,jpg,webp|max:2048',
             'band_member_images.*' => 'nullable|image|mimes:jpeg,png,jpg,webp|max:2048',
@@ -44,10 +52,16 @@ class BandMemberController extends Controller
             'first_name', 'last_name', 'role',
             'country', 'description',
             'facebook_link', 'instagram_link', 'wikipedia_link', 'webpage_link', 'youtube_link',
-            'order',
+            'is_active', 'is_head', 'order',
         ]);
 
         $data['is_active'] = $request->boolean('is_active', false);
+        $data['is_head'] = $request->boolean('is_head', false);
+
+        // Ensure only one band head
+        if ($data['is_head']) {
+            BandMember::where('is_head', true)->update(['is_head' => false]);
+        }
 
         // Single image
         if ($request->hasFile('band_member_image')) {
@@ -77,6 +91,8 @@ class BandMemberController extends Controller
 
     public function update(Request $request, BandMember $bandMember)
     {
+        Log::info('BandMember update called', ['request_data' => $request->all()]);
+
         $request->validate([
             'first_name' => 'required|string',
             'last_name' => 'required|string',
@@ -89,21 +105,27 @@ class BandMemberController extends Controller
             'webpage_link' => 'nullable|url',
             'youtube_link' => 'nullable|url',
             'is_active' => 'nullable|boolean',
+            'is_head' => 'nullable|boolean',
             'order' => 'required|integer|min:0',
             'band_member_image' => 'nullable|image|mimes:jpeg,png,jpg,webp|max:2048',
             'band_member_images.*' => 'nullable|image|mimes:jpeg,png,jpg,webp|max:2048',
             'image_paths' => 'nullable|array',
         ]);
 
-        $bandMember->fill($request->only([
+        $data = $request->only([
             'first_name', 'last_name', 'role',
             'country', 'description',
-            'facebook_link', 'instagram_link',
-            'wikipedia_link', 'webpage_link', 'youtube_link',
-            'order',
-        ]));
+            'facebook_link', 'instagram_link', 'wikipedia_link', 'webpage_link', 'youtube_link',
+            'is_active', 'is_head', 'order',
+        ]);
 
-        $bandMember->is_active = $request->boolean('is_active', false);
+        $data['is_active'] = $request->boolean('is_active', false);
+        $data['is_head'] = $request->boolean('is_head', false);
+
+        // Ensure only one band head
+        if ($data['is_head'] && !$bandMember->is_head) {
+            BandMember::where('is_head', true)->update(['is_head' => false]);
+        }
 
         // Update single image
         if ($request->hasFile('band_member_image')) {
@@ -112,12 +134,12 @@ class BandMemberController extends Controller
                 Storage::disk('public')->delete($oldPath);
             }
             $path = $request->file('band_member_image')->store('band_members', 'public');
-            $bandMember->band_member_image = '/storage/' . $path;
+            $data['band_member_image'] = '/storage/' . $path;
         } elseif ($request->boolean('remove_image')) {
             if ($bandMember->band_member_image) {
                 $oldPath = str_replace('/storage/', '', $bandMember->band_member_image);
                 Storage::disk('public')->delete($oldPath);
-                $bandMember->band_member_image = null;
+                $data['band_member_image'] = null;
             }
         }
 
@@ -141,10 +163,9 @@ class BandMemberController extends Controller
             }
         }
 
-        // Update band_member_images with newImagePaths
-        $bandMember->band_member_images = array_values($newImagePaths);
+        $data['band_member_images'] = array_values($newImagePaths);
 
-        $bandMember->save();
+        $bandMember->update($data);
 
         return redirect()->route('band-members.index')->with('success', 'Band member updated successfully.');
     }

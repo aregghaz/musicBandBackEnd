@@ -6,7 +6,7 @@ const navItems = [
     { label: 'Manage Blogs', route: 'blogs.index' },
     { label: 'Manage News About Us', route: 'about-us-news.index' },
     { label: 'Manage Concerts', route: 'concerts.index' },
-    { label: 'Manage Band Members', route: 'band-members.index' },
+    { label: 'Manage Team', route: 'band-members.index' },
     { label: 'Manage Albums', route: 'albums.index' },
     { label: 'Manage Contacts', route: 'contacts.showForm' },
     { label: 'Manage Settings', route: 'settings.index' },
@@ -95,14 +95,14 @@ export default function Dashboard() {
                                 </Link>
                             </div>
 
-                            {/* Band Members Management Card */}
+
                             <div className="bg-[#232a32] p-4 rounded-lg shadow text-white">
-                                <h2 className="text-md font-semibold mb-1">Manage Band Members</h2>
+                                <h2 className="text-md font-semibold mb-1">Manage Team Members</h2>
                                 <Link
                                     href={route('band-members.index', { locale })}
                                     className="inline-block mt-2 text-sm text-[#ff5252] hover:underline cursor-pointer"
                                 >
-                                    📋 View and Update Band Members
+                                    📋 View and Update Team Members
                                 </Link>
                             </div>
 

@@ -37,12 +37,7 @@ Route::middleware(['auth', 'admin'])->group(function () {
     Route::get('/admin/blogs/{blog}/edit', [BlogController::class, 'edit'])->name('blogs.edit');
     Route::patch('/admin/blogs/{blog}', [BlogController::class, 'update'])->name('blogs.update');
     Route::delete('/admin/blogs/{blog}', [BlogController::class, 'destroy'])->name('blogs.destroy');
-    Route::get('/admin/concerts', [ConcertController::class, 'index'])->name('concerts.index');
-    Route::get('/admin/concerts/create', [ConcertController::class, 'create'])->name('concerts.create');
-    Route::post('/admin/concerts', [ConcertController::class, 'store'])->name('concerts.store');
-    Route::get('/admin/concerts/{concert}/edit', [ConcertController::class, 'edit'])->name('concerts.edit');
-    Route::patch('/admin/concerts/{concert}', [ConcertController::class, 'update'])->name('concerts.update');
-    Route::delete('/admin/concerts/{concert}', [ConcertController::class, 'destroy'])->name('concerts.destroy');
+    Route::resource('/admin/concerts', ConcertController::class);
     Route::resource('/admin/band-members', BandMemberController::class);
     Route::resource('/admin/albums', AlbumController::class);
     Route::get('/admin/contacts', [ContactController::class, 'showForm'])->name('contacts.showForm');
