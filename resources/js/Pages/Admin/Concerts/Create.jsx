@@ -2,6 +2,7 @@ import { Link, useForm } from "@inertiajs/react";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.jsx";
 import PrimaryButton from "@/Components/PrimaryButton.jsx";
 import React from "react";
+import ImageUpload from "@/Components/ImageUpload.jsx";
 
 export default function Create() {
     const { data, setData, post, processing, errors } = useForm({
@@ -9,7 +10,7 @@ export default function Create() {
         concert_place: "",
         concert_date: "",
         type: "1",
-        concert_image: "https://via.placeholder.com/150",
+        concert_image: null,
         buy_ticket_link: "",
     });
 
@@ -90,6 +91,23 @@ export default function Create() {
                     {/*        <span className="text-red-500 text-sm">{errors.type}</span>*/}
                     {/*    )}*/}
                     {/*</div>*/}
+
+                    <div className={'mt-4 mb-4'}>
+                        <label htmlFor="slider_image" className="block text-white">
+                            Image
+                        </label>
+                        <small className="block mb-4">recommended size 300 x 300</small>
+
+                        <ImageUpload
+                            onChange={(file) => setData("concert_image", file)}
+                            initialImage={null}
+                            cropWidth={300}
+                            cropHeight={300}
+                        />
+                        {errors.concert_image && (
+                            <p className="text-red-600 text-sm">{errors.concert_image}</p>
+                        )}
+                    </div>
 
                     {/* Buy Ticket Link input */}
                     <div className="mb-4">

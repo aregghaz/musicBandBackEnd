@@ -1,7 +1,8 @@
-import { Link, useForm } from "@inertiajs/react";
+import {Link, router, useForm} from "@inertiajs/react";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.jsx";
 import PrimaryButton from "@/Components/PrimaryButton.jsx";
-import React from "react";
+import React, {useState} from "react";
+import ImageUpload from "@/Components/ImageUpload.jsx";
 
 export default function Edit({ concert }) {
     const { data, setData, put, processing, errors } = useForm({
@@ -9,19 +10,39 @@ export default function Edit({ concert }) {
         concert_place: concert.concert_place,
         concert_date: concert.concert_date,
         type: "1",
-        concert_image: concert.concert_image,
-        buy_ticket_link: concert.buy_ticket_link,
+        concert_image:null,
+        buy_ticket_link: concert.buy_ticket_link || null,
+        remove_image: false,
     });
-
+    const [existingImage, setExistingImage] = useState(concert.concert_image);
     // const concertTypes = [
     //     { id: 1, label: 'American', value: 1 },
     //     { id: 2, label: 'Armenian', value: 2 },
     // ];
 
-    function submit(e) {
+    const submit = (e) => {
         e.preventDefault();
-        put(`/admin/concerts/${concert.id}`);
-    }
+
+        const formData = new FormData();
+        formData.append("_method", "PATCH");
+        formData.append("concert_city", data.concert_city);
+        formData.append("concert_place", data.concert_place);
+        formData.append("type", '1');
+
+        if(data.buy_ticket_link){
+            formData.append("buy_ticket_link", data.buy_ticket_link);
+        }
+
+        if (data.concert_image) {
+            formData.append("concert_image", data.concert_image);
+        }
+
+        formData.append("remove_image", data.remove_image ? "1" : "0");
+
+        router.post(`/admin/concerts/${concert.id}`, formData, {
+            forceFormData: true,
+        });
+    };
 
     return (
         <AuthenticatedLayout>
@@ -88,6 +109,29 @@ export default function Edit({ concert }) {
                     {/*        <span className="text-red-500 text-sm">{errors.type}</span>*/}
                     {/*    )}*/}
                     {/*</div>*/}
+
+                    <div className={'mt-4 mb-4'}>
+                        <label htmlFor="slider_image" className="block text-white">
+                            Image
+                        </label>
+                        <small className="block mb-4">recommended size 300 x 300</small>
+                        <ImageUpload
+                            initialImage={existingImage}
+                            onChange={(file) => {
+                                setData("concert_image", file);
+                            }}
+                            onRemove={() => {
+                                setExistingImage(null);
+                                setData("concert_image", null);
+                                setData("remove_image", true);
+                            }}
+                            cropWidth={300}
+                            cropHeight={300}
+                        />
+                        {errors.slider_image && (
+                            <p className="text-red-600 text-sm">{errors.slider_image}</p>
+                        )}
+                    </div>
 
                     {/* Buy Ticket Link input */}
                     <div className="mb-4">
