@@ -37,6 +37,7 @@ class SettingController extends Controller
             'upcoming_location' => 'nullable|string|max:255',
             'upcoming_state' => 'nullable|string|max:255',
             'upcoming_country' => 'nullable|string|max:255',
+            'favicon_link' => 'nullable|image|mimes:jpeg,png,jpg,webp,ico|max:512',
 
             // Social Links
             'instagram_link' => 'nullable|url',
@@ -83,6 +84,23 @@ class SettingController extends Controller
         }
         else {
             unset($validated['about_background_image_mob']);
+        }
+
+        if ($request->hasFile('favicon_link')) {
+            if ($settings && $settings->favicon_link) {
+                Storage::disk('public')->delete(str_replace('/storage/', '', $settings->favicon_link));
+            }
+            $path = $request->file('favicon_link')->store('settings', 'public');
+            $validated['favicon_link'] = '/storage/' . $path;
+        }
+        elseif ($request->input('remove_favicon_link') === '1') {
+            if ($settings && $settings->favicon_link) {
+                Storage::disk('public')->delete(str_replace('/storage/', '', $settings->favicon_link));
+            }
+            $validated['favicon_link'] = null;
+        }
+        else {
+            unset($validated['favicon_link']);
         }
 
 

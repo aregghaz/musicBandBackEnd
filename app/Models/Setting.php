@@ -22,5 +22,6 @@ class Setting extends Model
         'youtube_link',
         'apple_link',
         'amazon_link',
+        'favicon_link',
     ];
 }

@@ -15,6 +15,8 @@ const ManageSettings = ({ settings }) => {
         remove_about_background_image: false,
         about_background_image_mob: null,
         remove_about_background_image_mob: false,
+        favicon_link:null,
+        remove_favicon_link: false,
     });
 
     const socialForm = useForm({
@@ -29,15 +31,16 @@ const ManageSettings = ({ settings }) => {
 
     const [existingImage, setExistingImage] = useState(settings?.about_background_image);
     const [existingImageMob, setExistingImageMob] = useState(settings?.about_background_image_mob);
+    const [existingFaviconImage, setExistingFaviconImage] = useState(settings?.favicon_link);
 
     const handleSubmit = (e, section, form) => {
         e.preventDefault();
         const formData = new FormData();
         Object.entries(form.data).forEach(([key, value]) => {
 
-            if ((key === 'about_background_image' || key === 'about_background_image_mob') && value) {
+            if ((key === 'about_background_image' || key === 'about_background_image_mob' || key === 'favicon_link') && value) {
                 formData.append(key, value);
-            } else if (key === 'remove_about_background_image' || key === 'remove_about_background_image_mob') {
+            } else if (key === 'remove_about_background_image' || key === 'remove_about_background_image_mob' || key === 'remove_favicon_link') {
                 formData.append(key, value ? '1' : '0');
             } else if (value) {
                 formData.append(key, value);
@@ -61,11 +64,12 @@ const ManageSettings = ({ settings }) => {
                         const isDescription = field === 'description';
                         const isAboutBackgroundImage = field === 'about_background_image';
                         const isAboutBackgroundImageMob = field === 'about_background_image_mob';
+                        const isFaviconLink = field === 'favicon_link';
 
                         return (
                             <div key={field}>
                                 <label className="block text-white capitalize">
-                                    {field.replace(/_/g, ' ')}
+                                    {isFaviconLink ? 'Favicon Image' : field.replace(/_/g, ' ')}
                                 </label>
                                 {isDescription ? (
                                     <textarea
@@ -111,7 +115,25 @@ const ManageSettings = ({ settings }) => {
                                             cropHeight={520}
                                         />
                                     </>
-                                ) :  (
+                                ) : isFaviconLink ? (
+                                    <>
+                                        <small className="block mb-4">Recommended size 40 x 40</small>
+                                        <ImageUpload
+                                            onChange={(file) => {
+                                                form.setData('favicon_link', file);
+                                                if (file) setExistingFaviconImage(null);
+                                            }}
+                                            initialImage={existingFaviconImage}
+                                            onRemove={() => {
+                                                setExistingFaviconImage(null);
+                                                form.setData('favicon_link', null);
+                                                form.setData('remove_favicon_link', true);
+                                            }}
+                                            cropWidth={40}
+                                            cropHeight={40}
+                                        />
+                                    </>
+                                ): (
                                     <input
                                         type="text"
                                         className="w-full p-2 border rounded-lg bg-[#1e242b] text-white placeholder-gray-400 focus:outline-none"
@@ -145,7 +167,7 @@ const ManageSettings = ({ settings }) => {
             <div className="mx-auto mt-8 p-6">
                 <h1 className="text-3xl font-bold mb-6 text-white">Manage Settings</h1>
                 {renderForm('About Section', presentationForm, [
-                    'title', 'description', 'about_background_image', 'about_background_image_mob',
+                    'title', 'description', 'about_background_image', 'about_background_image_mob', 'favicon_link',
                 ])}
                 {renderForm('Social Links', socialForm, [
                     'instagram_link', 'facebook_link', 'twitter_link',

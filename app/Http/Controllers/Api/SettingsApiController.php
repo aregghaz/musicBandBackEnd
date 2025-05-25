@@ -19,6 +19,17 @@ class SettingsApiController extends Controller
         return new SettingsCollection($settings, $sliders);
 
     }
+
+    public function getFavicon()
+    {
+
+        $settings = Setting::first();
+
+        return response()->json([
+            'faviconLink' => $settings->favicon_link ?? null,
+        ]);
+
+    }
 }
 
 

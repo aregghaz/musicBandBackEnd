@@ -3,7 +3,7 @@ import Cropper from "react-easy-crop";
 
 // Utility to validate image file
 const isValidImage = (file) => {
-    return file && file.type.startsWith("image/");
+    return file && (file.type.startsWith("image/") || file.type === "image/x-icon");
 };
 
 const ImageUpload = ({ onChange, onRemove, initialImage = null, cropWidth, cropHeight }) => {
@@ -13,23 +13,21 @@ const ImageUpload = ({ onChange, onRemove, initialImage = null, cropWidth, cropH
     const [zoom, setZoom] = useState(1);
     const [croppedAreaPixels, setCroppedAreaPixels] = useState(null);
     const [error, setError] = useState(null);
-    const [cropMode, setCropMode] = useState("landscape"); // New state for crop mode
+    const [cropMode, setCropMode] = useState("landscape");
+    const [selectedFile, setSelectedFile] = useState(null); // Store original file for .ico
     const fileInputRef = useRef(null);
 
     const isCropMode = cropWidth && cropHeight;
-
-    const aspectRatio = isCropMode
-        ? cropMode === "landscape"
-            ? 4 / 3
-            : 3 / 4
-        : cropWidth / cropHeight;
+    const isIcoFile = selectedFile && selectedFile.type === "image/x-icon"; // Use file type for accuracy
+    const aspectRatio = isCropMode && !isIcoFile
+        ? cropMode === "landscape" ? 4 / 3 : 3 / 4
+        : 1; // Square for favicons
 
     // Calculate initial zoom to fit image
     const calculateInitialZoom = useCallback(
         (image) => {
             if (!image.width || !image.height) return 1;
             const imageAspect = image.width / image.height;
-            // Fit image to cover crop area
             return imageAspect > aspectRatio
                 ? cropHeight / image.height
                 : cropWidth / image.width;
@@ -46,10 +44,11 @@ const ImageUpload = ({ onChange, onRemove, initialImage = null, cropWidth, cropH
         }
 
         if (!isValidImage(file)) {
-            setError("Please select a valid image file (e.g., JPEG, PNG).");
+            setError("Please select a valid image file (e.g., JPEG, PNG, WebP, ICO).");
             return;
         }
 
+        setSelectedFile(file); // Store original file
         setError(null);
         if (fileToCrop) {
             URL.revokeObjectURL(fileToCrop);
@@ -57,7 +56,6 @@ const ImageUpload = ({ onChange, onRemove, initialImage = null, cropWidth, cropH
         const fileUrl = URL.createObjectURL(file);
         setFileToCrop(fileUrl);
 
-        // Load image for initial zoom
         try {
             const image = new Image();
             image.src = fileUrl;
@@ -65,7 +63,6 @@ const ImageUpload = ({ onChange, onRemove, initialImage = null, cropWidth, cropH
                 image.onload = resolve;
                 image.onerror = () => reject(new Error("Failed to load image."));
             });
-            // const initialZoom = calculateInitialZoom(image);
             setZoom(1);
             setCrop({ x: 0, y: 0 });
         } catch (err) {
@@ -77,7 +74,7 @@ const ImageUpload = ({ onChange, onRemove, initialImage = null, cropWidth, cropH
     // Damped crop change for slower panning
     const handleCropChange = useCallback((newCrop) => {
         setCrop((prev) => ({
-            x: prev.x + (newCrop.x - prev.x) * 0.4, // Damping factor: 0.4
+            x: prev.x + (newCrop.x - prev.x) * 0.4,
             y: prev.y + (newCrop.y - prev.y) * 0.4,
         }));
     }, []);
@@ -92,9 +89,9 @@ const ImageUpload = ({ onChange, onRemove, initialImage = null, cropWidth, cropH
         setCroppedAreaPixels(croppedAreaPixels);
     }, []);
 
-    // Generate cropped image
+    // Generate cropped image (for non-.ico files)
     const getCroppedImg = useCallback(
-        async (imageSrc, pixelCrop) => {
+        async (imageSrc, pixelCrop, outputFormat = "image/jpeg", fileName = "cropped-image.jpg") => {
             const image = new Image();
             image.src = imageSrc;
             await new Promise((resolve, reject) => {
@@ -127,10 +124,10 @@ const ImageUpload = ({ onChange, onRemove, initialImage = null, cropWidth, cropH
                             reject(new Error("Failed to create cropped image."));
                             return;
                         }
-                        const file = new File([blob], "cropped-image.jpg", { type: "image/jpeg" });
+                        const file = new File([blob], fileName, { type: outputFormat });
                         resolve(file);
                     },
-                    "image/jpeg",
+                    outputFormat,
                     0.9
                 );
             });
@@ -140,25 +137,40 @@ const ImageUpload = ({ onChange, onRemove, initialImage = null, cropWidth, cropH
 
     // Handle crop confirmation
     const handleCropConfirm = useCallback(async () => {
-        if (!fileToCrop || !croppedAreaPixels) {
-            setError("No image or crop area selected.");
+        if (!fileToCrop) {
+            setError("No image selected.");
             return;
         }
 
         try {
-            const croppedFile = await getCroppedImg(fileToCrop, croppedAreaPixels);
-            const previewUrl = URL.createObjectURL(croppedFile);
+            let fileToSend;
+            if (isIcoFile) {
+                // Use original .ico file without cropping
+                fileToSend = new File([selectedFile], selectedFile.name, { type: "image/x-icon" });
+            } else if (croppedAreaPixels) {
+                // Crop non-.ico files (JPEG, PNG, WebP)
+                const originalExtension = selectedFile.name.split('.').pop().toLowerCase();
+                const outputFormat = originalExtension === 'png' ? 'image/png' : 'image/jpeg';
+                const fileName = `cropped-image.${originalExtension === 'png' ? 'png' : 'jpg'}`;
+                fileToSend = await getCroppedImg(fileToCrop, croppedAreaPixels, outputFormat, fileName);
+            } else {
+                setError("No crop area selected.");
+                return;
+            }
+
+            const previewUrl = URL.createObjectURL(fileToSend);
             setPreview(previewUrl);
-            onChange(croppedFile);
+            onChange(fileToSend);
             setFileToCrop(null);
+            setSelectedFile(null);
             if (fileInputRef.current) {
                 fileInputRef.current.value = "";
             }
         } catch (e) {
-            setError("Failed to crop image. Please try again.");
+            setError("Failed to process image. Please try again.");
             console.error("Crop error:", e);
         }
-    }, [fileToCrop, croppedAreaPixels, onChange, getCroppedImg]);
+    }, [fileToCrop, croppedAreaPixels, onChange, getCroppedImg, isIcoFile, selectedFile]);
 
     // Handle crop cancel
     const handleCropCancel = () => {
@@ -166,6 +178,7 @@ const ImageUpload = ({ onChange, onRemove, initialImage = null, cropWidth, cropH
             URL.revokeObjectURL(fileToCrop);
         }
         setFileToCrop(null);
+        setSelectedFile(null);
         setError(null);
         if (fileInputRef.current) {
             fileInputRef.current.value = "";
@@ -179,6 +192,7 @@ const ImageUpload = ({ onChange, onRemove, initialImage = null, cropWidth, cropH
         }
         setPreview(null);
         setFileToCrop(null);
+        setSelectedFile(null);
         setError(null);
         onChange(null);
         if (onRemove) onRemove();
@@ -187,11 +201,13 @@ const ImageUpload = ({ onChange, onRemove, initialImage = null, cropWidth, cropH
         }
     };
 
-    // Handle crop mode toggle
+    // Handle crop mode toggle (disable for .ico)
     const handleCropModeToggle = (mode) => {
-        setCropMode(mode);
-        setCrop({ x: 0, y: 0 }); // Reset crop position
-        setZoom(1); // Reset zoom
+        if (!isIcoFile) {
+            setCropMode(mode);
+            setCrop({ x: 0, y: 0 });
+            setZoom(1);
+        }
     };
 
     // Clean up Blob URLs on unmount
@@ -220,7 +236,7 @@ const ImageUpload = ({ onChange, onRemove, initialImage = null, cropWidth, cropH
                     <img
                         src={preview}
                         alt="Image preview"
-                        className="object-cover w-full h-full"
+                        className="object-contain w-full h-full"
                     />
                     <button
                         type="button"
@@ -248,7 +264,7 @@ const ImageUpload = ({ onChange, onRemove, initialImage = null, cropWidth, cropH
 
             <input
                 type="file"
-                accept="image/jpeg,image/png,image/webp"
+                accept="image/jpeg,image/png,image/webp,image/x-icon"
                 disabled={preview || fileToCrop}
                 onChange={handleFileChange}
                 ref={fileInputRef}
@@ -272,9 +288,10 @@ const ImageUpload = ({ onChange, onRemove, initialImage = null, cropWidth, cropH
                             onZoomChange={handleZoomChange}
                             onCropComplete={onCropComplete}
                             aria-label="Crop image"
+                            disableAutomaticStylesInjection={isIcoFile}
                         />
                     </div>
-                    {isCropMode && (
+                    {!isIcoFile && isCropMode && (
                         <div className="flex space-x-2 mb-2">
                             <button
                                 type="button"

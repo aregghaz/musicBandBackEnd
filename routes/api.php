@@ -38,6 +38,7 @@ Route::get('/home-sections-manage', [HomeSectionApiController::class, 'index']);
 Route::get('/reviews', [ReviewApiController::class, 'index']);
 Route::get('/reviews/{id}', [ReviewApiController::class, 'show']);
 Route::post('/reviews', [ReviewApiController::class, 'store']);
+Route::get('/favicon', [SettingsApiController::class, 'getFavicon']);
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
