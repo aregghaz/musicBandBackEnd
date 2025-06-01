@@ -96,13 +96,13 @@ export default function Create() {
                         <label htmlFor="slider_image" className="block text-white">
                             Image
                         </label>
-                        <small className="block mb-4">recommended size 300 x 300</small>
+                        <small className="block mb-4">recommended size 360 x 400</small>
 
                         <ImageUpload
                             onChange={(file) => setData("concert_image", file)}
                             initialImage={null}
-                            cropWidth={300}
-                            cropHeight={300}
+                            // cropWidth={360}
+                            // cropHeight={400}
                         />
                         {errors.concert_image && (
                             <p className="text-red-600 text-sm">{errors.concert_image}</p>

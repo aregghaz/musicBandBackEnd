@@ -114,7 +114,7 @@ export default function Edit({ concert }) {
                         <label htmlFor="slider_image" className="block text-white">
                             Image
                         </label>
-                        <small className="block mb-4">recommended size 300 x 300</small>
+                        <small className="block mb-4">recommended size 360 x 400</small>
                         <ImageUpload
                             initialImage={existingImage}
                             onChange={(file) => {
@@ -125,8 +125,8 @@ export default function Edit({ concert }) {
                                 setData("concert_image", null);
                                 setData("remove_image", true);
                             }}
-                            cropWidth={300}
-                            cropHeight={300}
+                            // cropWidth={360}
+                            // cropHeight={400}
                         />
                         {errors.slider_image && (
                             <p className="text-red-600 text-sm">{errors.slider_image}</p>

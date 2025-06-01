@@ -17,9 +17,9 @@ const ImageUpload = ({ onChange, onRemove, initialImage = null, cropWidth, cropH
     const [selectedFile, setSelectedFile] = useState(null); // Store original file for .ico
     const fileInputRef = useRef(null);
 
-    const isCropMode = cropWidth && cropHeight;
+    const isCropEnabled = cropWidth && cropHeight;
     const isIcoFile = selectedFile && selectedFile.type === "image/x-icon"; // Use file type for accuracy
-    const aspectRatio = isCropMode && !isIcoFile
+    const aspectRatio = isCropEnabled && !isIcoFile
         ? cropMode === "landscape" ? 4 / 3 : 3 / 4
         : 1; // Square for favicons
 
@@ -34,6 +34,43 @@ const ImageUpload = ({ onChange, onRemove, initialImage = null, cropWidth, cropH
         },
         [cropWidth, cropHeight, aspectRatio]
     );
+
+    // Convert to WebP for non-ICO files (used when cropping is disabled)
+    const convertToWebP = async (file) => {
+        const image = new Image();
+        const imageUrl = URL.createObjectURL(file);
+        await new Promise((resolve, reject) => {
+            image.onload = resolve;
+            image.onerror = () => reject(new Error("Failed to load image."));
+            image.src = imageUrl;
+        });
+
+        const canvas = document.createElement("canvas");
+        const ctx = canvas.getContext("2d");
+
+        canvas.width = image.width;
+        canvas.height = image.height;
+
+        ctx.drawImage(image, 0, 0);
+
+        const blob = await new Promise((resolve, reject) => {
+            canvas.toBlob(
+                (blob) => {
+                    if (!blob) {
+                        reject(new Error("Failed to convert image to WebP."));
+                        return;
+                    }
+                    const webpFile = new File([blob], "image.webp", { type: "image/webp" });
+                    resolve(webpFile);
+                },
+                "image/webp",
+                0.9 // High quality
+            );
+        });
+
+        URL.revokeObjectURL(imageUrl);
+        return blob;
+    };
 
     // Handle file selection
     const handleFileChange = async (e) => {
@@ -50,24 +87,50 @@ const ImageUpload = ({ onChange, onRemove, initialImage = null, cropWidth, cropH
 
         setSelectedFile(file); // Store original file
         setError(null);
-        if (fileToCrop) {
-            URL.revokeObjectURL(fileToCrop);
-        }
-        const fileUrl = URL.createObjectURL(file);
-        setFileToCrop(fileUrl);
 
-        try {
-            const image = new Image();
-            image.src = fileUrl;
-            await new Promise((resolve, reject) => {
-                image.onload = resolve;
-                image.onerror = () => reject(new Error("Failed to load image."));
-            });
-            setZoom(1);
-            setCrop({ x: 0, y: 0 });
-        } catch (err) {
-            setError("Failed to process image. Please try another.");
-            console.error("Image load error:", err);
+        if (isCropEnabled) {
+            // Cropping path
+            if (fileToCrop) {
+                URL.revokeObjectURL(fileToCrop);
+            }
+            const fileUrl = URL.createObjectURL(file);
+            setFileToCrop(fileUrl);
+
+            try {
+                const image = new Image();
+                image.src = fileUrl;
+                await new Promise((resolve, reject) => {
+                    image.onload = resolve;
+                    image.onerror = () => reject(new Error("Failed to load image."));
+                });
+                setZoom(1);
+                setCrop({ x: 0, y: 0 });
+            } catch (err) {
+                setError("Failed to process image. Please try another.");
+                console.error("Image load error:", err);
+            }
+        } else {
+            // Non-cropping path
+            try {
+                let fileToSend = file;
+                const isIcoFile = file.type === "image/x-icon";
+
+                // Convert to WebP for non-ICO files
+                if (!isIcoFile) {
+                    fileToSend = await convertToWebP(file);
+                }
+
+                const previewUrl = URL.createObjectURL(fileToSend);
+                setPreview(previewUrl);
+                onChange(fileToSend);
+                setSelectedFile(null);
+                if (fileInputRef.current) {
+                    fileInputRef.current.value = "";
+                }
+            } catch (err) {
+                setError("Failed to process image. Please try another.");
+                console.error("Image processing error:", err);
+            }
         }
     };
 
@@ -272,7 +335,7 @@ const ImageUpload = ({ onChange, onRemove, initialImage = null, cropWidth, cropH
                 aria-label="Upload image"
             />
 
-            {fileToCrop && (
+            {isCropEnabled && fileToCrop && (
                 <div className="space-y-4">
                     <div className="relative h-64 bg-[#232a32] rounded-lg overflow-hidden">
                         <Cropper
@@ -291,7 +354,7 @@ const ImageUpload = ({ onChange, onRemove, initialImage = null, cropWidth, cropH
                             disableAutomaticStylesInjection={isIcoFile}
                         />
                     </div>
-                    {!isIcoFile && isCropMode && (
+                    {!isIcoFile && (
                         <div className="flex space-x-2 mb-2">
                             <button
                                 type="button"

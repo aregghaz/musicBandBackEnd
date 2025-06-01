@@ -41,6 +41,9 @@ class BandMemberController extends Controller
             'wikipedia_link' => 'nullable|url',
             'webpage_link' => 'nullable|url',
             'youtube_link' => 'nullable|url',
+            'spotify_link' => 'nullable|url',
+            'apple_music_link' => 'nullable|url',
+            'tiktok_link' => 'nullable|url',
             'is_active' => 'nullable|boolean',
             'is_head' => 'nullable|boolean',
             'order' => 'required|integer|min:0',
@@ -52,6 +55,7 @@ class BandMemberController extends Controller
             'first_name', 'last_name', 'role',
             'country', 'description',
             'facebook_link', 'instagram_link', 'wikipedia_link', 'webpage_link', 'youtube_link',
+            'spotify_link', 'apple_music_link', 'tiktok_link',
             'is_active', 'is_head', 'order',
         ]);
 
@@ -104,6 +108,9 @@ class BandMemberController extends Controller
             'wikipedia_link' => 'nullable|url',
             'webpage_link' => 'nullable|url',
             'youtube_link' => 'nullable|url',
+            'spotify_link' => 'nullable|url',
+            'apple_music_link' => 'nullable|url',
+            'tiktok_link' => 'nullable|url',
             'is_active' => 'nullable|boolean',
             'is_head' => 'nullable|boolean',
             'order' => 'required|integer|min:0',
@@ -116,6 +123,7 @@ class BandMemberController extends Controller
             'first_name', 'last_name', 'role',
             'country', 'description',
             'facebook_link', 'instagram_link', 'wikipedia_link', 'webpage_link', 'youtube_link',
+            'spotify_link', 'apple_music_link', 'tiktok_link',
             'is_active', 'is_head', 'order',
         ]);
 
