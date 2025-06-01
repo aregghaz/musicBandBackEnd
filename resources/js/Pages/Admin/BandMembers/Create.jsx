@@ -17,6 +17,9 @@ export default function Create() {
         wikipedia_link: '',
         webpage_link: '',
         youtube_link: '',
+        spotify_link: '',
+        apple_music_link: '',
+        tiktok_link: '',
         is_active: false,
         is_head: false,
         band_member_image: null,
@@ -171,6 +174,39 @@ export default function Create() {
                                 className="w-full px-4 py-2 rounded-md bg-[#1e242b] text-white placeholder-gray-400 border border-[#232a32] focus:outline-none focus:ring-2 focus:ring-[#ff5252]"
                             />
                             {errors.youtube_link && <div className="text-red-500 text-sm mt-1">{errors.youtube_link}</div>}
+                        </div>
+
+                        <div>
+                            <input
+                                type="url"
+                                value={data.spotify_link}
+                                onChange={e => setData('spotify_link', e.target.value)}
+                                placeholder="Spotify Link"
+                                className="w-full px-4 py-2 rounded-md bg-[#1e242b] text-white placeholder-gray-400 border border-[#232a32] focus:outline-none focus:ring-2 focus:ring-[#ff5252]"
+                            />
+                            {errors.spotify_link && <div className="text-red-500 text-sm mt-1">{errors.spotify_link}</div>}
+                        </div>
+
+                        <div>
+                            <input
+                                type="url"
+                                value={data.apple_music_link}
+                                onChange={e => setData('apple_music_link', e.target.value)}
+                                placeholder="Apple Music Link"
+                                className="w-full px-4 py-2 rounded-md bg-[#1e242b] text-white placeholder-gray-400 border border-[#232a32] focus:outline-none focus:ring-2 focus:ring-[#ff5252]"
+                            />
+                            {errors.apple_music_link && <div className="text-red-500 text-sm mt-1">{errors.apple_music_link}</div>}
+                        </div>
+
+                        <div>
+                            <input
+                                type="url"
+                                value={data.tiktok_link}
+                                onChange={e => setData('tiktok_link', e.target.value)}
+                                placeholder="TikTok Link"
+                                className="w-full px-4 py-2 rounded-md bg-[#1e242b] text-white placeholder-gray-400 border border-[#232a32] focus:outline-none focus:ring-2 focus:ring-[#ff5252]"
+                            />
+                            {errors.tiktok_link && <div className="text-red-500 text-sm mt-1">{errors.tiktok_link}</div>}
                         </div>
                     </div>
 

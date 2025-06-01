@@ -7,6 +7,7 @@ use App\Models\Concert;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Inertia\Inertia;
+use App\Helpers\ImageUploadHelper;
 
 class ConcertController extends Controller
 {
@@ -34,12 +35,19 @@ class ConcertController extends Controller
             'buy_ticket_link' => 'nullable|url',
         ]);
 
-        if ($request->hasFile('concert_image')) {
-            $path = $request->file('concert_image')->store('concerts', 'public');
-            $validatedData['concert_image'] = '/storage/' . $path;
-        }
+        $concert = new Concert();
+        $concert->fill($validatedData);
 
-        Concert::create($validatedData);
+        ImageUploadHelper::handleImageUpload(
+            $request,
+            $concert,
+            'concert_image',
+            'remove_image',
+            'concert_image',
+            'concerts'
+        );
+
+        $concert->save();
 
         return redirect()->route('concerts.index')->with('success', 'Concert created successfully.');
     }
@@ -62,23 +70,18 @@ class ConcertController extends Controller
             'buy_ticket_link' => 'nullable|url',
         ]);
 
-        if ($request->hasFile('concert_image')) {
-            // Delete old image if it exists
-            if ($concert->concert_image) {
-                Storage::disk('public')->delete(str_replace('/storage/', '', $concert->concert_image));
-            }
-            // Store new image
-            $path = $request->file('concert_image')->store('concerts', 'public');
-            $validatedData['concert_image'] = '/storage/' . $path;
-        } elseif ($request->boolean('remove_image')) {
-            // Remove existing image if requested
-            if ($concert->concert_image) {
-                Storage::disk('public')->delete(str_replace('/storage/', '', $concert->concert_image));
-            }
-            $validatedData['concert_image'] = null;
-        }
+        $concert->fill($validatedData);
 
-        $concert->update($validatedData);
+        ImageUploadHelper::handleImageUpload(
+            $request,
+            $concert,
+            'concert_image',
+            'remove_image',
+            'concert_image',
+            'concerts',
+        );
+
+        $concert->save();
 
         return redirect()->route('concerts.index')->with('success', 'Concert updated successfully.');
     }

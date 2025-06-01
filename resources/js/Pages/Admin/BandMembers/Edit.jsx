@@ -27,6 +27,9 @@ export default function Edit() {
         wikipedia_link: bandMember.wikipedia_link || '',
         webpage_link: bandMember.webpage_link || '',
         youtube_link: bandMember.youtube_link || '',
+        spotify_link: bandMember.spotify_link || '',
+        apple_music_link: bandMember.apple_music_link || '',
+        tiktok_link: bandMember.tiktok_link || '',
         is_active: bandMember.is_active || false,
         is_head: bandMember.is_head || false,
         order: bandMember.order || 0,
@@ -49,6 +52,9 @@ export default function Edit() {
         formData.append('wikipedia_link', data.wikipedia_link);
         formData.append('webpage_link', data.webpage_link);
         formData.append('youtube_link', data.youtube_link);
+        formData.append('spotify_link', data.spotify_link);
+        formData.append('apple_music_link', data.apple_music_link);
+        formData.append('tiktok_link', data.tiktok_link);
         formData.append('is_active', data.is_active ? '1' : '0');
         formData.append('is_head', data.is_head ? '1' : '0');
         formData.append('order', data.order.toString());
@@ -93,15 +99,12 @@ export default function Edit() {
     };
 
     return (
-        <AuthenticatedLayout
-
-        >
+        <AuthenticatedLayout>
             <div className="p-6 bg-[#1e242b]">
                 <h1 className="text-2xl font-bold mb-6 text-white">Edit Team Member</h1>
 
                 <div className="bg-[#1e242b] shadow-md rounded-lg p-6">
                     <form onSubmit={submit}>
-
                         <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
                             <div>
                                 <label className="block text-white font-medium mb-2">First Name</label>
@@ -237,6 +240,42 @@ export default function Edit() {
                                     placeholder="Enter YouTube Link"
                                 />
                                 {errors.youtube_link && <p className="text-red-500 text-sm mt-1">{errors.youtube_link}</p>}
+                            </div>
+
+                            <div>
+                                <label className="block text-white font-medium mb-2">Spotify Link</label>
+                                <input
+                                    type="text"
+                                    value={data.spotify_link}
+                                    onChange={(e) => setData('spotify_link', e.target.value)}
+                                    className="w-full px-4 py-2 rounded-md bg-[#1e242b] text-white placeholder-gray-400 border border-[#232a32] focus:outline-none focus:ring-2 focus:ring-[#ff5252]"
+                                    placeholder="Enter Spotify Link"
+                                />
+                                {errors.spotify_link && <p className="text-red-500 text-sm mt-1">{errors.spotify_link}</p>}
+                            </div>
+
+                            <div>
+                                <label className="block text-white font-medium mb-2">Apple Music Link</label>
+                                <input
+                                    type="text"
+                                    value={data.apple_music_link}
+                                    onChange={(e) => setData('apple_music_link', e.target.value)}
+                                    className="w-full px-4 py-2 rounded-md bg-[#1e242b] text-white placeholder-gray-400 border border-[#232a32] focus:outline-none focus:ring-2 focus:ring-[#ff5252]"
+                                    placeholder="Enter Apple Music Link"
+                                />
+                                {errors.apple_music_link && <p className="text-red-500 text-sm mt-1">{errors.apple_music_link}</p>}
+                            </div>
+
+                            <div>
+                                <label className="block text-white font-medium mb-2">TikTok Link</label>
+                                <input
+                                    type="text"
+                                    value={data.tiktok_link}
+                                    onChange={(e) => setData('tiktok_link', e.target.value)}
+                                    className="w-full px-4 py-2 rounded-md bg-[#1e242b] text-white placeholder-gray-400 border border-[#232a32] focus:outline-none focus:ring-2 focus:ring-[#ff5252]"
+                                    placeholder="Enter TikTok Link"
+                                />
+                                {errors.tiktok_link && <p className="text-red-500 text-sm mt-1">{errors.tiktok_link}</p>}
                             </div>
                         </div>
 
